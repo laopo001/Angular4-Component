@@ -1,0 +1,31 @@
+<main>
+  <h1>Hello from Angular App with Webpack</h1>
+  <!--<img src="../assets/images/angular.png">-->
+  <Icon [style]="{'font-size':'30px',color:'red'}" type="fast-backward"></Icon>
+  <Icon type="loading"></Icon>
+  <br/>
+  <acButton type="primary" [style]="{'color':'red'}">Primary</acButton>
+  <acButton>Default</acButton>
+  <acButton type="dashed">Dashed</acButton>
+  <acButton type="danger">Danger</acButton>
+  <acButton type="danger" shape="circle" htmlType="submit" size="large">Dang</acButton>
+  <acButton type="primary" [loading]="true">loading</acButton>
+
+  <acButton type="primary">loading<Icon type="loading" ></Icon></acButton>
+  <br/>
+
+    <ButtonGroup>
+      <acButton type="primary" (onClick)="myClick($event)">
+        <Icon type="left"  ></Icon>Go back
+      </acButton>
+        <acButton type="primary">
+        <Icon type="loading"  ></Icon>Middle
+      </acButton>
+      <acButton >
+        Go forward<Icon type="right" ></Icon>
+      </acButton>
+    </ButtonGroup>
+    <br/>
+
+    <Pagination [total]="100" [showTotal]="showTotal" ></Pagination>
+</main>

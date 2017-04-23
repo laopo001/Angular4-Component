@@ -1,0 +1,30 @@
+<ul [ngClass]="currClass" [ngStyle]="style" unselectable="unselectable">
+    <span *ngIf="showTotal" [ngClass]="showTotalClass">
+          {{showTotalText}}
+        </span>
+    <li [attr.title]="showTitle ? locale.prev_page : null" (click)="_prev()" [ngClass]="_prevClass">
+        <a></a>
+    </li>
+
+
+    <li *ngFor="let page of pagerList" [attr.title]="page.showTitle ? page.page : null" [class]="page.className" (click)="_handleChange(page.key)">
+        <a>{{page.page}}</a>
+    </li>
+    <li [attr.title]="showTitle ? locale.prev_page : null" (click)="_next()" [ngClass]="_nextClass"
+      
+        >
+        <a></a>
+    </li>
+    <!--
+        <Options
+          locale={props.locale}
+          rootPrefixCls={prefixCls}
+          selectComponentClass={props.selectComponentClass}
+          selectPrefixCls={props.selectPrefixCls}
+          changeSize={this.props.showSizeChanger ? this._changePageSize.bind(this) : null}
+          current={this.state.current}
+          pageSize={this.state.pageSize}
+          pageSizeOptions={this.props.pageSizeOptions}
+          quickGo={this.props.showQuickJumper ? this._handleChange.bind(this) : null}
+        />-->
+</ul>

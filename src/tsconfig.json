@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "allowJs":true,
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    // "types": [
+    //   // add node as an option
+    //   "node","jasmine"
+    // ]
+    "typeRoots": [
+      // add path to @types
+      "../node_modules/@types"
+    ],
+    "exclude": [
+      "node_modules",
+      "typings/main",
+      "typings/main.d.ts"
+    ]
+  }
+}
