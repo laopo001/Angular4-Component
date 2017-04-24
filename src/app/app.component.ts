@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import '../assets/css/styles.css';
 
 
@@ -14,5 +15,8 @@ export class AppComponent {
   showTotal(total:number, range:number[]){
 
     return `${range[0]}-${range[1]} of ${total} items`;
+  }
+  onChange(q:any ){
+    console.log(q)
   }
  }

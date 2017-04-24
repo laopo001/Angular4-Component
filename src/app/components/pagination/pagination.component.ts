@@ -7,7 +7,7 @@ function classNames(obj: Pagination) {
 
     return {
         'mini': isSmall,
-
+        [`${prefixCls}`]:true,
         [`${obj.class}`]: !!obj.class
     }
 }
@@ -27,10 +27,10 @@ export class Pagination implements OnInit {
     @Input() size: string;
     isSmall: boolean;
 
-    @Input() defaultCurrent = 1;
+    
     @Input() total = 0;
     @Input() defaultPageSize = 10;
-    @Input() onChange = noop;
+    // @Input() onChange = noop;
 
 
     @Input() selectComponentClass: any = null;
@@ -42,17 +42,21 @@ export class Pagination implements OnInit {
     @Input() locale = LOCALE;
     @Input() showTotal: any;
 
-    current = 1;
+    @Input() defaultCurrent = 1;
+    @Input() current: number;
+    _currentTemp = 1;
+    _current:number = 1;
     pageSize = 10;
 
     pagerList: any[] = [];
 
-
+    @Input() simple: boolean = false;
 
 
 
     @Input() class: string;
     @Input() style: any;
+    @Output() onChange = new EventEmitter();
 
     currClasses = {};
 
@@ -62,38 +66,58 @@ export class Pagination implements OnInit {
     showTotalText = "";
     _prevClass = {};
     _nextClass = {}
-    @Output() Change = new EventEmitter();
+    simpleUlClass = "";
+    simpleShowTitle = ""
+    simpleMiddleClass = ""
+    simpleSlashClass = ""
+    allPages = 0;
     constructor() {
 
     }
 
     ngOnInit() {
+        this._current=this.defaultCurrent==null?this._current:this.defaultCurrent;
+        this._currentTemp=this.defaultCurrent==null?this._current:this.defaultCurrent;
+        this.render();
+    }
+    render(){
+        this._current=this.current==null?this._current:this.current;
+        this._currentTemp=this.current==null?this._current:this.current;
+        this.allPages = this._calcPage();
         this.isSmall = this.size === 'small';
+        
+        
         this.currClasses = classNames(this);
-
         this.showTotalClass = { [`${this.prefixCls}-total-text`]: true };
         this.showTotalText = this.showTotal(
             this.total,
             [
-                (this.current - 1) * this.pageSize + 1,
-                this.current * this.pageSize > this.total ? this.total : this.current * this.pageSize,
+                (this._current - 1) * this.pageSize + 1,
+                this._current * this.pageSize > this.total ? this.total : this._current * this.pageSize,
             ]
         )
+        if (this.simple) {
+            this.simpleUlClass = `${this.prefixCls} ${this.prefixCls}-simple ${this.class}`;
+            this.simpleShowTitle = this.showTitle ? `${this._current}/${this.allPages}` : null
+            this.simpleMiddleClass = `${this.prefixCls}-simple-pager`;
+            this.simpleSlashClass = `${this.prefixCls}-slash`
+        }
+
         this._prevClass = { [`${this._hasPrev() ? '' : `${this.prefixCls}-disabled`}`]: true, [`${this.prefixCls}-prev`]: true };
         this._nextClass = { [`${this._hasNext() ? '' : `${this.prefixCls}-disabled`}`]: true, [`${this.prefixCls}-next`]: true };
         const allPages = this._calcPage();
-        //       const pagerList: any[] = [];
+
 
         let jumpPrev = null;
         let jumpNext = null;
         let firstPager = null;
         let lastPager = null;
         const pageBufferSize = this.showLessItems ? 1 : 2;
-        const { current, pageSize, pagerList } = this;
+        const {  pageSize, pagerList } = this;
 
         if (allPages <= 5 + pageBufferSize * 2) {
             for (let i = 1; i <= allPages; i++) {
-                const active = this.current === i;
+                const active = this._current === i;
                 const prefixCls = `${this.prefixCls}-item`;
                 let className = `${prefixCls} ${prefixCls}-${i}`;
                 if (active) {
@@ -115,15 +139,12 @@ export class Pagination implements OnInit {
             jumpPrev = {
                 showTitle: this.showTitle ? prevItemTitle : null,
                 key: "prev",
-
-                onClick: this._jumpPrev,
                 className: `${this.prefixCls}-jump-prev`
             };
             jumpNext = {
                 showTitle: this.showTitle ? nextItemTitle : null,
                 key: "next",
 
-                onClick: this._jumpNext,
                 className: `${this.prefixCls}-jump-next`
             };
             // let className = `${this.prefixCls} ${this.prefixCls}-${allPages}`;
@@ -144,18 +165,18 @@ export class Pagination implements OnInit {
                 className: `${prefixCls} ${prefixCls}-${1}`,
                 showTitle: this.showTitle
             };
-            let left = Math.max(1, current - pageBufferSize);
-            let right = Math.min(current + pageBufferSize, allPages);
+            let left = Math.max(1, this._current - pageBufferSize);
+            let right = Math.min(this._current + pageBufferSize, allPages);
 
-            if (current - 1 <= pageBufferSize) {
+            if (this._current - 1 <= pageBufferSize) {
                 right = 1 + pageBufferSize * 2;
             }
 
-            if (allPages - current <= pageBufferSize) {
+            if (allPages - this._current <= pageBufferSize) {
                 left = allPages - pageBufferSize * 2;
             }
             for (let i = left; i <= right; i++) {
-                const active = current === i;
+                const active = this._current === i;
                 const prefixCls = `${this.prefixCls}-item`;
                 let className = `${prefixCls} ${prefixCls}-${i}`;
                 if (active) {
@@ -164,7 +185,7 @@ export class Pagination implements OnInit {
 
                 pagerList.push({
                     locale: this.locale,
-                    onClick: () => { this._handleChange.bind(this, i); console.log(123) },
+                    onClick: () => { this._handleChange.bind(this, i); },
                     key: i,
                     page: i,
                     className: className,
@@ -172,7 +193,7 @@ export class Pagination implements OnInit {
                 });
 
             }
-            if (current - 1 >= pageBufferSize * 2 && current !== 1 + 2) {
+            if (this._current - 1 >= pageBufferSize * 2 && this._current !== 1 + 2) {
                 pagerList[0] = Object.assign({}, {
                     className: pagerList[0].className + ` ${this.prefixCls}-item-after-jump-prev`,
                 }, pagerList[0])
@@ -181,7 +202,7 @@ export class Pagination implements OnInit {
                 // });
                 pagerList.unshift(jumpPrev);
             }
-            if (allPages - current >= pageBufferSize * 2 && current !== allPages - 2) {
+            if (allPages - this._current >= pageBufferSize * 2 && this._current !== allPages - 2) {
                 pagerList[pagerList.length - 1] = Object.assign({}, {
                     className: pagerList[pagerList.length - 1].className + ` ${this.prefixCls}-item-after-jump-prev`,
                 }, pagerList[pagerList.length - 1])
@@ -196,42 +217,61 @@ export class Pagination implements OnInit {
         }
     }
     _isValid(page: any) {
-        return typeof page === 'number' && page >= 1 && page !== this.current;
+        return typeof page === 'number' && page >= 1 && page !== this._current;
     }
 
 
     _hasPrev() {
-        return this.current > 1;
+        return this._current > 1;
     }
     _hasNext() {
-        return this.current < this._calcPage();
+        return this._current < this._calcPage();
     }
     _prev() {
-        console.log(123)
+
         if (this._hasPrev()) {
-            this._handleChange(this.current - 1);
+            this._handleChange(Number(this._current) - 1);
         }
     }
     _next() {
+
         if (this._hasNext()) {
-            this._handleChange(this.current + 1);
+
+            this._handleChange(Number(this._current) + 1);
         }
     }
-    _jumpPrev() {
-        this._handleChange(Math.max(1, this.current - (this.showLessItems ? 3 : 5)));
-    }
-    _jumpNext() {
-        this._handleChange(
-            Math.min(this._calcPage(), this.current + (this.showLessItems ? 3 : 5))
-        );
+    // _jumpPrev() {
+    //     this._handleChange(Math.max(1, this._current - (this.showLessItems ? 3 : 5)));
+    // }
+    // _jumpNext() {
+    //     this._handleChange(
+    //         Math.min(this._calcPage(), this._current + (this.showLessItems ? 3 : 5))
+    //     );
+    // }
+    update() {
+        var _val = this._current.toString();
+        let val;
+        if (_val == '') {
+            val = _val;
+        } else if (!isNaN(Number(_val)) && Number(_val) >= 1 && Number(_val) <= this.allPages) {
+            val = Number(_val);
+        } else {
+            val = this._currentTemp;
+            this._current = val;
+            return;
+        }
+        //   console.log(val);
+        // this._current = Number(val);
+        // this.current = Number(val);
+        this._handleChange(val);
     }
     _handleChange(p: any) {
-        
+
         if (p == "prev") {
-            p = Math.max(1, this.current - (this.showLessItems ? 3 : 5))
+            p = Math.max(1, this._current - (this.showLessItems ? 3 : 5))
         }
         if (p == "next") {
-            p = Math.min(this._calcPage(), this.current + (this.showLessItems ? 3 : 5))
+            p = Math.min(this._calcPage(), this._current + (this.showLessItems ? 3 : 5))
         }
         let page = p;
 
@@ -240,25 +280,19 @@ export class Pagination implements OnInit {
                 page = this._calcPage();
             }
             this.pagerList = []
-            this.current = page;
-            this.ngOnInit();
-            // if (!('current' in this)) {
-            //     this.current=page;
-            //    // this.ngOnInit();
-            //     this.pagerList=[]
-            //     // this.setState({
-            //     //     current: page,
-            //     //     _current: page,
-            //     // });
-            // }
+            this._current = page;
+            this._currentTemp = page;
+            this.render();
 
             const pageSize = this.pageSize;
+
+            this.onChange.emit({ page, pageSize });
             // this.props.onChange(page, pageSize);
 
             return page;
         }
 
-        return this.current;
+        return this._current;
     }
     _calcPage(p?: any) {
         let pageSize = p;

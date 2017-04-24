@@ -1,4 +1,18 @@
-<ul [ngClass]="currClass" [ngStyle]="style" unselectable="unselectable">
+<ul *ngIf="simple" [class]="simpleUlClass">
+    <li [attr.title]="showTitle ? locale.prev_page : null" (click)="_prev()" [ngClass]="_prevClass">
+        <a></a>
+    </li>
+    <li   [attr.title]="simpleShowTitle" [class]="simpleMiddleClass">
+        <input type="text"   [(ngModel)]="_current"  (keyup.enter)="update()" (blur)="update()">
+        <!--<input type="text" class="form-control"  [(ngModel)]="current">-->
+        <span [class]="simpleSlashClass">／</span> {{allPages}}
+    </li>
+    <li [attr.title]="showTitle ? locale.next_page : null" (click)="_next()" [ngClass]="_nextClass">
+        <a></a>
+    </li>
+</ul>
+
+<ul *ngIf="!simple" [ngClass]="currClasses" [ngStyle]="style" unselectable="unselectable">
     <span *ngIf="showTotal" [ngClass]="showTotalClass">
           {{showTotalText}}
         </span>
@@ -10,9 +24,7 @@
     <li *ngFor="let page of pagerList" [attr.title]="page.showTitle ? page.page : null" [class]="page.className" (click)="_handleChange(page.key)">
         <a>{{page.page}}</a>
     </li>
-    <li [attr.title]="showTitle ? locale.prev_page : null" (click)="_next()" [ngClass]="_nextClass"
-      
-        >
+    <li [attr.title]="showTitle ? locale.next_page : null" (click)="_next()" [ngClass]="_nextClass">
         <a></a>
     </li>
     <!--
