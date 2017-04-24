@@ -5,12 +5,13 @@ import { AppComponent } from './app.component';
 import { Icon } from './components/icon/';
 import { Button,ButtonGroup } from './components/button/';
 import { Pagination } from './components/pagination/';
+import { Select } from './components/select/';
 @NgModule({
   imports: [
     BrowserModule,FormsModule
   ],
   declarations: [
-    AppComponent,Icon,Button,ButtonGroup,Pagination
+    AppComponent,Icon,Button,ButtonGroup,Pagination,Select
   ],
   bootstrap: [ AppComponent ]
 })

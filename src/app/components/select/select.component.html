@@ -1,0 +1,34 @@
+<div [style]="style" ref="root" (blur)="onOuterBlur()" (focus)="onOuterFocus()" [class]="rootClass">
+    <div ref-selection [class]="selectionClasses" role="combobox" aria-autocomplete="list" aria-haspopup="true" [attr.aria-expanded]="open">
+        <div [class]="selectionClass">
+            
+            <div *ngIf="placeholder"
+                keydown="preventDefaultEvent()"
+                [ngStyle]="placeholderStyle"
+                unselectable="unselectable"
+                onClick={this.onPlaceholderClick}
+                [class]="placeholderClass"
+            >
+                {{placeholder}}
+            </div>
+
+            <div key="value" [class]="singleValueClass" [attr.title]="singleValue.title || singleValue.label" [ngStyle]="singleValueStyle">
+                {{singleValue}}
+            </div>
+            <div *ngIf="showSearch" key="input" [class]="showSearchClass" [ngStyle]="showSearchStyle">
+                <input value="" [class]="showSearchInputClass" (keydown)="onkeydown()">
+                <span [class]="showSearchSpanClass">
+                    {{inputValue}}&nbsp;
+                </span>
+            </div>
+        <div>
+                <!--{ctrlNode} 
+        {allowClear ? clear : null} 
+        {
+            multiple || !props.showArrow ? null : (
+        <span key="arrow" className={`${prefixCls}-arrow`} style={UNSELECTABLE_STYLE} {...UNSELECTABLE_ATTRIBUTE} onClick={this.onArrowClick}>
+              <b />
+            </span>)
+            }-->
+    </div>
+</div>
