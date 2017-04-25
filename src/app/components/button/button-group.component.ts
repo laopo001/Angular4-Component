@@ -1,4 +1,4 @@
-import { Component, Input, OnInit ,ContentChildren,Directive,QueryList ,Inject, ElementRef} from '@angular/core';
+import { Component, Input, OnInit ,ContentChildren,Directive,QueryList ,Inject, ElementRef,ViewChildren} from '@angular/core';
 import {Button} from './button.component'
 
 function classNames(obj: ButtonGroup) {
@@ -24,6 +24,8 @@ function classNames(obj: ButtonGroup) {
 export class ButtonGroup implements OnInit {
     @Input() size: string;
     @Input() class: string;
+    @ViewChildren(Button) child: QueryList<Button>;
+
     currClasses = {};
     prefixCls= 'ant-btn-group';
     sizeCls='';
@@ -50,6 +52,7 @@ export class ButtonGroup implements OnInit {
 
     }
     ngAfterContentInit() {
-        //console.log( this.items)
+        console.log(this.child)
+        console.log(this.items)
     }
 }

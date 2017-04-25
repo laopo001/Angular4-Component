@@ -1,6 +1,6 @@
 <div [style]="style" ref="root" (blur)="onOuterBlur()" (focus)="onOuterFocus()" [class]="rootClass">
-    <div ref-selection [class]="selectionClasses" role="combobox" aria-autocomplete="list" aria-haspopup="true" [attr.aria-expanded]="open">
-        <div [class]="selectionClass">
+    <div ref-selection [class]="selectionClasses" #selection role="combobox" aria-autocomplete="list" aria-haspopup="true" [attr.aria-expanded]="open">
+        <div [class]="selectionClass"  #topCtrlNode>
             
             <div *ngIf="placeholder"
                 keydown="preventDefaultEvent()"
@@ -15,9 +15,9 @@
             <div key="value" [class]="singleValueClass" [attr.title]="singleValue.title || singleValue.label" [ngStyle]="singleValueStyle">
                 {{singleValue}}
             </div>
-            <div *ngIf="showSearch" key="input" [class]="showSearchClass" [ngStyle]="showSearchStyle">
+            <div *ngIf="showSearch" key="input" [class]="showSearchClass" [ngStyle]="showSearchStyle" #inputInstance>
                 <input value="" [class]="showSearchInputClass" (keydown)="onkeydown()">
-                <span [class]="showSearchSpanClass">
+                <span [class]="showSearchSpanClass" #inputMirrorInstance>
                     {{inputValue}}&nbsp;
                 </span>
             </div>
