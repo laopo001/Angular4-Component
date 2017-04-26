@@ -7,10 +7,10 @@
   <acIcon [style]="{'font-size':'30px',color:'red'}" type="fast-backward"></acIcon>
   <acIcon type="loading"></acIcon>
   <br/>
-  <acButton type="primary" [style]="{'color':'red'}">Primary</acButton>
-  <acButton>Default</acButton>
+  <acButton  type="primary" [style]="{'color':'red'}">Primary</acButton>
+  <acButton >Default</acButton>
   <acButton #cs type="dashed">Dashed</acButton>
-  <acButton type="danger">Danger</acButton>
+  <acButton  type="danger">Danger</acButton>
   <acButton type="danger" shape="circle" htmlType="submit" size="large">Dang</acButton>
   <acButton type="primary" [loading]="true">loading</acButton>
 
@@ -36,22 +36,26 @@
   <acPagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [simple]="true"></acPagination>
 
   <br/>
-  <acSelect [showSearch]="true"  ></acSelect>
+  <acSelect [showSearch]="true"></acSelect>
   <br/>
-  <acSelect [showSearch]="true" placeholder="asdfasdfazxc" ></acSelect>
+  <acSelect [showSearch]="true" placeholder="asdfasdfazxc"></acSelect>
   <br/>
   <acSelect [showSearch]="true" placeholder="asdfasdfazxc" [showSearch]="true"></acSelect>
   <br/>
-<acTrigger trigger="click">
-  <div title>title</div>
-  <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
-  <acButton content>触发bottom</acButton>
+  <acTrigger trigger="click">
+    <div title>title</div>
+    <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
+    <acButton content>触发bottom</acButton>
 
-</acTrigger>
-  <br/>
-    <acTrigger trigger="click" placement="top">
-
-      <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
-      <div content>触发top</div>
   </acTrigger>
+  <br/>
+  <acTrigger trigger="click" placement="top">
+
+    <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
+    <div content>触发top</div>
+  </acTrigger>
+  <br/>
+    <acCheckbox (checkedChange)="onChange($event)" >checkBox</acCheckbox>
+    <acCheckbox  [(checked)]="qq" >checkBox</acCheckbox>
+  <acCheckbox  disabled>checkBox</acCheckbox>
 </main>

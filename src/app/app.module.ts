@@ -7,12 +7,14 @@ import { Button,ButtonGroup } from './components/button/';
 import { Pagination } from './components/pagination/';
 import { Select } from './components/select/';
 import { Trigger } from './components/trigger/';
+import { Checkbox } from './components/checkbox/'
+
 @NgModule({
   imports: [
     BrowserModule,FormsModule
   ],
   declarations: [
-    AppComponent,Icon,Button,ButtonGroup,Pagination,Select,Trigger
+    AppComponent,Icon,Button,ButtonGroup,Pagination,Select,Trigger,Checkbox
   ],
   bootstrap: [ AppComponent ]
 })

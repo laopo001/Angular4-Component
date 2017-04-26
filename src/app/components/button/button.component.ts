@@ -26,7 +26,7 @@ function classNames(obj: Button) {
 export class Button implements OnInit {
     @HostBinding('style.display') dis='inline-block';
     @Input() loading: boolean = false;
-    @Input() clicked: boolean = false;
+    clicked: boolean = false;
     @Input() ghost: boolean = false;
     @Input() iconOnly: boolean = false;
     @Input() shape: string;
@@ -48,6 +48,12 @@ export class Button implements OnInit {
     }
 
     ngOnInit() {
+       if(typeof this.ghost=='string'){
+            this.ghost=true;
+        }
+        if(typeof this.loading=='string'){
+            this.loading=true;
+        }
         this.sizeCls = ({
             large: 'lg',
             small: 'sm',

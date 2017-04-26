@@ -10,7 +10,7 @@ import '../assets/css/styles.css';
 })
 export class AppComponent implements OnInit {
   @ViewChild('cs') cs: TemplateRef<any>;
-
+  qq=true;
   constructor(private elRef:ElementRef){
    
   }
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     return `${range[0]}-${range[1]} of ${total} items`;
   }
   onChange(q:any ){
-    console.log(q)
+    console.log(this.qq)
   }
   ngOnInit(){
     console.log('ngOnInit',this.cs);
