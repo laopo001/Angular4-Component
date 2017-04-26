@@ -2,10 +2,10 @@
   <h1>Hello from Angular App with Webpack</h1>
   <!--<img src="../assets/images/angular.png">-->
 
-  <i class="iconfont icon-money-copy"></i>
+  <i class="acIconfont acIcon-money-copy"></i>
   <br/>
-  <Icon [style]="{'font-size':'30px',color:'red'}" type="fast-backward"></Icon>
-  <Icon type="loading"></Icon>
+  <acIcon [style]="{'font-size':'30px',color:'red'}" type="fast-backward"></acIcon>
+  <acIcon type="loading"></acIcon>
   <br/>
   <acButton type="primary" [style]="{'color':'red'}">Primary</acButton>
   <acButton>Default</acButton>
@@ -15,25 +15,25 @@
   <acButton type="primary" [loading]="true">loading</acButton>
 
   <acButton type="primary">loading
-    <Icon type="loading"></Icon>
+    <acIcon type="loading"></acIcon>
   </acButton>
   <br/>
 
-  <ButtonGroup>
+  <acButtonGroup>
     <acButton type="primary" (onClick)="myClick($event)">
-      <Icon type="left"></Icon>Go back
+      <acIcon type="left"></acIcon>Go back
     </acButton>
     <acButton type="primary">
-      <Icon type="loading"></Icon>Middle
+      <acIcon type="loading"></acIcon>Middle
     </acButton>
     <acButton>
       Go forward
-      <Icon type="right"></Icon>
+      <acIcon type="right"></acIcon>
     </acButton>
-  </ButtonGroup>
+  </acButtonGroup>
   <br/>
-  <Pagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [defaultCurrent]="5"></Pagination>
-  <Pagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [simple]="true"></Pagination>
+  <acPagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [defaultCurrent]="5"></acPagination>
+  <acPagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [simple]="true"></acPagination>
 
   <br/>
   <acSelect [showSearch]="true"  ></acSelect>
@@ -41,4 +41,17 @@
   <acSelect [showSearch]="true" placeholder="asdfasdfazxc" ></acSelect>
   <br/>
   <acSelect [showSearch]="true" placeholder="asdfasdfazxc" [showSearch]="true"></acSelect>
+  <br/>
+<acTrigger trigger="click">
+  <div title>title</div>
+  <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
+  <acButton content>触发bottom</acButton>
+
+</acTrigger>
+  <br/>
+    <acTrigger trigger="click" placement="top">
+
+      <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
+      <div content>触发top</div>
+  </acTrigger>
 </main>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit ,Output,EventEmitter} from '@angular/core';
+import { Component, Input, OnInit ,Output,EventEmitter,HostBinding} from '@angular/core';
 
 function classNames(obj: Button) {
 
@@ -24,6 +24,7 @@ function classNames(obj: Button) {
     styleUrls: ['./button.component.css']
 })
 export class Button implements OnInit {
+    @HostBinding('style.display') dis='inline-block';
     @Input() loading: boolean = false;
     @Input() clicked: boolean = false;
     @Input() ghost: boolean = false;

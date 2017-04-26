@@ -18,7 +18,7 @@ function classNames(obj: ButtonGroup) {
 
 
 @Component({
-    selector: 'ButtonGroup',
+    selector: 'acButtonGroup',
     templateUrl: './button-group.component.html',
 })
 export class ButtonGroup implements OnInit {

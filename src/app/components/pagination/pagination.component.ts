@@ -18,7 +18,7 @@ function noop() {
 
 
 @Component({
-    selector: 'Pagination',
+    selector: 'acPagination',
     templateUrl: './pagination.component.html',
 
 })
