@@ -37,7 +37,7 @@ var contains  = function(root:any, el:any) {
 @Component({
     selector: 'acTrigger',
     templateUrl: './trigger.component.html',
-    styleUrls: ['./trigger.component.css']
+    styleUrls: ['./trigger.component.scss']
 })
 export default class Trigger implements OnInit {
     show: boolean = false;
@@ -77,13 +77,13 @@ export default class Trigger implements OnInit {
         })
 
 
-
     }
 
     ngOnInit() {
 
         this.showTitle = !!this.myElement.nativeElement.querySelector('[title]');
         this.dom.content=this.myElement.nativeElement.querySelector('[content]');
+        if(this.dom.content==null){console.warn('content没定义')}
         this.placementClass=`ant-popover ant-popover-placement-${this.placement}`
         if (this.myElement.nativeElement.querySelector('[show]') != null) {
             this.setTether();
@@ -100,19 +100,16 @@ export default class Trigger implements OnInit {
 
         var content = this.dom.content;
 
-        // content.addEventListener('click', () => {
-        //     console.log()
-        //     this.show = !this.show;
-        //     this.setShowStyle();
-        // }, false)
+
         document.body.addEventListener('click', (e) => {
             var target=e.target||e.srcElement;
             // console.log(contains(this.showDom.nativeElement,target))
             // console.log(this.showDom.nativeElement)
-            // console.log(target)
+           
             if ((contains(this.showDom.nativeElement,target)||contains(content,target))) {
                 this.show = true;
                 this.setShowStyle();
+                 this.setTether();
             }else{
                 this.show = false;
                 this.setShowStyle();
@@ -127,5 +124,13 @@ export default class Trigger implements OnInit {
     }
     onFocus() {
 
+    }
+    ngOnDestroy() {
+        //Called once, before the instance is destroyed.
+        //Add 'implements OnDestroy' to the class.
+    //    console.log(24)
+        this.showDom.nativeElement.style.display="none"
+        this.show=false;
+        this.setShowStyle();
     }
 }

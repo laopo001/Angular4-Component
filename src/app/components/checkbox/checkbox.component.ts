@@ -17,12 +17,12 @@ import { Component, Input, OnInit ,Output,EventEmitter} from '@angular/core';
 
 
 @Component({
-    selector: 'acCheckbox',
+    selector: 'acCheck',
     templateUrl: './checkbox.component.html',
-    styleUrls: ['./checkbox.component.css']
+    styleUrls: ['./checkbox.component.scss']
 })
 // @classDecorator
-export class Checkbox implements OnInit {
+export class CheckBox implements OnInit {
     @Input() disabled: boolean=false;
 
     @Input() checked: boolean=false;
@@ -49,10 +49,16 @@ export class Checkbox implements OnInit {
     onClick(){
         this.checked=!this.checked;
         this.update();
+
         this.checkedChange.emit(this.checked)
     }
+    ngOnChanges(changes:any){
+        this.checked= changes.checked.currentValue;
+        this.update();
+        // console.log(changes)
+    }
     update(){
-
+        
         this.currClasses = {
             [`ant-checkbox`]:true,
             [`ant-checkbox-disabled`]:this.disabled,
