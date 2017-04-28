@@ -88,9 +88,9 @@ export default class Trigger implements OnInit {
         if (this.myElement.nativeElement.querySelector('[show]') != null) {
             this.setTether();
             switch (this.trigger) {
-                case 'click': this.onClick();
-                case 'hover': this.onHover();
-                case 'focus': this.onFocus();
+                case 'click': this.onClick();break;
+                case 'hover': this.onHover();break;
+                case 'focus': this.onFocus();break;
             }
         }
 
