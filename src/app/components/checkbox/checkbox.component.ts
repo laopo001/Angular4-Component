@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit ,Output,EventEmitter} from '@angular/core';
 
 
 // function classDecorator<T extends {new(...args:any[]):{}}>(constructor:T) {
@@ -23,20 +23,21 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 // @classDecorator
 export class CheckBox implements OnInit {
-    @Input() disabled: boolean = false;
+    @Input() disabled: boolean=false;
 
-    @Input() checked: boolean = false;
-    @Input() style: any;
+    @Input() checked: boolean=false;
+    @Input() style: any={};
     @Input() class: string;
-    currClasses = {};
+    currClasses={};
 
-    @Output() checkedChange = new EventEmitter();
+    @Output() checkedChange=new EventEmitter();
     ngOnInit() {
-        if (typeof this.disabled == 'string') {
-            this.disabled = true;
+      
+        if(typeof this.disabled=='string'){
+            this.disabled=true;
         }
-        if (typeof this.checked == 'string') {
-            this.checked = true;
+        if(typeof this.checked=='string'){
+            this.checked=true;
         }
 
         // this.disabled=typeof this.disabled=='string'?true:false;
@@ -46,28 +47,23 @@ export class CheckBox implements OnInit {
 
 
     }
-    onClick() {
-        this.checked = !this.checked;
+    onClick(){
+        this.checked=!this.checked;
         this.update();
 
         this.checkedChange.emit(this.checked)
     }
-    ngOnChanges(changes: any) {
-        // debugger;
-        if (changes.checked!=null&&changes.checked != this.checked) {
-            this.checked = changes.checked.currentValue;
-            this.update();
-        }
-   
-
+    ngOnChanges(changes:any){
+        this.checked= changes.checked.currentValue;
+        this.update();
         // console.log(changes)
     }
-    update() {
-
+    update(){
+        
         this.currClasses = {
-            [`ant-checkbox`]: true,
-            [`ant-checkbox-disabled`]: this.disabled,
-            [`ant-checkbox-checked`]: this.checked
+            [`ant-checkbox`]:true,
+            [`ant-checkbox-disabled`]:this.disabled,
+            [`ant-checkbox-checked`]:this.checked
         };
     }
 }
