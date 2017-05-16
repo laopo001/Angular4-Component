@@ -54,7 +54,11 @@ export class CheckBox implements OnInit {
         this.checkedChange.emit(this.checked)
     }
     ngOnChanges(changes:any){
-        this.checked= changes.checked.currentValue;
+
+        if('checked' in changes){
+            this.checked=changes.checked.currentValue;
+        }
+     //   this.checked= changes.checked.currentValue;
         this.update();
         // console.log(changes)
     }
