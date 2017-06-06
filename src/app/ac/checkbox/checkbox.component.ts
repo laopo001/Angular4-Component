@@ -17,6 +17,7 @@ export class CheckBox implements OnInit {
     currClasses={};
 
     @Output() checkedChange=new EventEmitter();
+    @Output() onChange=new EventEmitter();
     ngOnInit() {
       
         if(typeof this.disabled=='string'){
@@ -34,9 +35,10 @@ export class CheckBox implements OnInit {
     }
     onClick(){
         this.checked=!this.checked;
-   //     this.update();
+    //    this.render();
 
         this.checkedChange.emit(this.checked)
+        this.onChange.emit(this.checked)
     }
     ngOnChanges(changes:any){
 

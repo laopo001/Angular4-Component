@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
 
   }
   myClick(e: any) {
+
     console.log(e)
   }
   showTotal(total: number, range: number[]) {
@@ -34,9 +35,11 @@ export class AppComponent implements OnInit {
 
   }
   layout(key:any) {
+
     let close = message[key]('qwoerqrej', 1500)
     setTimeout(() => {
       //  close();
     }, 1000)
   }
+  
 }

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 
 @Component({
-    selector: 'acIcon',
+    selector: 'Icon',
     templateUrl: './icon.component.html',
     styleUrls: ['./icon.component.css']
 })

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit ,Output,EventEmitter,HostBinding} from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, HostBinding, HostListener } from '@angular/core';
 
 var classnames = require('classnames');
 
@@ -6,7 +6,7 @@ function classNames(obj: Button) {
 
     var { prefixCls, type, shape, iconOnly, sizeCls, icon, loading, clicked, ghost } = obj;
 
-    return {
+    return classnames({
         [`${prefixCls}`]: true,
         [`${prefixCls}-${type}`]: !!type,
         [`${prefixCls}-${shape}`]: !!shape,
@@ -17,7 +17,7 @@ function classNames(obj: Button) {
         [`${prefixCls}-background-ghost`]: ghost,
 
         [`${obj.class}`]: !!obj.class
-    }
+    })
 }
 
 @Component({
@@ -26,7 +26,7 @@ function classNames(obj: Button) {
     styleUrls: ['./button.component.css']
 })
 export class Button implements OnInit {
-    @HostBinding('style.display') dis='inline-block';
+    @HostBinding('style.display') dis = 'inline-block';
     @Input() loading: boolean = false;
     clicked: boolean = false;
     @Input() ghost: boolean = false;
@@ -42,46 +42,44 @@ export class Button implements OnInit {
     prefixCls = 'ant-btn';
     sizeCls = '';
     iconType = "";
-    timeout=0;
-    @HostBinding('class') Tclass :any=''; 
-    @HostBinding('type') Ttype :any=''; 
+    timeout = 0;
+    @HostBinding('class') Tclass: any = '';
+    @HostBinding('type') Ttype: any = '';
 
-
-    @Output() onClick=new EventEmitter();
-    constructor(){
+    @Output() onClick = new EventEmitter();
+    constructor() {
 
     }
 
     ngOnInit() {
-       if(typeof this.ghost=='string'){
-            this.ghost=true;
+        if (typeof this.ghost == 'string') {
+            this.ghost = true;
         }
-        if(typeof this.loading=='string'){
-            this.loading=true;
+        if (typeof this.loading == 'string') {
+            this.loading = true;
         }
         this.sizeCls = ({
             large: 'lg',
             small: 'sm',
         })[this.size] || '';
-      //  this.currClasses = classNames(this);
-        this.Tclass= classnames(classNames(this));
-        this.Ttype=this.htmlType;
+        //  this.currClasses = classNames(this);
+        this.Tclass = classNames(this);
+        this.Ttype = this.htmlType;
+
         this.iconType = this.loading ? 'loading' : this.icon;
 
     }
 
-    handleClick(e:any) {
-        this.clicked=true;
-        this.currClasses = classNames(this);
+
+    @HostListener('click', ['$event']) handleClick(e: any) {
+        this.clicked = true;
+        this.Tclass = classNames(this);
         clearTimeout(this.timeout);
         this.timeout = Number(setTimeout(() => {
-            this.clicked= false;
-            this.currClasses = classNames(this);
-        }, 500) );
+            this.clicked = false;
+            this.Tclass = classNames(this);
+        }, 500));
 
         this.onClick.emit(e);
-      //  console.log('handleClick')
     }
-
-    
 }
