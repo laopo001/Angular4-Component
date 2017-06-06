@@ -1,30 +1,16 @@
 import { Component, Input, OnInit ,Output,EventEmitter} from '@angular/core';
 
 
-// function classDecorator<T extends {new(...args:any[]):{}}>(constructor:T) {
-//     console.log(this)
-//     debugger;
-//     return class extends constructor {
-//         newProperty = "new property";
-//         hello = "override";
-//     }
-// }
-// // @classDecorator
-
-// function cs(){
-//     console.log(12)
-// }
-
 
 @Component({
-    selector: 'acCheck',
+    selector: 'Check',
     templateUrl: './checkbox.component.html',
     styleUrls: ['./checkbox.component.scss']
 })
-// @classDecorator
 export class CheckBox implements OnInit {
     @Input() disabled: boolean=false;
 
+    @Input() defaultChecked: boolean=false;
     @Input() checked: boolean=false;
     @Input() style: any={};
     @Input() class: string;
@@ -39,30 +25,27 @@ export class CheckBox implements OnInit {
         if(typeof this.checked=='string'){
             this.checked=true;
         }
-
-        // this.disabled=typeof this.disabled=='string'?true:false;
-        // this.checked=typeof this.checked=='string'?true:false;
-        this.update();
-
-
+        if(typeof this.defaultChecked=='string'){
+            this.defaultChecked=true;
+        }
+        
+        this.render();
 
     }
     onClick(){
         this.checked=!this.checked;
-        this.update();
+   //     this.update();
 
         this.checkedChange.emit(this.checked)
     }
     ngOnChanges(changes:any){
 
-        if('checked' in changes){
-            this.checked=changes.checked.currentValue;
+        for(var key in changes){
+            this[key]=changes[key].currentValue;
         }
-     //   this.checked= changes.checked.currentValue;
-        this.update();
-        // console.log(changes)
+        this.render();
     }
-    update(){
+    render(){
         
         this.currClasses = {
             [`ant-checkbox`]:true,

@@ -18,21 +18,21 @@ function classNames(obj: ButtonGroup) {
 
 
 @Component({
-    selector: 'acButtonGroup',
+    selector: 'ButtonGroup',
     templateUrl: './button-group.component.html',
 })
 export class ButtonGroup implements OnInit {
     @Input() size: string;
     @Input() class: string;
-    @ViewChildren(Button) child: QueryList<Button>;
+    // @ViewChildren(Button) child: QueryList<Button>;
 
     currClasses = {};
     prefixCls= 'ant-btn-group';
     sizeCls='';
-    elRef: ElementRef
-    @ContentChildren(Button) items: QueryList<Button>
+    // elRef: ElementRef
+    // @ContentChildren(Button) items: QueryList<Button>
     constructor(myElement: ElementRef){
-        this.elRef=myElement;
+   //     this.elRef=myElement;
     }
     ngOnInit() {
         this.sizeCls = ({
@@ -41,18 +41,14 @@ export class ButtonGroup implements OnInit {
         })[this.size] || '';
         this.currClasses = classNames(this);
         
-        var list=this.elRef.nativeElement.querySelectorAll('acButton');
-        list.forEach((x:any) => {
-            this.elRef.nativeElement.children[0].appendChild(x.children[0])
-            this.elRef.nativeElement.children[0].removeChild(x);
+        // var list=this.elRef.nativeElement.querySelectorAll('acButton');
+        // list.forEach((x:any) => {
+        //     this.elRef.nativeElement.children[0].appendChild(x.children[0])
+        //     this.elRef.nativeElement.children[0].removeChild(x);
 
-        });
+        // });
 
 
 
-    }
-    ngAfterContentInit() {
-        console.log(this.child)
-        console.log(this.items)
     }
 }

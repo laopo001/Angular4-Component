@@ -1,5 +1,7 @@
 import { Component, Input, OnInit ,Output,EventEmitter,HostBinding} from '@angular/core';
 
+var classnames = require('classnames');
+
 function classNames(obj: Button) {
 
     var { prefixCls, type, shape, iconOnly, sizeCls, icon, loading, clicked, ghost } = obj;
@@ -19,7 +21,7 @@ function classNames(obj: Button) {
 }
 
 @Component({
-    selector: 'acButton',
+    selector: 'Button',
     templateUrl: './button.component.html',
     styleUrls: ['./button.component.css']
 })
@@ -41,6 +43,9 @@ export class Button implements OnInit {
     sizeCls = '';
     iconType = "";
     timeout=0;
+    @HostBinding('class') Tclass :any=''; 
+    @HostBinding('type') Ttype :any=''; 
+
 
     @Output() onClick=new EventEmitter();
     constructor(){
@@ -58,16 +63,13 @@ export class Button implements OnInit {
             large: 'lg',
             small: 'sm',
         })[this.size] || '';
-        this.currClasses = classNames(this);
+      //  this.currClasses = classNames(this);
+        this.Tclass= classnames(classNames(this));
+        this.Ttype=this.htmlType;
         this.iconType = this.loading ? 'loading' : this.icon;
 
     }
-//   // Handle auto focus when click button in Chrome
-//   handleMouseUp = (e) => {
-//     if (this.props.onMouseUp) {
-//       this.props.onMouseUp(e);
-//     }
-//   }
+
     handleClick(e:any) {
         this.clicked=true;
         this.currClasses = classNames(this);
@@ -80,4 +82,6 @@ export class Button implements OnInit {
         this.onClick.emit(e);
       //  console.log('handleClick')
     }
+
+    
 }

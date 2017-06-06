@@ -1,10 +1,11 @@
 import { Component, ViewChild, TemplateRef, OnInit, ElementRef } from '@angular/core';
-import message from './components/message/'
+import {message} from './ac/'
 import '../assets/css/styles.css';
 
 
 @Component({
   selector: 'my-app',
+ // template:` <acIcon type="loading"></acIcon>`,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -37,6 +38,5 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       //  close();
     }, 1000)
-
   }
 }

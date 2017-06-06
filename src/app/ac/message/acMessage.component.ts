@@ -43,7 +43,7 @@ function log(type:string, content:string, duration = 1500, onClose?:any) {
 }
 
 @Component({
-    selector: 'acMessage',
+    selector: 'Message',
     template: `<div data-reactroot="" class="ant-message">
         <span >
              <ng-container *ngFor="let item of list|async">
@@ -84,11 +84,9 @@ function log(type:string, content:string, duration = 1500, onClose?:any) {
         ])
     ]
 })
-export default class message {
+export  class Message {
 
     list: Observable<any>;
-
-
 
     state: Observable<any>;
     constructor() {
@@ -96,8 +94,11 @@ export default class message {
         this.list = subject.asObservable();
     }
 
+}
+
+export class message{
     static success(content:any, duration = 1500, onClose?:any) {
-        log('success', content, duration, onClose)
+        return log('success', content, duration, onClose)
     }
     static error(content:any, duration = 1500, onClose?:any) {
         return log('error', content, duration, onClose)
@@ -115,4 +116,3 @@ export default class message {
         return log('loading', content, duration, onClose)
     }
 }
-
