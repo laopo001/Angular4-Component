@@ -49,11 +49,11 @@ var contains = function (root: any, el: any) {
 
 
 @Component({
-    selector: 'acTrigger',
-    templateUrl: './trigger.component.html',
-    styleUrls: ['./trigger.component.scss']
+    selector: 'Popover',
+    templateUrl: './popover.component.html',
+    styleUrls: ['./popover.component.scss']
 })
-export default class Trigger implements OnInit {
+export default class Popover implements OnInit {
     _show: boolean;
     @Input('show')
     set show(x: any) {
@@ -129,11 +129,9 @@ export default class Trigger implements OnInit {
 
         document.body.addEventListener('click', (e) => {
             var target = e.target || e.srcElement;
-            // console.log(contains(this.showDom.nativeElement,target))
-            // console.log(this.showDom.nativeElement)
 
             if (contains(content, target)) {
-              
+
                 this.show = true;
                 this.setShowStyle();
                 this.setTether();
@@ -149,29 +147,54 @@ export default class Trigger implements OnInit {
             }
 
         }, false)
-        //    this.showDom.nativeElement.addEventListener('click',()=>{
 
-        //    },false)
     }
     onHover() {
+        var content = this.dom.content;
+        document.body.addEventListener('mouseover', (e) => {
+            var target = e.target || e.srcElement;
 
+            if (contains(content, target)) {
+
+                this.show = true;
+                this.setShowStyle();
+                this.setTether();
+                this.showChange.emit(this.show)
+            } else {
+                if (contains(this.showDom.nativeElement, target)) {
+
+                } else {
+                    this.show = false;
+                    this.setShowStyle();
+                    this.showChange.emit(this.show)
+                }
+            }
+
+        }, false)
     }
     onFocus() {
-
+        var content = this.dom.content;
+        content.addEventListener('focus',  ()=>{
+            this.show = true;
+            this.setShowStyle();
+            this.setTether();
+            this.showChange.emit(this.show)
+        }, false)
+        content.addEventListener('blur', ()=>{
+            this.show = false;
+            this.setShowStyle();
+            this.showChange.emit(this.show)
+        }, false)
     }
     ngOnChanges(changes: any) {
-        //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-        //Add 'implements OnChanges' to the class.
-    //    console.log(changes);
-        if('show' in changes){
-            this.show=changes.show.currentValue;
+
+        if ('show' in changes) {
+            this.show = changes.show.currentValue;
             this.setShowStyle();
         }
     }
     ngOnDestroy() {
-        //Called once, before the instance is destroyed.
-        //Add 'implements OnDestroy' to the class.
-        //    console.log(24)
+
         this.showDom.nativeElement.style.display = "none"
         this.show = false;
         this.setShowStyle();

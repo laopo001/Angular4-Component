@@ -5,13 +5,13 @@
 
   <!--<i class="Iconfont Icon-money-copy"></i>-->
   <br/>
-  <Icon  [style]="{'font-size':'30px',color:'red'}" type="fast-backward"></Icon>
+  <Icon [style]="{'font-size':'30px',color:'red'}" type="fast-backward"></Icon>
   <Icon type="loading"></Icon>
   <br/>
-  <Button (onClick)="layout('error')" type="primary" style="color:red" >Primary</Button>
-  <Button >Default</Button>
+  <Button (onClick)="layout('error')" type="primary" style="color:red">Primary</Button>
+  <Button>Default</Button>
   <Button #cs type="dashed">Dashed</Button>
-  <Button  type="danger">Danger</Button>
+  <Button type="danger">Danger</Button>
   <Button type="danger" shape="circle" htmlType="submit" size="large">Dang</Button>
   <Button type="primary" [loading]="true">loading</Button>
 
@@ -33,36 +33,46 @@
     </Button>
   </ButtonGroup>
   <br/>
-  <acPagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [defaultCurrent]="5"></acPagination>
-  <acPagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [simple]="true"></acPagination>
+  <Pagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [defaultCurrent]="5"></Pagination>
+  <Pagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [simple]="true"></Pagination>
 
   <br/>
-  <acSelect [showSearch]="true"></acSelect>
+  <!--<Select [showSearch]="true"></Select>
   <br/>
-  <acSelect [showSearch]="true" placeholder="asdfasdfazxc"></acSelect>
+  <Select [showSearch]="true" placeholder="asdfasdfazxc"></Select>
   <br/>
-  <acSelect [showSearch]="true" placeholder="asdfasdfazxc" [showSearch]="true"></acSelect>
+  <Select [showSearch]="true" placeholder="asdfasdfazxc" [showSearch]="true"></Select>-->
   <br/>
-  <acTrigger trigger="click">
+  <Popover trigger="click">
     <div title>title</div>
     <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
-    <Button  content>触发bottom</Button>
-  </acTrigger>
+    <Button content>click触发bottom</Button>
+  </Popover>
   <br/>
-  <acTrigger trigger="click" placement="top">
-
+  <Popover trigger="click" placement="top">
     <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
-    <div content>触发top</div>
-  </acTrigger>
+    <div content>click触发top</div>
+  </Popover>
+
+  <Popover trigger="hover" placement="top">
+    <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
+    <div content>hover触发top</div>
+  </Popover>
+
+
+  <Popover trigger="focus" placement="top">
+    <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
+    <Button content>focus触发top</Button>
+  </Popover>
   <br/>
-    <Check (checkedChange)="onChange($event)" >checkBox</Check>
-    <Check  [(checked)]="qq" >checkBox</Check>
-  <Check  disabled>checkBox</Check>
-  
- <br>
-<button  type="primary" (click)="layout('success')">success</button>
-<button (click)="layout('error')">error</button>
-<button (click)="layout('info')">info</button>
-<button (click)="layout('warning')">warning</button>
-<button (click)="layout('loading')">loading</button>
+  <Check (checkedChange)="onChange($event)">checkBox</Check>
+  <Check [(checked)]="qq">checkBox</Check>
+  <Check disabled>checkBox</Check>
+
+  <br>
+  <button type="primary" (click)="layout('success')">success</button>
+  <button (click)="layout('error')">error</button>
+  <button (click)="layout('info')">info</button>
+  <button (click)="layout('warning')">warning</button>
+  <button (click)="layout('loading')">loading</button>
 </main>

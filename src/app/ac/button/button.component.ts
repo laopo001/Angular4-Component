@@ -26,7 +26,6 @@ function classNames(obj: Button) {
     styleUrls: ['./button.component.css']
 })
 export class Button implements OnInit {
-    @HostBinding('style.display') dis = 'inline-block';
     @Input() loading: boolean = false;
     clicked: boolean = false;
     @Input() ghost: boolean = false;

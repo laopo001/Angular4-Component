@@ -7,14 +7,14 @@ import { Icon } from './icon/';
 import { Button, ButtonGroup } from './button/';
 import { Pagination } from './pagination/';
 import { Select } from './select/';
-import { Trigger } from './trigger/';
+import { Popover } from './popover/';
 import { CheckBox } from './checkbox/'
 import {Message} from './message/'
 
 import {message} from './message/'
 
 
-let output=[Icon,Message,Button,ButtonGroup,Pagination,Select,Trigger,CheckBox]
+let output=[Icon,Message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox]
 
 @NgModule({
   declarations: output,
