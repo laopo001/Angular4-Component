@@ -1,6 +1,18 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
-// import * as Tether from 'tether';
+//create time:Wed Jun 07 2017 16:07:07 GMT+0800 (中国标准时间)
+import { Component, OnInit, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 var Tether = require('tether');
+
+
+var contains = function (root: any, el: any) {
+    if (root.compareDocumentPosition)
+        return root === el || !!(root.compareDocumentPosition(el) & 16);
+    if (root.contains && el.nodeType === 1) {
+        return root.contains(el) && root !== el;
+    }
+    while ((el = el.parentNode))
+        if (el === root) return true;
+    return false;
+}
 type Direction = 'top' | 'right' | 'bottom' | 'left';
 const attachments = <{ [key: string]: any }>{
     top: { attachment: 'bottom center', offset: '0 0', opposite: 'bottom' },
@@ -22,7 +34,6 @@ const attachments = <{ [key: string]: any }>{
 
 
 };
-
 const PLACEMENTS = Object.keys(attachments).reduce((placements: any, direction: Direction) => {
     const { attachment, offset, opposite } = attachments[direction];
     const targetAttachment = attachments[opposite].attachment;
@@ -34,57 +45,54 @@ const PLACEMENTS = Object.keys(attachments).reduce((placements: any, direction: 
 function placement(direction: Direction) {
     return PLACEMENTS[direction];
 }
-type Method = 'click' | 'hover' | 'focus';
-
-var contains = function (root: any, el: any) {
-    if (root.compareDocumentPosition)
-        return root === el || !!(root.compareDocumentPosition(el) & 16);
-    if (root.contains && el.nodeType === 1) {
-        return root.contains(el) && root !== el;
-    }
-    while ((el = el.parentNode))
-        if (el === root) return true;
-    return false;
-}
-
+type Method = 'click' | 'hover' | 'focus' | 'focusClick';
 
 @Component({
-    selector: 'Popover',
-    templateUrl: './popover.component.html',
-    styleUrls: ['./popover.component.scss']
+    selector: 'Trigger',
+    templateUrl: './trigger.component.html',
+    styleUrls: ['./trigger.component.scss']
 })
-export default class Popover implements OnInit {
-    _show: boolean=false;
-    @Input('show') show:any;
-    // set show(x: any) {
-    //     this._show = x;
-    // }
-    // get show() {
-    //     return this._show;
-    // }
-    @Output() showChange = new EventEmitter();
-
-    //show: boolean = false;
-    private tether = Tether;
-    @Input() placement: Direction = 'bottom';
-    placementClass = "ant-popover ant-popover-placement-bottom"
+export default class TriggerComponent implements OnInit {
     @ViewChild('showDom') showDom: ElementRef;
-    @Input() trigger: Method = 'click';
-    @Input() style: any;
-    @Input() class: string;
-    showStyle = { position: 'fixed', top: '0px', left: '0px', visibility: this.show ? 'visible' : 'hidden' };
-    showTitle = false;
-
+    _show: boolean = false;
+    @Input('show')
+    set show(x: any) {
+        this._show = x;
+    }
+    @Input() placement: Direction = 'bottom';
+    get show() {
+        return this._show;
+    }
     dom: any = {
         content: null
     }
+    showStyle = { position: 'fixed', top: '0px', zIndex: 1001, left: '0px', visibility: this.show ? 'visible' : 'hidden' };
+    @Input() trigger: Method = 'click';
 
+    @Output() showChange = new EventEmitter();
     constructor(private myElement: ElementRef) {
 
     }
-    setShowStyle() {
-        this.showStyle = { position: 'fixed', top: '0px', left: '0px', visibility: this.show ? 'visible' : 'hidden' };
+    ngOnInit() {
+
+
     }
+    ngAfterContentInit() {
+        this.dom.content = this.myElement.nativeElement.querySelector('[content]');
+        if (this.dom.content == null) { console.warn('content没定义') }
+
+        this.setShowStyle();
+        if (this.myElement.nativeElement.querySelector('[show]') != null) {
+            this.setTether();
+            switch (this.trigger) {
+                case 'click': this.onClick(); break;
+                case 'hover': this.onHover(); break;
+                case 'focus': this.onFocus(); break;
+                case 'focusClick': this.onfocusClick(); break;
+            }
+        }
+    }
+    private tether = Tether;
     private setTether() {
         if (!this.tether) return;
 
@@ -95,41 +103,26 @@ export default class Popover implements OnInit {
             attachment,
             targetAttachment,
             offset,
+            constraints: [
+                {
+                    to: 'window',
+                    attachment: 'together'
+                }
+            ]
         };
-        setTimeout(() => {
+        setTimeout(()=>{
             this.tether = new Tether(options);
         })
 
 
     }
-
-    ngOnInit() {
-
-        this.showTitle = !!this.myElement.nativeElement.querySelector('[title]');
-        this.dom.content = this.myElement.nativeElement.querySelector('[content]');
-        if (this.dom.content == null) { console.warn('content没定义') }
-        this.placementClass = `ant-popover ant-popover-placement-${this.placement}`
-
-        this.setShowStyle();
-        if (this.myElement.nativeElement.querySelector('[show]') != null) {
-            this.setTether();
-            switch (this.trigger) {
-                case 'click': this.onClick(); break;
-                case 'hover': this.onHover(); break;
-                case 'focus': this.onFocus(); break;
-            }
-        }
-
-
+    setShowStyle() {
+        this.showStyle = { position: 'fixed', top: '0px', zIndex: 1001, left: '0px', visibility: this.show ? 'visible' : 'hidden' };
     }
     onClick() {
-
         var content = this.dom.content;
-
-
         document.body.addEventListener('click', (e) => {
             var target = e.target || e.srcElement;
-
             if (contains(content, target)) {
 
                 if (this.show) {
@@ -151,9 +144,30 @@ export default class Popover implements OnInit {
                     this.showChange.emit(this.show)
                 }
             }
-
         }, false)
+    }
+    onfocusClick() {
+        var content = this.dom.content;
+        document.body.addEventListener('click', (e) => {
+            var target = e.target || e.srcElement;
+            if (contains(content, target)) {
+                if (this.show) {
+                    this.show = false;
+                    this.setShowStyle();
+                    this.showChange.emit(this.show)
+                } else {
+                    this.show = true;
+                    this.setShowStyle();
+                   // this.setTether();
+                    this.showChange.emit(this.show)
+                }
+            } else {
 
+                this.show = false;
+                this.setShowStyle();
+                this.showChange.emit(this.show)
+            }
+        }, false)
     }
     onHover() {
         var content = this.dom.content;
@@ -191,18 +205,5 @@ export default class Popover implements OnInit {
             this.setShowStyle();
             this.showChange.emit(this.show)
         }, false)
-    }
-    ngOnChanges(changes: any) {
-
-        if ('show' in changes) {
-            this.show = changes.show.currentValue;
-            this.setShowStyle();
-        }
-    }
-    ngOnDestroy() {
-
-        this.showDom.nativeElement.style.display = "none"
-        this.show = false;
-        this.setShowStyle();
     }
 }

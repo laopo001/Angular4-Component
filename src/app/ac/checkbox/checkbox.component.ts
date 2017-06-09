@@ -34,8 +34,6 @@ export class CheckBox implements OnInit {
 
     }
     onClick(){
-        this.checked=!this.checked;
-    //    this.render();
 
         this.checkedChange.emit(this.checked)
         this.onChange.emit(this.checked)

@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     return `${range[0]}-${range[1]} of ${total} items`;
   }
   onChange(q: any) {
-    console.log(this.qq)
+    console.log(q)
   }
   ngOnInit() {
     console.log('ngOnInit', this.cs);
@@ -41,5 +41,9 @@ export class AppComponent implements OnInit {
       //  close();
     }, 1000)
   }
-  
+  selectValue='1';
+  selectChange(x:any){
+    console.log(x)
+    this.selectValue='1';
+  }
 }

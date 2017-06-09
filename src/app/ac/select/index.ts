@@ -1,3 +1,3 @@
 import Select from './select.component';
-
-export {Select};
+import Option from './option.component';
+export {Select,Option};
