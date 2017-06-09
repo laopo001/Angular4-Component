@@ -42,16 +42,23 @@
   <br/>
   <Select [showSearch]="true" placeholder="asdfasdfazxc"></Select>
   <br/>-->
-  <acSelect  placeholder="请选择" [value]="selectValue" (onChange)="selectChange($event)">
-    <acOption value="0" label="A">A</acOption>
-    <acOption value="1" label="B">B</acOption>
-    <acOption value="2" label="C">C</acOption>
+
+  <ng-template #tip>
+    <div class="slds-text-title--caps"><strong>{{ placement }}</strong> placement. Initially open!</div>
+    Dolor sit amet, <i>consectetur adipisicing</i> elit. Cum, quaerat?
+  </ng-template>
+  <a [target]="tip" placement="bottom" [open]="opened" (mouseenter)="opened = true" (mouseleave)="opened = false">hover</a>
+
+  <acSelect placeholder="请选择" [value]="selectValue" width="120" (onChange)="selectChange($event)">
+    <acOption value="0" label="A"></acOption>
+    <acOption value="1" label="B"></acOption>
+    <acOption value="2" label="C"></acOption>
   </acSelect>
   <br/>
-  <acSelect  placeholder="请选择" (onChange)="selectChange($event)">
-    <acOption value="0" label="A">A</acOption>
-    <acOption value="1" label="B">B</acOption>
-    <acOption value="2" label="C">C</acOption>
+  <acSelect placeholder="请选择" width="120" (onChange)="selectChange($event)">
+    <acOption value="0" label="A"></acOption>
+    <acOption value="1" label="B"></acOption>
+    <acOption value="2" label="C"></acOption>
   </acSelect>
   <br/>
   <br/>
@@ -80,10 +87,10 @@
     <Button content>focus触发top</Button>
   </Popover>
 
-  <Trigger>
+  <!--<Trigger>
     <div show>测123123试</div>
     <Button content>测试</Button>
-  </Trigger>
+  </Trigger>-->
   <br/>
   <br/>
   <br/>

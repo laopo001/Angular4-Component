@@ -54,6 +54,7 @@ type Method = 'click' | 'hover' | 'focus' | 'focusClick';
 })
 export default class TriggerComponent implements OnInit {
     @ViewChild('showDom') showDom: ElementRef;
+    @ViewChild('content') content: ElementRef;
     _show: boolean = false;
     @Input('show')
     set show(x: any) {
@@ -66,7 +67,7 @@ export default class TriggerComponent implements OnInit {
     dom: any = {
         content: null
     }
-    showStyle = { position: 'fixed', top: '0px', zIndex: 1001, left: '0px', visibility: this.show ? 'visible' : 'hidden' };
+    showStyle = { position: 'absolute', top: '0px', zIndex: 1001, left: '0px', visibility: this.show ? 'visible' : 'hidden' };
     @Input() trigger: Method = 'click';
 
     @Output() showChange = new EventEmitter();
@@ -78,9 +79,8 @@ export default class TriggerComponent implements OnInit {
 
     }
     ngAfterContentInit() {
-        this.dom.content = this.myElement.nativeElement.querySelector('[content]');
-        if (this.dom.content == null) { console.warn('content没定义') }
 
+        console.log(this.content)
         this.setShowStyle();
         if (this.myElement.nativeElement.querySelector('[show]') != null) {
             this.setTether();
@@ -92,35 +92,40 @@ export default class TriggerComponent implements OnInit {
             }
         }
     }
-    private tether = Tether;
+    private tether:any;
     private setTether() {
-        if (!this.tether) return;
 
-        const { attachment, targetAttachment, offset } = placement(this.placement);
-        const options = {
-            element: this.showDom.nativeElement,
-            target: this.dom.content,
-            attachment,
-            targetAttachment,
-            offset,
-            constraints: [
-                {
-                    to: 'window',
-                    attachment: 'together'
-                }
-            ]
-        };
-        setTimeout(()=>{
+        if (!this.tether) {
+
+            const { attachment, targetAttachment, offset } = placement(this.placement);
+            const options = {
+                element: this.showDom.nativeElement,
+                target: this.content.nativeElement,
+                attachment,
+                targetAttachment,
+                offset,
+                optimizations: {
+                    moveElement: false
+                },
+                constraints: [
+                    {
+                        to: 'window',
+                        attachment: 'together'
+                    }
+                ]
+            };
+
             this.tether = new Tether(options);
-        })
-
-
+        }
+        else {
+            this.tether.position();   
+        }
     }
     setShowStyle() {
-        this.showStyle = { position: 'fixed', top: '0px', zIndex: 1001, left: '0px', visibility: this.show ? 'visible' : 'hidden' };
+        this.showStyle = { position: 'absolute', top: '0px', zIndex: 1001, left: '0px', visibility: this.show ? 'visible' : 'hidden' };
     }
     onClick() {
-        var content = this.dom.content;
+        var content = this.content.nativeElement;
         document.body.addEventListener('click', (e) => {
             var target = e.target || e.srcElement;
             if (contains(content, target)) {
@@ -147,8 +152,9 @@ export default class TriggerComponent implements OnInit {
         }, false)
     }
     onfocusClick() {
-        var content = this.dom.content;
+        var content = this.content.nativeElement;
         document.body.addEventListener('click', (e) => {
+ 
             var target = e.target || e.srcElement;
             if (contains(content, target)) {
                 if (this.show) {
@@ -158,7 +164,7 @@ export default class TriggerComponent implements OnInit {
                 } else {
                     this.show = true;
                     this.setShowStyle();
-                   // this.setTether();
+                    this.setTether();
                     this.showChange.emit(this.show)
                 }
             } else {
@@ -170,7 +176,7 @@ export default class TriggerComponent implements OnInit {
         }, false)
     }
     onHover() {
-        var content = this.dom.content;
+        var content = this.content.nativeElement;
         document.body.addEventListener('mouseover', (e) => {
             var target = e.target || e.srcElement;
 
@@ -193,7 +199,7 @@ export default class TriggerComponent implements OnInit {
         }, false)
     }
     onFocus() {
-        var content = this.dom.content;
+        var content = this.content.nativeElement;
         content.addEventListener('focus', () => {
             this.show = true;
             this.setShowStyle();

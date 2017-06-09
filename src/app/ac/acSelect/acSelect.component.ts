@@ -1,17 +1,17 @@
 import { Component, Input, OnInit, ElementRef, ViewChild, Output, EventEmitter, ContentChildren, QueryList, ViewChildren } from '@angular/core';
 // import KeyCode from 'rc-util/lib/KeyCode';
 
-
 import Option from './option.component';
-
-
+import { contains } from '../util/util';
 
 @Component({
     selector: 'acSelect',
-    templateUrl: './select.component.html',
+    templateUrl: './acSelect.component.html',
 })
 export default class Select implements OnInit {
+     @ViewChild('content') content: ElementRef;
     @Input() placeholder: string = '';
+    @Input() width: any = 120;
     @Output() onChange = new EventEmitter();
     @Output() valueChange = new EventEmitter();
     @ContentChildren(Option)
@@ -19,19 +19,13 @@ export default class Select implements OnInit {
     opened=false;
     @Input() value: any = '';
     selectLabel = ""
-
-    open = false
-    Template = {
-        contentClass: {
-
-        }
-    }
     ngOnInit() {
+        this.width=parseInt(this.width);
+    }
+    onClick(){
+        this.opened=!this.opened;
+    }
 
-    }
-    showChange(e: boolean) {
-        this.open = e;
-    }
     ngAfterContentInit() {
 
         if (this.childCmps == null) return;
@@ -47,10 +41,18 @@ export default class Select implements OnInit {
 
                 this.onChange.emit(x.value);
                 this.valueChange.emit(x.value);
+                this.opened=false;
             }
             return x;
         })
-
+        document.body.addEventListener('click', (e) => {
+            var target = e.target || e.srcElement;
+            if (contains(this.content.nativeElement, target)) {
+                
+            } else {
+                this.opened=false
+            }
+        }, false)
     }
 
     ngOnChanges(changes: any) {
