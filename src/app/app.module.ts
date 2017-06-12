@@ -6,7 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 
 
-// enableProdMode();
+ enableProdMode();
 
 import acModule from './ac/'
 @NgModule({

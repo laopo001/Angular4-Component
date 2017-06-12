@@ -7,7 +7,7 @@ function classNames(obj: Pagination) {
 
     return {
         'mini': isSmall,
-        [`${prefixCls}`]:true,
+        [`${prefixCls}`]: true,
         [`${obj.class}`]: !!obj.class
     }
 }
@@ -27,10 +27,14 @@ export class Pagination implements OnInit {
     @Input() size: string;
     isSmall: boolean;
 
-    
+
     @Input() total = 0;
     @Input() defaultPageSize = 10;
     // @Input() onChange = noop;
+
+
+    @Input() pageSizeData: number[] = [10, 20];
+
 
 
     @Input() selectComponentClass: any = null;
@@ -45,8 +49,14 @@ export class Pagination implements OnInit {
     @Input() defaultCurrent = 1;
     @Input() current: number;
     _currentTemp = 1;
-    _current:number = 1;
+    _current: number = 1;
+
     pageSize = 10;
+    pageSizeChange(x: number) {
+        this.pageSize = x
+         this._handleChange(Number(this._current) );
+    }
+
 
     pagerList: any[] = [];
 
@@ -76,17 +86,17 @@ export class Pagination implements OnInit {
     }
 
     ngOnInit() {
-        this._current=this.defaultCurrent==null?this._current:this.defaultCurrent;
-        this._currentTemp=this.defaultCurrent==null?this._current:this.defaultCurrent;
+        this._current = this.defaultCurrent == null ? this._current : this.defaultCurrent;
+        this._currentTemp = this.defaultCurrent == null ? this._current : this.defaultCurrent;
         this.render();
     }
-    render(){
-        this._current=this.current==null?this._current:this.current;
-        this._currentTemp=this.current==null?this._current:this.current;
+    render() {
+        this._current = this.current == null ? this._current : this.current;
+        this._currentTemp = this.current == null ? this._current : this.current;
         this.allPages = this._calcPage();
         this.isSmall = this.size === 'small';
-        
-        
+
+
         this.currClasses = classNames(this);
         this.showTotalClass = { [`${this.prefixCls}-total-text`]: true };
         this.showTotalText = this.showTotal(
@@ -113,7 +123,7 @@ export class Pagination implements OnInit {
         let firstPager = null;
         let lastPager = null;
         const pageBufferSize = this.showLessItems ? 1 : 2;
-        const {  pageSize, pagerList } = this;
+        const { pageSize, pagerList } = this;
 
         if (allPages <= 5 + pageBufferSize * 2) {
             for (let i = 1; i <= allPages; i++) {

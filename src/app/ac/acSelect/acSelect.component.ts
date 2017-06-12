@@ -10,8 +10,12 @@ import { contains } from '../util/util';
 })
 export default class Select implements OnInit {
     @ViewChild('content') content: ElementRef;
+    @ViewChildren(Option) options:  QueryList<Output>;
+
     @Input() placeholder: string = '';
-    @Input() width: any = 120;
+    @Input() width: any = null;
+    @Input() data: any[] = [];
+
     @Output() onChange = new EventEmitter();
     @Output() valueChange = new EventEmitter();
     @ContentChildren(Option)
@@ -27,17 +31,25 @@ export default class Select implements OnInit {
     }
     @Input() dropdownMatchSelectWidth = true;
     get contentStyle() {
+        if (this.width == null) {
+            return {}
+        } else {
+            return { width: this.width + 'px' }
+        }
 
-        return { width: this.width + 'px' }
 
 
     }
     get tipStyle() {
         if (!this.dropdownMatchSelectWidth) {
-            return {top: '0px', left: '0px', position: 'relative'};
+            return { top: '0px', left: '0px', position: 'relative' };
         } else {
+            if(this.width==null){console.warn('width is null')}
             return { top: '0px', left: '0px', position: 'relative', width: this.width + 'px' }
         }
+    }
+    ngAfterViewInit(){
+        console.log(this.options,this.options.length)
     }
     ngAfterContentInit() {
 

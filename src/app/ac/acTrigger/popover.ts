@@ -52,7 +52,7 @@ export class NglPopover {
     this.renderer.setElementAttribute(this.element.nativeElement, 'aria-describedby', this.uid);
   }
 
-  ngAfterViewInit() {
+  ngAfterContentInit() {
     this.afterViewInit.emit();
     setTimeout(()=>{
       this.show='visible';
