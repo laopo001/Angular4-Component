@@ -11,7 +11,7 @@ export type Direction = 'top' | 'right' | 'bottom' | 'left';
   `,
 })
 export class NglPopover {
-    @HostBinding('style.z-index') z=10001;
+  
   @Output() afterViewInit = new EventEmitter();
 
   @Output() onInteraction = new EventEmitter<boolean>();
@@ -54,8 +54,13 @@ export class NglPopover {
 
   ngAfterViewInit() {
     this.afterViewInit.emit();
+    setTimeout(()=>{
+      this.show='visible';
+    })
   }
 
+  @HostBinding('style.z-index') z=10001;
+  @HostBinding('style.visibility') show='hidden';
   @HostListener('mouseenter', ['$event', 'true'])
   @HostListener('mouseleave', ['$event', 'false'])
   interactiveHandler(evt: Event, isEnter: boolean) {

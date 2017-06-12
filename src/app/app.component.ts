@@ -10,6 +10,7 @@ import '../assets/css/styles.css';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  list=[{label:'A',value:0},{label:'B',value:1},{label:'C',value:2}]
   @ViewChild('cs') cs: TemplateRef<any>;
   qq = true;
   constructor(private elRef: ElementRef) {
@@ -44,6 +45,6 @@ export class AppComponent implements OnInit {
   selectValue='1';
   selectChange(x:any){
     console.log(x)
-    this.selectValue='1';
+    this.selectValue=x;
   }
 }

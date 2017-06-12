@@ -49,13 +49,14 @@
   </ng-template>
   <a [target]="tip" placement="bottom" [open]="opened" (mouseenter)="opened = true" (mouseleave)="opened = false">hover</a>
 
-  <acSelect placeholder="请选择" [value]="selectValue" width="120" (onChange)="selectChange($event)">
+  <acSelect placeholder="请选择" [value]="selectValue" width="220"  (onChange)="selectChange($event)">
+     <!--<acOption  *ngFor="let item of list" [value]="item.value" [label]="item.label"></acOption>-->
     <acOption value="0" label="A"></acOption>
     <acOption value="1" label="B"></acOption>
     <acOption value="2" label="C"></acOption>
   </acSelect>
   <br/>
-  <acSelect placeholder="请选择" width="120" (onChange)="selectChange($event)">
+  <acSelect placeholder="请选择" width="120" [dropdownMatchSelectWidth]="false"  (onChange)="selectChange($event)">
     <acOption value="0" label="A"></acOption>
     <acOption value="1" label="B"></acOption>
     <acOption value="2" label="C"></acOption>

@@ -1,37 +1,37 @@
 import { Component, Input, OnInit, } from '@angular/core';
 import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,keyframes
+    trigger,
+    state,
+    style,
+    animate,
+    transition, keyframes
 } from '@angular/animations';
 import * as Rx from 'rxjs';
 import { Observable, Subject } from 'rxjs';
 
 
-let list:any = []
+let list: any = []
 
 var subject = new Rx.BehaviorSubject(list);
 
 let id = 0;
 
-function log(type:string, content:string, duration = 1500, onClose?:any) {
+function log(type: string, content: string, duration = 1500, onClose?: any) {
     id++;
     let obj = {
         type: type,
         content,
         id,
         onClose,
-        state:'in'
+        state: 'in'
     }
     list = [...list, obj]
 
     function close() {
-        list = list.filter((x:any) => {
+        list = list.filter((x: any) => {
             if (x.id == obj.id) {
                 if (obj.onClose != null) { obj.onClose(); }
-              
+
                 return false;
             } else { return true; }
         })
@@ -66,7 +66,7 @@ function log(type:string, content:string, duration = 1500, onClose?:any) {
     animations: [
         trigger('flyInOut', [
             state('in', style({ opacity: 1, transform: 'translateX(0)' })),
-    //        state('done', style({  opacity: 0.5 ,transform: 'translateX(100%)', })),
+            //        state('done', style({  opacity: 0.5 ,transform: 'translateX(100%)', })),
             transition('void => in', [
                 style({
                     opacity: 0,
@@ -84,35 +84,35 @@ function log(type:string, content:string, duration = 1500, onClose?:any) {
         ])
     ]
 })
-export  class Message {
+export class message {
 
     list: Observable<any>;
 
-    state: Observable<any>;
+
     constructor() {
-  
         this.list = subject.asObservable();
     }
-
-}
-
-export class message{
-    static success(content:any, duration = 1500, onClose?:any) {
+    static success(content: any, duration = 1500, onClose?: any): Function {
         return log('success', content, duration, onClose)
     }
-    static error(content:any, duration = 1500, onClose?:any) {
+    static error(content: any, duration = 1500, onClose?: any): Function {
         return log('error', content, duration, onClose)
     }
-    static info(content:any, duration = 1500, onClose?:any) {
+    static info(content: any, duration = 1500, onClose?: any): Function {
         return log('info', content, duration, onClose)
     }
-    static warning(content:any, duration = 1500, onClose?:any) {
+    static warning(content: any, duration = 1500, onClose?: any): Function {
         return log('warning', content, duration, onClose)
     }
-    static warn(content:any, duration = 1500, onClose?:any) {
+    static warn(content: any, duration = 1500, onClose?: any): Function {
         return log('warning', content, duration, onClose)
     }
-    static loading(content:any, duration = 1500, onClose?:any) {
+    static loading(content: any, duration = 1500, onClose?: any): Function {
         return log('loading', content, duration, onClose)
     }
+    static destroy() {
+        list = [];
+        subject.next(list)
+    }
 }
+

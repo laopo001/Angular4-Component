@@ -1,7 +1,7 @@
-import  {Message } from './acMessage.component'
-import  {message } from './acMessage.component'
 
-export  {Message,message};
+import  {message } from './Message.component'
+
+export  {message};
 
 
 

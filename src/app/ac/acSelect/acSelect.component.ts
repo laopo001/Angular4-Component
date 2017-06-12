@@ -9,23 +9,36 @@ import { contains } from '../util/util';
     templateUrl: './acSelect.component.html',
 })
 export default class Select implements OnInit {
-     @ViewChild('content') content: ElementRef;
+    @ViewChild('content') content: ElementRef;
     @Input() placeholder: string = '';
     @Input() width: any = 120;
     @Output() onChange = new EventEmitter();
     @Output() valueChange = new EventEmitter();
     @ContentChildren(Option)
     childCmps: QueryList<Output>;
-    opened=false;
-    @Input() value: any = '';
+    opened = false;
+    @Input() value: any = null;
     selectLabel = ""
     ngOnInit() {
-        this.width=parseInt(this.width);
+        this.width = parseInt(this.width);
     }
-    onClick(){
-        this.opened=!this.opened;
+    onClick() {
+        this.opened = !this.opened;
     }
+    @Input() dropdownMatchSelectWidth = true;
+    get contentStyle() {
 
+        return { width: this.width + 'px' }
+
+
+    }
+    get tipStyle() {
+        if (!this.dropdownMatchSelectWidth) {
+            return {top: '0px', left: '0px', position: 'relative'};
+        } else {
+            return { top: '0px', left: '0px', position: 'relative', width: this.width + 'px' }
+        }
+    }
     ngAfterContentInit() {
 
         if (this.childCmps == null) return;
@@ -41,16 +54,16 @@ export default class Select implements OnInit {
 
                 this.onChange.emit(x.value);
                 this.valueChange.emit(x.value);
-                this.opened=false;
+                this.opened = false;
             }
             return x;
         })
         document.body.addEventListener('click', (e) => {
             var target = e.target || e.srcElement;
             if (contains(this.content.nativeElement, target)) {
-                
+
             } else {
-                this.opened=false
+                this.opened = false
             }
         }, false)
     }

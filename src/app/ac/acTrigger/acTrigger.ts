@@ -166,6 +166,7 @@ export default class acTrigger {
       ]
     };
 
+
     if (create) {
       this.tether = new Tether(options);
     } else {
@@ -194,14 +195,17 @@ export default class acTrigger {
     this.popover = this.componentRef.instance;
     this.popover.header = this.nglPopoverHeader;
     this.popover.footer = this.nglPopoverFooter;
-    this.popover.afterViewInit.take(1).subscribe(() => this.position(false));
+    this.popover.afterViewInit.take(1).subscribe(() =>
+        //修改成异步
+        this.position(true)
+    );
 
     if (this.nglInteractive) {
       this.interactiveSubscription = this.popover.onInteraction.subscribe((enter: boolean) => this.open = enter);
     }
-
+    
     this.setTether(true);
-
+    
     // To avoid unexpected behavior when template "lives" inside an OnPush
     // component, explicitlly request change detection to run on creation.
     this.popover.changeDetector.markForCheck();
