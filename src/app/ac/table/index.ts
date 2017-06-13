@@ -1,2 +1,2 @@
-import {TableComponent as Table} from './table.component'
+import {datatable as Table} from './datatable'
 export {Table}

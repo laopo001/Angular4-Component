@@ -12,12 +12,14 @@ import { CheckBox } from './checkbox/'
 import {message} from './message/'
 import {Trigger} from './trigger/'
 import {acTrigger,NglPopover} from './acTrigger/'
-import {Table} from './table/'
+// import {Table} from './table/'
+
+import {NglDatatablesModule} from './table/module';
 
 
 enableProdMode();
 
-let output=[Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Trigger,Option,acTrigger,NglPopover,Table]
+let output=[Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Trigger,Option,acTrigger,NglPopover]
 
 @NgModule({
   declarations: output,
@@ -29,3 +31,5 @@ export default class acModule {
 
 }
 export {message}
+
+export {NglDatatablesModule}

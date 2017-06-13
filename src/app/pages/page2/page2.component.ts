@@ -22,20 +22,11 @@ export default class Page2Component {
         key: 'action',
 
     }];
-    data = [{
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    }, {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    }, {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-    }];
+    data = [
+        { rank: 1, name: 'Kareem', surname: 'Abdul-Jabbar', points: 38387 },
+        { rank: 2, name: 'Karl', surname: 'Malone', points: 36928 },
+        { rank: 3, name: 'Kobe', surname: 'Bryant', points: 33643 },
+        { rank: 4, name: 'Michael', surname: 'Jordan', points: 32292 },
+        { rank: 5, name: 'Wilt', surname: 'Chamberlain', points: 31419 },
+    ];
 }
