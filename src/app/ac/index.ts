@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders,enableProdMode } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -12,10 +12,12 @@ import { CheckBox } from './checkbox/'
 import {message} from './message/'
 import {Trigger} from './trigger/'
 import {acTrigger,NglPopover} from './acTrigger/'
+import {Table} from './table/'
 
 
+enableProdMode();
 
-let output=[Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Trigger,Option,acTrigger,NglPopover]
+let output=[Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Trigger,Option,acTrigger,NglPopover,Table]
 
 @NgModule({
   declarations: output,
@@ -26,4 +28,4 @@ let output=[Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,T
 export default class acModule {
 
 }
- export {message}
+export {message}

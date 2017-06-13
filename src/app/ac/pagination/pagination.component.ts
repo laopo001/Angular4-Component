@@ -29,13 +29,6 @@ export class Pagination implements OnInit {
 
 
     @Input() total = 0;
-    @Input() defaultPageSize = 10;
-    // @Input() onChange = noop;
-
-
-    @Input() pageSizeData: number[] = [10, 20];
-
-
 
     @Input() selectComponentClass: any = null;
     @Input() showQuickJumper = false;
@@ -48,13 +41,30 @@ export class Pagination implements OnInit {
 
     @Input() defaultCurrent = 1;
     @Input() current: number;
+    @Output() currentChange = new EventEmitter();
     _currentTemp = 1;
     _current: number = 1;
 
-    pageSize = 10;
-    pageSizeChange(x: number) {
-        this.pageSize = x
-         this._handleChange(Number(this._current) );
+    _pageSize: number = 10;
+    @Input() pageSize: number;
+    @Output() pageSizeChange = new EventEmitter();
+
+    @Input() defaultPageSize: number = 10;
+    @Input() pageSizeData: number[] = [];
+    _pageSizeChange(x: number) {
+        this._pageSize = x
+        if (this._current > this._calcPage()) {
+            this._current = this._calcPage();
+            this._currentTemp = this._current;
+            this.currentChange.emit(this._current)
+        }
+
+        this.pageSizeChange.emit(this._pageSize)
+        this.onChange.emit({ page: this._current, pageSize: this._pageSize });
+        if (this.current == null && this.pageSize == null) {
+            this.render();
+        }
+
     }
 
 
@@ -86,11 +96,16 @@ export class Pagination implements OnInit {
     }
 
     ngOnInit() {
+        this._pageSize = this.defaultPageSize == null ? this._pageSize : this.defaultPageSize;
+
         this._current = this.defaultCurrent == null ? this._current : this.defaultCurrent;
         this._currentTemp = this.defaultCurrent == null ? this._current : this.defaultCurrent;
         this.render();
     }
     render() {
+        this.pagerList = [];
+        this._pageSize = this.pageSize == null ? this._pageSize : this.pageSize;
+
         this._current = this.current == null ? this._current : this.current;
         this._currentTemp = this.current == null ? this._current : this.current;
         this.allPages = this._calcPage();
@@ -102,8 +117,8 @@ export class Pagination implements OnInit {
         this.showTotalText = this.showTotal(
             this.total,
             [
-                (this._current - 1) * this.pageSize + 1,
-                this._current * this.pageSize > this.total ? this.total : this._current * this.pageSize,
+                (this._current - 1) * this._pageSize + 1,
+                this._current * this._pageSize > this.total ? this.total : this._current * this._pageSize,
             ]
         )
         if (this.simple) {
@@ -123,7 +138,7 @@ export class Pagination implements OnInit {
         let firstPager = null;
         let lastPager = null;
         const pageBufferSize = this.showLessItems ? 1 : 2;
-        const { pageSize, pagerList } = this;
+        const { _pageSize, pagerList } = this;
 
         if (allPages <= 5 + pageBufferSize * 2) {
             for (let i = 1; i <= allPages; i++) {
@@ -289,16 +304,17 @@ export class Pagination implements OnInit {
             if (page > this._calcPage()) {
                 page = this._calcPage();
             }
-            this.pagerList = []
+            // this.pagerList = []
             this._current = page;
             this._currentTemp = page;
-            this.render();
+            if (this.current == null && this.pageSize == null) {
+                this.render();
+            }
+            const pageSize = this._pageSize;
 
-            const pageSize = this.pageSize;
 
+            this.currentChange.emit(page)
             this.onChange.emit({ page, pageSize });
-            // this.props.onChange(page, pageSize);
-
             return page;
         }
 
@@ -307,8 +323,18 @@ export class Pagination implements OnInit {
     _calcPage(p?: any) {
         let pageSize = p;
         if (typeof pageSize === 'undefined') {
-            pageSize = this.pageSize;
+            pageSize = this._pageSize;
         }
         return Math.floor((this.total - 1) / pageSize) + 1;
+    }
+
+    ngOnChanges(changes: any) {
+
+        for (var key in changes) {
+            this[key] = changes[key].currentValue;
+
+        }
+        this.render()
+
     }
 }

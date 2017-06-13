@@ -3,18 +3,44 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule }  from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // import {acTrigger,NglPopover,NglPopoverBehavior} from './ac/acTrigger/'
-import { AppComponent } from './app.component';
+import {
+    Routes,
+    RouterModule
+} from '@angular/router';
 
 
- enableProdMode();
+import Page1Component from './pages/page1/page1.component'
+import Page2Component from './pages/page2/page2.component'
+import {
+    AppComponent
+} from './app.component';
+
 
 import acModule from './ac/'
+
+export const ROUTES: Routes = [{
+    path: 'page1',
+    component: Page1Component
+},{
+    path: 'page2',
+    component: Page2Component
+},{
+    path: '**',
+    redirectTo: '/page1',
+    pathMatch: 'full'
+}];
+
+
+
+let R=RouterModule.forRoot(ROUTES, {
+    useHash: true
+})
 @NgModule({
   imports: [
-    BrowserModule,FormsModule,acModule
+    BrowserModule,FormsModule,acModule,R
   ],
   declarations: [
-    AppComponent
+    AppComponent,Page1Component,Page2Component
   ],
   
   bootstrap: [ AppComponent ]

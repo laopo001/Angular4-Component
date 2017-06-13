@@ -28,37 +28,15 @@
         <a></a>
     </li>
     <div class="ant-pagination-options">
-        <acSelect *ngIf="pageSizeData.length>0" placeholder="请选择" [value]="pageSize" (valueChange)="pageSizeChange($event)">
+        <acSelect *ngIf="pageSizeData.length>0" placeholder="请选择" [value]="_pageSize" (valueChange)="_pageSizeChange($event)">
             <acOption  *ngFor="let item of pageSizeData" [value]="item" [label]="item+' / page'"></acOption>
             <!--<acOption value="0" label="A"></acOption>
             <acOption value="1" label="B"></acOption>
             <acOption value="2" label="C"></acOption>-->
 
         </acSelect>
-        <div class="ant-pagination-options-size-changer ant-select ant-select-enabled">
-            <div class="ant-select-selection
-            ant-select-selection--single" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false"
-                tabindex="0">
-                <div class="ant-select-selection__rendered">
-                    <div class="ant-select-selection-selected-value" title="10 / page" style="display: block; opacity: 1;">10 / page</div>
-                </div><span class="ant-select-arrow" unselectable="unselectable" style="user-select: none;"><b></b></span></div>
-        </div>
-        <div style="position: absolute; top: 0px; left: 0px; width: 100%;">
-            <div data-reactroot="">
-                <div class="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft  ant-select-dropdown-hidden"
-                    style="left: 352px; top: 74px; min-width: 81px;">
-                    <div style="overflow: auto;">
-                        <ul class="ant-select-dropdown-menu ant-select-dropdown-menu-vertical  ant-select-dropdown-menu-root" role="menu" aria-activedescendant="">
-                            <li unselectable="unselectable" class="ant-select-dropdown-menu-item-active ant-select-dropdown-menu-item-selected ant-select-dropdown-menu-item"
-                                role="menuitem" aria-selected="true" style="user-select: none;">10 / page</li>
-                            <li unselectable="unselectable" class="ant-select-dropdown-menu-item" role="menuitem" aria-selected="false" style="user-select: none;">20 / page</li>
-                            <li unselectable="unselectable" class="ant-select-dropdown-menu-item" role="menuitem" aria-selected="false" style="user-select: none;">30 / page</li>
-                            <li unselectable="unselectable" class="ant-select-dropdown-menu-item" role="menuitem" aria-selected="false" style="user-select: none;">40 / page</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
+
     </div>
     <!--
         <Options

@@ -10,7 +10,7 @@ import { contains } from '../util/util';
 })
 export default class Select implements OnInit {
     @ViewChild('content') content: ElementRef;
-    @ViewChildren(Option) options:  QueryList<Output>;
+    // @ViewChildren(Option) options:  QueryList<Output>;
 
     @Input() placeholder: string = '';
     @Input() width: any = null;
@@ -48,9 +48,9 @@ export default class Select implements OnInit {
             return { top: '0px', left: '0px', position: 'relative', width: this.width + 'px' }
         }
     }
-    ngAfterViewInit(){
-        console.log(this.options,this.options.length)
-    }
+    // ngAfterViewInit(){
+    //     console.log(this.options,this.options.length)
+    // }
     ngAfterContentInit() {
 
         if (this.childCmps == null) return;
