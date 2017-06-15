@@ -38,7 +38,7 @@ export default class Page2Component implements OnInit  {
     onRowClick($event: any) {
         console.log('clicked row', $event.data);
     }
-    scroll = { y: 400, x: 750 }
+    scroll:any = { y:400, x: 800 }
     columns = [{
         title: 'Name',
         key: 'name',

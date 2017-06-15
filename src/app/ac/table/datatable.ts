@@ -84,7 +84,12 @@ export class datatable implements OnChanges {
   @Input() striped = true;
   @Input() scroll: any = false
   get fixedStyle() {
-    return { width: this.scroll.x + 'px' }
+    if (this.scroll.x == null) {
+      return {}
+    } else {
+      return { width: this.scroll.x + 'px' }
+    }
+
   }
   get bodyStyle() {
     return { maxHeight: this.scroll.y + 'px', overflowY: 'scroll', overflowX: 'auto' }
@@ -166,22 +171,40 @@ export class datatable implements OnChanges {
   ngAfterContentInit() {
     this._columnsSubscription = this.columns.changes.subscribe(() => this.detector.markForCheck());
 
-    if (this.scroll) {
+    if (this.scroll.x) {
       let i = 0;
+      let maxWidth = 0;
       this.columns.forEach((x) => {
         if (x.width == null) {
           if (i == 0) {
             i++
           } else {
             x.width = 150;
+            maxWidth += x.width as number;
             console.warn(`表格滚动时,必须总列数减一的列有width属性，否则，除第一个没有width属性的列外，其他默认为150`)
           }
 
+        } else {
+          maxWidth += x.width as number;
         }
       })
+
+      if (this.scroll.x < maxWidth) {
+        if (i == 0) {
+          this.scroll.x = maxWidth;
+        } else {
+          this.scroll.x = maxWidth + 150;
+        }
+      }
+      if (this.scroll.x > maxWidth) {
+        if (i == 0) {
+          this.scroll.x = maxWidth;
+        } 
+      }
     }
 
     this.columns.forEach((x) => {
+
       if (x.fixLeft != null) {
         this.fixLeft.push(x)
       }
@@ -189,6 +212,13 @@ export class datatable implements OnChanges {
         this.fixRight.push(x)
       }
     })
+    if (this.fixLeft.length > 0 || this.fixRight.length > 0) {
+      if (this.scroll.x == null) {
+        console.warn('fixLeft和fixRight固定列，必须定义scroll.x')
+        this.fixLeft = [];
+        this.fixRight = [];
+      }
+    }
 
   }
 
@@ -207,25 +237,14 @@ export class datatable implements OnChanges {
 
   }
 
-  click() {
-    console.log(this.hoverKey)
-    debugger;
-  }
   ngAfterViewInit() {
 
     if (this.scrollTpl != null) {
       this.scrollTpl.nativeElement.addEventListener('scroll', (e: any) => {
-        if (e.currentTarget != this.currScroll) { return; }
 
         let left = this.scrollTpl.nativeElement.scrollLeft;
-        let top = this.scrollTpl.nativeElement.scrollTop;
-        this.scrollHeaderTpl.nativeElement.scrollLeft = left;
-
-        if (this.RightTpl != null) {
-          this.RightTpl.nativeElement.scrollTop = top;
-        }
-        if (this.LeftTpl != null) {
-          this.LeftTpl.nativeElement.scrollTop = top;
+        if (this.scrollHeaderTpl != null) {
+          this.scrollHeaderTpl.nativeElement.scrollLeft = left;
         }
         if (left == 0) {
           this.position = 'left'
@@ -233,10 +252,24 @@ export class datatable implements OnChanges {
         if (left > 0 && left < this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth) {
           this.position = 'middle'
         }
-        if (left > this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth&&left>0) {
+        if (left >= this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth && left > 0) {
           this.position = 'right'
         }
-        console.log(left, this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth)
+        //console.log(left, this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth)
+
+        if (e.currentTarget != this.currScroll) { return; }
+
+
+        let top = this.scrollTpl.nativeElement.scrollTop;
+
+
+        if (this.RightTpl != null) {
+          this.RightTpl.nativeElement.scrollTop = top;
+        }
+        if (this.LeftTpl != null) {
+          this.LeftTpl.nativeElement.scrollTop = top;
+        }
+
 
       }, false)
       if (this.RightTpl != null) {

@@ -2,8 +2,8 @@
     <div class="ant-table {{tableSizeClass}} {{bordered||bordered===''?'ant-table-bordered':''}} {{scroll?'ant-table-fixed-header':''}} ant-table-scroll-position-{{position}}">
         <div class="ant-table-content">
 
-            <div *ngIf="!scroll" class="ant-table-body">
-                <table>
+            <div *ngIf="scroll?.y==null" class="ant-table-body" #scrollTpl style="overflow-x: auto;">
+                <table class="{{scroll?.x!=null?'ant-table-fixed':''}}" [ngStyle]="fixedStyle">
                     <colgroup>
                         <col *ngFor="let col of columns; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                     </colgroup>
@@ -21,7 +21,8 @@
                             </td>
                         </tr>
                         <template ngIf="hasRows">
-                            <tr *ngFor="let d of data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" class="ant-table-row">
+                            <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
+                                (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
                                 <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
                             </tr>
                         </template>
@@ -33,7 +34,7 @@
                 </table>
             </div>
 
-            <div *ngIf="scroll" class="ant-table-scroll">
+            <div *ngIf="scroll?.y!=null" class="ant-table-scroll">
                 <div class="ant-table-header" #scrollHeaderTpl style="margin-bottom: -17px; padding-bottom: 0px;">
                     <table class="ant-table-fixed" [ngStyle]="fixedStyle">
                         <colgroup>
@@ -61,7 +62,7 @@
                             </tr>
                             <template ngIf="hasRows">
                                 <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                    (mouseleave)="hover(false,i)" class="ant-table-row" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
+                                    (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
                                     <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
                                 </tr>
                             </template>
@@ -74,8 +75,9 @@
                 </div>
             </div>
             <div *ngIf="fixLeft.length>0" class="ant-table-fixed-left">
-                <div class="ant-table-header">
-                    <table class="ant-table-fixed">
+                <ng-container *ngIf="scroll?.y==null">
+
+                    <table>
                         <colgroup>
                             <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                         </colgroup>
@@ -86,32 +88,60 @@
                                     class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
                             </tr>
                         </thead>
+                        <tbody class="ant-table-tbody">
+                            <template ngIf="hasRows">
+                                <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
+                                    (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
+                                    <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
+                                </tr>
+                            </template>
+                        </tbody>
                     </table>
-                </div>
-                <div class="ant-table-body-outer" style="margin-bottom: -17px; padding-bottom: 0px;">
-                    <div class="ant-table-body-inner" [ngStyle]="innerStyle" #LeftTpl (mouseenter)="select($event)">
+
+
+                </ng-container>
+                <ng-container *ngIf="scroll?.y!=null">
+                    <div class="ant-table-header">
                         <table class="ant-table-fixed">
                             <colgroup>
                                 <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                             </colgroup>
-                            <tbody class="ant-table-tbody">
-
-                                <template ngIf="hasRows">
-                                    <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                        (mouseleave)="hover(false,i)" class="ant-table-row" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                                        <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                                    </tr>
-                                </template>
-                            </tbody>
-
+                            <thead class="ant-table-thead">
+                                <tr>
+                                    <th *ngFor="let col of fixLeft; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
+                                        [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
+                                        class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
+                                </tr>
+                            </thead>
                         </table>
                     </div>
-                </div>
+                    <div class="ant-table-body-outer" style="margin-bottom: -17px; padding-bottom: 0px;">
+                        <div class="ant-table-body-inner" [ngStyle]="innerStyle" #LeftTpl (mouseenter)="select($event)">
+                            <table class="ant-table-fixed">
+                                <colgroup>
+                                    <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
+                                </colgroup>
+                                <tbody class="ant-table-tbody">
+
+                                    <template ngIf="hasRows">
+                                        <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
+                                            (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
+                                            <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </ng-container>
             </div>
 
             <div *ngIf="fixRight.length>0" class="ant-table-fixed-right">
-                <div class="ant-table-header">
-                    <table class="ant-table-fixed">
+
+                <ng-container *ngIf="scroll?.y==null">
+
+                    <table>
                         <colgroup>
                             <col *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                         </colgroup>
@@ -122,29 +152,57 @@
                                     class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
                             </tr>
                         </thead>
+                        <tbody class="ant-table-tbody">
+                            <template ngIf="hasRows">
+                                <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
+                                    (mouseleave)="hover(false,i)" class="abc ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
+                                    <td *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
+                                </tr>
+                            </template>
+                        </tbody>
                     </table>
-                </div>
-                <div class="ant-table-body-outer" style="margin-bottom: -17px; padding-bottom: 0px;">
-                    <div class="ant-table-body-inner" [ngStyle]="innerStyle" #RightTpl (mouseenter)="select($event)">
+
+
+                </ng-container>
+
+                <ng-container *ngIf="scroll?.y!=null">
+                    <div class="ant-table-header">
                         <table class="ant-table-fixed">
                             <colgroup>
                                 <col *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                             </colgroup>
-                            <tbody class="ant-table-tbody">
-
-                                <template ngIf="hasRows">
-                                    <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                        (mouseleave)="hover(false,i)" class="ant-table-row" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                                        <td *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                                    </tr>
-                                </template>
-                            </tbody>
-
+                            <thead class="ant-table-thead">
+                                <tr>
+                                    <th *ngFor="let col of fixRight; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
+                                        [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
+                                        class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
+                                </tr>
+                            </thead>
                         </table>
                     </div>
-                </div>
+                    <div class="ant-table-body-outer" style="margin-bottom: -17px; padding-bottom: 0px;">
+                        <div class="ant-table-body-inner" [ngStyle]="innerStyle" #RightTpl (mouseenter)="select($event)">
+                            <table class="ant-table-fixed">
+                                <colgroup>
+                                    <col *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
+                                </colgroup>
+                                <tbody class="ant-table-tbody">
+
+                                    <template ngIf="hasRows">
+                                        <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
+                                            (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
+                                            <td *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </ng-container>
             </div>
-            <Pagination *ngIf="pagination" [size]="PaginationSize" [showQuickJumper]="showQuickJumper" className="ant-table-pagination" [total]="data?.length" [showTotal]="showTotal" [pageSizeData]="pagination.pageSizeData" size="pagination.size"
+            <Pagination *ngIf="pagination" [size]="PaginationSize" [showQuickJumper]="showQuickJumper" className="ant-table-pagination"
+                [total]="data?.length" [showTotal]="showTotal" [pageSizeData]="pagination.pageSizeData" size="pagination.size"
                 [current]="current" [pageSize]="pageSize" (onChange)="pageChange($event)"></Pagination>
         </div>
     </div>
