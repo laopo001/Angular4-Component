@@ -25,7 +25,7 @@
 <div >1</div>
 <div style="width:650px">
 <acTable ngl-datatable [scroll]="scroll" [pageSizeData]="pageSizeData" [data]="data" trackByKey="rank" [loading]="loading" [(sort)]="sort" (sortChange)="onSort($event)"
-  (onRowClick)="onRowClick($event)" class="headerRowClass">
+  (onRowClick)="onRowClick($event)" >
   <acTable-column fixLeft [width]='200' heading="Rank" key="rank" sortable></acTable-column>
   <acTable-column [width]='200' heading="Name" key="name" *ngIf="!hideName" cellClass="slds-truncate" sortable></acTable-column>
   <acTable-column  heading="Surname" key="surname" cellClass="slds-truncate" sortable>
@@ -44,6 +44,8 @@
   <!-- No rows overlay -->
   <template nglNoRowsOverlay>No data available in table!</template>
 </acTable>
+
+
 
 
 </div>

@@ -1,9 +1,9 @@
 //create time:Tue Jun 13 2017 13:42:10 GMT+0800 (中国标准时间)
-import { Component, Input, ChangeDetectorRef, ContentChild, ContentChildren,OnInit, QueryList, ElementRef, Renderer, HostBinding, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, ContentChild, SimpleChanges, ContentChildren, OnInit, OnChanges, QueryList, ElementRef, Renderer, HostBinding, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NglDatatableColumn } from './column';
 import { NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay } from './overlays';
-
+type Size = 'large' | 'small' | 'middle';
 @Component({
   selector: 'acTable[ngl-datatable]',
   templateUrl: './datatable.html',
@@ -14,13 +14,30 @@ import { NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay } from './overlay
 
   `],
 })
-export class datatable implements OnInit {
-  current=1;
-  pageSize=10;
-  pageChange(event:any){
-    this.current=event.current;
-    this.pageSize=event.pageSize;
-    this._data=this.data.slice((this.current-1)*this.pageSize,this.current*this.pageSize);
+export class datatable implements OnChanges {
+  @Input() size: Size = 'large'
+  get tableSizeClass() {
+    switch (this.size) {
+      case 'large': return 'ant-table-large';
+      case 'middle': return 'ant-table-middle';
+      case 'small': return 'ant-table-small';
+      default: return 'ant-table';
+    }
+  }
+  get PaginationSize() {
+    switch (this.size) {
+      case 'large': return 'default';
+      case 'middle': return 'small';
+      case 'small': return 'small';
+      default: return 'default';
+    }
+  }
+  current = 1;
+  pageSize = 10;
+  pageChange(event: any) {
+    this.current = event.current;
+    this.pageSize = event.pageSize;
+    this._data = this.data.slice((this.current - 1) * this.pageSize, this.current * this.pageSize);
 
   }
   showTotal(total: number, range: number[]) {
@@ -29,26 +46,39 @@ export class datatable implements OnInit {
   }
 
   @Input() data: any[] = [];
-  @Input() pagination: any = true;
+  @Input() pagination: any = {
+    pageSizeData: [],
+    size: 'default',
+    showQuickJumper: false
+  };
   @Input() pageSizeData: any[] = [];
   _data: any[] = [];
-  ngOnInit() {
-    if(this.pagination){
-      if(this.pageSizeData.length>0){
-        this.pageSize=this.pageSizeData[0]
+  Init() {
+    this.data = this.data == null ? [] : this.data;
+    if (this.pagination) {
+      this.pagination.pageSizeData = this.pageSizeData;
+
+      if (this.pagination.pageSizeData.length > 0) {
+        this.pageSize = this.pagination.pageSizeData[0]
       }
-      this._data=this.data.slice((this.current-1)*this.pageSize,this.current*this.pageSize);
-    }else{
-      this._data=this.data;
+      this._data = this.data.slice((this.current - 1) * this.pageSize, this.current * this.pageSize);
+    } else {
+      this._data = this.data;
     }
-    
-    
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if ('data' in changes) {
+      this.current = 1;
+    }
+    this.Init();
   }
 
   @Input() trackByKey: string;
 
   // @HostBinding('class.slds-table--bordered')
-  @Input() bordered = true;
+  @Input() bordered = false;
 
   // @HostBinding('class.slds-table--striped')
   @Input() striped = true;
@@ -203,10 +233,10 @@ export class datatable implements OnInit {
         if (left > 0 && left < this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth) {
           this.position = 'middle'
         }
-        if (left > this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth) {
+        if (left > this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth&&left>0) {
           this.position = 'right'
         }
-        // console.log(e, top)
+        console.log(left, this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth)
 
       }, false)
       if (this.RightTpl != null) {

@@ -1,8 +1,10 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, Output, EventEmitter, ContentChildren, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild, Output, EventEmitter, ContentChildren, QueryList, ViewChildren,OnChanges } from '@angular/core';
 // import KeyCode from 'rc-util/lib/KeyCode';
 
 import Option from './option.component';
 import { contains } from '../util/util';
+
+type Size='large'|'small'|'default';
 
 @Component({
     selector: 'acSelect',
@@ -11,10 +13,20 @@ import { contains } from '../util/util';
 export default class Select implements OnInit {
     @ViewChild('content') content: ElementRef;
     // @ViewChildren(Option) options:  QueryList<Output>;
-
+    @Input() className: string = '';
     @Input() placeholder: string = '';
-    @Input() width: any = null;
+    @Input() width: any = '';
     @Input() data: any[] = [];
+    @Input() size:Size ='default'
+    get sizeClass(){
+        switch(this.size){
+            case 'large':return 'ant-select-lg';
+            case 'default':return 'ant-select';
+            case 'small':return 'ant-select-sm';
+            default:return 'ant-select';
+
+        }
+    }
 
     @Output() onChange = new EventEmitter();
     @Output() valueChange = new EventEmitter();
@@ -24,7 +36,7 @@ export default class Select implements OnInit {
     @Input() value: any = null;
     selectLabel = ""
     ngOnInit() {
-        this.width = parseInt(this.width);
+      //  this.width = parseInt(this.width);
     }
     onClick() {
         this.opened = !this.opened;
@@ -41,6 +53,7 @@ export default class Select implements OnInit {
 
     }
     get tipStyle() {
+     
         if (!this.dropdownMatchSelectWidth) {
             return { top: '0px', left: '0px', position: 'relative' };
         } else {
@@ -82,9 +95,11 @@ export default class Select implements OnInit {
 
     ngOnChanges(changes: any) {
 
-        for (var key in changes) {
-            this[key] = changes[key].currentValue;
+        if( 'width' in changes) {
+            this['width'] = changes['width'].currentValue.toString();
         }
+
+
         this.ngAfterContentInit()
     }
 }

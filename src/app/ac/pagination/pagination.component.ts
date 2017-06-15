@@ -3,11 +3,11 @@ import LOCALE from './locale/zh_CN';
 
 function classNames(obj: Pagination) {
 
-    var { prefixCls, isSmall } = obj;
+    var { prefixCls, size } = obj;
 
     return {
-        'mini': isSmall,
         [`${prefixCls}`]: true,
+        'mini': size=='small',
         [`${obj.className}`]: !!obj.className
     }
 }
@@ -15,7 +15,7 @@ function noop() {
 }
 
 
-
+type Size='small'|'default';
 
 @Component({
     selector: 'Pagination',
@@ -24,9 +24,9 @@ function noop() {
 })
 export class Pagination implements OnInit {
 
-    @Input() size: string;
-    isSmall: boolean;
 
+
+    @Input() size:Size ='default'
 
     @Input() total = 0;
 
@@ -98,7 +98,7 @@ export class Pagination implements OnInit {
     ngOnInit() {
         this._pageSize=this.pageSizeData.length>0?this.pageSizeData[0]:this._pageSize;
         this._pageSize = this.defaultPageSize == null ? this._pageSize : this.defaultPageSize;
-        
+
         this._current = this.defaultCurrent == null ? this._current : this.defaultCurrent;
         this._currentTemp = this.defaultCurrent == null ? this._current : this.defaultCurrent;
         this.render();
@@ -110,7 +110,7 @@ export class Pagination implements OnInit {
         this._current = this.current == null ? this._current : this.current;
         this._currentTemp = this.current == null ? this._current : this.current;
         this.allPages = this._calcPage();
-        this.isSmall = this.size === 'small';
+        //this.isSmall = this.size === 'small';
 
 
         this.currClasses = classNames(this);
@@ -329,12 +329,13 @@ export class Pagination implements OnInit {
         return Math.floor((this.total - 1) / pageSize) + 1;
     }
 
+    Count=0;
     ngOnChanges(changes: any) {
-
-        for (var key in changes) {
-            this[key] = changes[key].currentValue;
-
+        if(this.Count==0){
+            this.Count++;
+            return;
         }
+
         this.render()
 
     }

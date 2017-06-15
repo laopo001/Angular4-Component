@@ -28,10 +28,13 @@
         <a></a>
     </li>
     <div *ngIf="pageSizeData.length>0" class="ant-pagination-options">
-        <acSelect  placeholder="请选择" [value]="_pageSize" (valueChange)="_pageSizeChange($event)">
-            <acOption  *ngFor="let item of pageSizeData" [value]="item" [label]="item+' / page'"></acOption>
+        <acSelect className="ant-pagination-options-size-changer" placeholder="请选择" [size]="size" [value]="_pageSize" (valueChange)="_pageSizeChange($event)">
+            <acOption *ngFor="let item of pageSizeData" [value]="item" [label]="item+' / page'"></acOption>
         </acSelect>
-      
+        <div *ngIf="showQuickJumper||showQuickJumper===''" class="ant-pagination-options-quick-jumper">
+            Goto
+            <input [(ngModel)]="_current" (keyup.enter)="update()" (blur)="update()">
+        </div>
 
     </div>
     <!--

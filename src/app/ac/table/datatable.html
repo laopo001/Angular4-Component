@@ -1,5 +1,5 @@
 <div class="ant-table-wrapper">
-    <div class="ant-table ant-table-large {{bordered?'ant-table-bordered':''}} {{scroll?'ant-table-fixed-header':''}} ant-table-scroll-position-{{position}}">
+    <div class="ant-table {{tableSizeClass}} {{bordered||bordered===''?'ant-table-bordered':''}} {{scroll?'ant-table-fixed-header':''}} ant-table-scroll-position-{{position}}">
         <div class="ant-table-content">
 
             <div *ngIf="!scroll" class="ant-table-body">
@@ -144,7 +144,7 @@
                     </div>
                 </div>
             </div>
-            <Pagination *ngIf="pagination" className="ant-table-pagination" [total]="data.length" [showTotal]="showTotal" [pageSizeData]="pageSizeData"
+            <Pagination *ngIf="pagination" [size]="PaginationSize" [showQuickJumper]="showQuickJumper" className="ant-table-pagination" [total]="data?.length" [showTotal]="showTotal" [pageSizeData]="pagination.pageSizeData" size="pagination.size"
                 [current]="current" [pageSize]="pageSize" (onChange)="pageChange($event)"></Pagination>
         </div>
     </div>
