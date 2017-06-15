@@ -16,7 +16,7 @@ import {
 } from './app.component';
 
 
-import acModule,{NglDatatablesModule} from './ac/'
+import acModule from './ac/'
 
 export const ROUTES: Routes = [{
     path: 'page1',
@@ -37,7 +37,7 @@ let R=RouterModule.forRoot(ROUTES, {
 })
 @NgModule({
   imports: [
-    BrowserModule,FormsModule,acModule,R,NglDatatablesModule
+    BrowserModule,FormsModule,acModule,R
   ],
   declarations: [
     AppComponent,Page1Component,Page2Component

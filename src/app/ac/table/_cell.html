@@ -1,1 +1,2 @@
-<template *ngIf="column.cellTpl" [ngTemplateOutlet]="column.cellTpl.templateRef" [ngOutletContext]="context"></template><span *ngIf="!column.cellTpl">{{ value }}</span>
+<template *ngIf="column.cellTpl" [ngTemplateOutlet]="column.cellTpl.templateRef" [ngOutletContext]="context"></template>
+<span *ngIf="!column.cellTpl">{{ value }}</span>

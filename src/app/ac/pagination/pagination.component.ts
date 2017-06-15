@@ -8,7 +8,7 @@ function classNames(obj: Pagination) {
     return {
         'mini': isSmall,
         [`${prefixCls}`]: true,
-        [`${obj.class}`]: !!obj.class
+        [`${obj.className}`]: !!obj.className
     }
 }
 function noop() {
@@ -37,7 +37,7 @@ export class Pagination implements OnInit {
     @Input() showTitle = true;
     @Input() onShowSizeChange = noop;
     @Input() locale = LOCALE;
-    @Input() showTotal: any;
+    @Input() showTotal: any=()=>{return ''};
 
     @Input() defaultCurrent = 1;
     @Input() current: number;
@@ -60,7 +60,7 @@ export class Pagination implements OnInit {
         }
 
         this.pageSizeChange.emit(this._pageSize)
-        this.onChange.emit({ page: this._current, pageSize: this._pageSize });
+        this.onChange.emit({ current: this._current, pageSize: this._pageSize });
         if (this.current == null && this.pageSize == null) {
             this.render();
         }
@@ -74,7 +74,7 @@ export class Pagination implements OnInit {
 
 
 
-    @Input() class: string;
+    @Input() className: string;
     @Input() style: any;
     @Output() onChange = new EventEmitter();
 
@@ -96,8 +96,9 @@ export class Pagination implements OnInit {
     }
 
     ngOnInit() {
+        this._pageSize=this.pageSizeData.length>0?this.pageSizeData[0]:this._pageSize;
         this._pageSize = this.defaultPageSize == null ? this._pageSize : this.defaultPageSize;
-
+        
         this._current = this.defaultCurrent == null ? this._current : this.defaultCurrent;
         this._currentTemp = this.defaultCurrent == null ? this._current : this.defaultCurrent;
         this.render();
@@ -122,7 +123,7 @@ export class Pagination implements OnInit {
             ]
         )
         if (this.simple) {
-            this.simpleUlClass = `${this.prefixCls} ${this.prefixCls}-simple ${this.class}`;
+            this.simpleUlClass = `${this.prefixCls} ${this.prefixCls}-simple ${this.className}`;
             this.simpleShowTitle = this.showTitle ? `${this._current}/${this.allPages}` : null
             this.simpleMiddleClass = `${this.prefixCls}-simple-pager`;
             this.simpleSlashClass = `${this.prefixCls}-slash`
@@ -314,7 +315,7 @@ export class Pagination implements OnInit {
 
 
             this.currentChange.emit(page)
-            this.onChange.emit({ page, pageSize });
+            this.onChange.emit({current:page, pageSize });
             return page;
         }
 

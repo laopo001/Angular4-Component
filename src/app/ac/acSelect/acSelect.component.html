@@ -10,7 +10,7 @@
 </ng-template>
 
 <div #content [target]="tip" (click)="onClick($event)" placement="bottom" [open]="opened" class="ant-select {{!open?'':'ant-select-open'}} ant-select-enabled"  [ngStyle]="contentStyle" >
-    <div class="ant-select-selection ant-select-selection--single" tabindex="0" [attr.aria-expanded]="open?'true':'false'">
+    <div class="ant-select-selection ant-select-selection--single"  [attr.aria-expanded]="open?'true':'false'">
         <div class="ant-select-selection__rendered">
             <div *ngIf='value==null' unselectable="unselectable" class="ant-select-selection__placeholder" style="display: block; user-select: none;">{{placeholder}}</div>
             <div *ngIf='value!=null' class="ant-select-selection-selected-value" title="{{selectLabel}}" >{{selectLabel}}</div>

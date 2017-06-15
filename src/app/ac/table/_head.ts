@@ -1,19 +1,19 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, HostBinding, TemplateRef} from '@angular/core';
 
 @Component({
-  selector: 'th[ngl-internal-datatatable-head]',
+  selector: 'th[datatatable-head]',
   templateUrl: './_head.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    'scope': 'col',
-    '[class.slds-is-sorted--asc]': `sortOrder === 'asc'`,
-    '[class.slds-is-sorted--desc]': `sortOrder === 'desc'`,
-    '[class.slds-is-sorted]': `!!sortOrder`,
-  },
+  // host: {
+  //   'scope': 'col',
+  //   '[class.slds-is-sorted--asc]': `sortOrder === 'asc'`,
+  //   '[class.slds-is-sorted--desc]': `sortOrder === 'desc'`,
+  //   '[class.slds-is-sorted]': `!!sortOrder`,
+  // },
 })
 export class NglInternalDatatableHeadCell {
 
-  @HostBinding('attr.title')
+  // @HostBinding('attr.title')
   @Input() heading: string;
   @Input() headingTpl: TemplateRef<any>;
 
@@ -21,19 +21,24 @@ export class NglInternalDatatableHeadCell {
     return this.headingTpl || this.heading;
   }
 
-  @HostBinding('class.slds-is-sortable')
+  // @HostBinding('class.slds-is-sortable')
   @Input() sortable: boolean;
 
   @Input() sortOrder: 'asc' | 'desc';
 
-  @HostBinding('attr.aria-sort')
-  get ariaSort() {
-    return this.sortOrder ? `${this.sortOrder}ending` : null;
-  }
+  // @HostBinding('attr.aria-sort')
 
+  get ariaSortUp() {
+
+    return this.sortOrder=='asc' ? 'on' : 'off';
+  }
+  get ariaSortDown() {
+
+    return this.sortOrder=='desc' ? 'on' : 'off';
+  }
   @Output() onSort = new EventEmitter();
 
-  sortChange() {
-    this.onSort.emit(this.sortOrder === 'desc' ? 'asc' : 'desc');
+  sortChange(type:any) {
+    this.onSort.emit(type);
   }
 }

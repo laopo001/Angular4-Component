@@ -12,24 +12,29 @@ import { CheckBox } from './checkbox/'
 import {message} from './message/'
 import {Trigger} from './trigger/'
 import {acTrigger,NglPopover} from './acTrigger/'
-// import {Table} from './table/'
 
-import {NglDatatablesModule} from './table/module';
+// import {NglDatatablesModule} from './table/module';
+import {Table,NglInternalOutletModule,NglDatatableColumn,NglDatatableCell,NglDatatableHeadingTemplate,NglDatatableLoadingOverlay,NglDatatableNoRowsOverlay,NglInternalDatatableHeadCell,NglInternalDatatableCell} from './table/'
 
 
 enableProdMode();
 
-let output=[Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Trigger,Option,acTrigger,NglPopover]
+let output=[
+  Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Trigger,Option,acTrigger,NglPopover,
+  Table,
+  NglDatatableColumn,
+  NglDatatableCell,
+  NglDatatableHeadingTemplate,
+  NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay,
+]
 
 @NgModule({
-  declarations: output,
-  exports: output,
+  declarations:[...output,NglInternalDatatableHeadCell, NglInternalDatatableCell],
+  exports: [...output],
   entryComponents: [ NglPopover ],
-  imports: [CommonModule,FormsModule,BrowserAnimationsModule],
+  imports: [CommonModule,FormsModule,BrowserAnimationsModule,NglInternalOutletModule],
 })
 export default class acModule {
 
 }
 export {message}
-
-export {NglDatatablesModule}

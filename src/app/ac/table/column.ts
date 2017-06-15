@@ -1,16 +1,19 @@
-import {Directive, Input, ContentChild} from '@angular/core';
-import {NglDatatableCell} from './cell';
-import {NglDatatableHeadingTemplate} from './heading';
-import {toBoolean} from '../util/util';
+import { Directive, Input, ContentChild } from '@angular/core';
+import { NglDatatableCell } from './cell';
+import { NglDatatableHeadingTemplate } from './heading';
+import { toBoolean } from '../util/util';
 
 @Directive({
-  selector: 'ngl-datatable-column',
+  selector: 'acTable-column',
 })
 export class NglDatatableColumn {
   @Input() heading: string;
   @Input() key: string;
   @Input() headClass: any;
   @Input() cellClass: any;
+  @Input() width: number | string;
+  @Input() fixLeft: boolean | string;
+  @Input() fixRight: boolean | string;
   @ContentChild(NglDatatableCell) cellTpl: NglDatatableCell;
   @ContentChild(NglDatatableHeadingTemplate) headingTpl: NglDatatableHeadingTemplate;
 

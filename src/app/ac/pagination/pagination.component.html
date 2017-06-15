@@ -13,7 +13,7 @@
 </ul>
 
 <ul *ngIf="!simple" [ngClass]="currClasses" [ngStyle]="style" unselectable="unselectable">
-    <span *ngIf="showTotal" [ngClass]="showTotalClass">
+    <span *ngIf="showTotalText!=''" [ngClass]="showTotalClass">
           {{showTotalText}}
         </span>
     <li [attr.title]="showTitle ? locale.prev_page : null" (click)="_prev()" [ngClass]="_prevClass">
@@ -27,13 +27,9 @@
     <li [attr.title]="showTitle ? locale.next_page : null" (click)="_next()" [ngClass]="_nextClass">
         <a></a>
     </li>
-    <div class="ant-pagination-options">
-        <acSelect *ngIf="pageSizeData.length>0" placeholder="请选择" [value]="_pageSize" (valueChange)="_pageSizeChange($event)">
+    <div *ngIf="pageSizeData.length>0" class="ant-pagination-options">
+        <acSelect  placeholder="请选择" [value]="_pageSize" (valueChange)="_pageSizeChange($event)">
             <acOption  *ngFor="let item of pageSizeData" [value]="item" [label]="item+' / page'"></acOption>
-            <!--<acOption value="0" label="A"></acOption>
-            <acOption value="1" label="B"></acOption>
-            <acOption value="2" label="C"></acOption>-->
-
         </acSelect>
       
 
