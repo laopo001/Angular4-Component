@@ -115,10 +115,16 @@ export class Pagination implements OnInit {
 
         this.currClasses = classNames(this);
         this.showTotalClass = { [`${this.prefixCls}-total-text`]: true };
+
+        let currQ=(this._current - 1) * this._pageSize + 1> this.total ? this.total : (this._current - 1) * this._pageSize + 1;
+        if(currQ<0){
+            currQ=0;
+        }
+
         this.showTotalText = this.showTotal(
             this.total,
             [
-                (this._current - 1) * this._pageSize + 1,
+                currQ,
                 this._current * this._pageSize > this.total ? this.total : this._current * this._pageSize,
             ]
         )
