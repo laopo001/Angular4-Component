@@ -42,7 +42,7 @@ export default class AppComponent implements OnInit {
       //  close();
     }, 1000)
   }
-  selectValue='1';
+  selectValue:any=null;
   selectChange(x:any){
     console.log(x)
     this.selectValue=x;

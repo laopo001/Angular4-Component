@@ -34,13 +34,13 @@
     </Button>
   </ButtonGroup>
   <br/>
-<Pagination showQuickJumper [total]="100" [showTotal]="showTotal"  [pageSizeData]="pageSizeData" [(current)]="current" [(pageSize)]="pageSize" ></Pagination>
+<!--<Pagination showQuickJumper [total]="100" [showTotal]="showTotal"  [pageSizeData]="pageSizeData" [(current)]="current" [(pageSize)]="pageSize" ></Pagination>
 <Pagination [total]="100" [showTotal]="showTotal"  [(current)]="current" ></Pagination>
 
 <button (click)="queding()">cs</button>
 
   <Pagination size="small" [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [pageSizeData]="pageSizeData" [defaultCurrent]="5"></Pagination>
-  <Pagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [simple]="true"></Pagination>
+  <Pagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [simple]="true"></Pagination>-->
 
   <br/>
   <!--<Select [showSearch]="true"></Select>
@@ -59,10 +59,13 @@
 
   </acSelect>
   <br/>
-  <acSelect placeholder="请选择" width="120" size="small" [dropdownMatchSelectWidth]="false"  (onChange)="selectChange($event)">
+  <acSelect placeholder="请选择" width="120" size="small" [value]="selectValue"   (onChange)="selectChange($event)">
     <acOption value="0" label="A"></acOption>
     <acOption value="1" label="B"></acOption>
     <acOption value="2" label="C"></acOption>
+  </acSelect>
+    <acSelect placeholder="请选择" width="120" showSearch  [value]="selectValue"  [data]="list" (onChange)="selectChange($event)">
+
   </acSelect>
   <br/>
   <br/>
