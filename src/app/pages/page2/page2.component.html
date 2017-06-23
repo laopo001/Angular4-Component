@@ -24,11 +24,11 @@
 </acTable>-->
 <div >1</div>
 <div style="width:650px">
-<acTable ngl-datatable [scroll]="scroll" [pageSizeData]="pageSizeData" [data]="data" trackByKey="rank" [loading]="loading" [(sort)]="sort" (sortChange)="onSort($event)"
+<acTable  [scroll]="scroll" [pageSizeData]="pageSizeData" [data]="data" trackByKey="rank" [loading]="loading" [(sort)]="sort" (sortChange)="onSort($event)"
   (onRowClick)="onRowClick($event)" >
   <acTable-column fixLeft [width]='200' heading="Rank" key="rank" sortable></acTable-column>
-  <acTable-column [width]='200' heading="Name" key="name" *ngIf="!hideName" cellClass="slds-truncate" sortable></acTable-column>
-  <acTable-column  heading="Surname" key="surname" cellClass="slds-truncate" sortable>
+  <acTable-column  heading="Name" key="name" *ngIf="!hideName" cellClass="slds-truncate" sortable></acTable-column>
+  <acTable-column  [width]='200' heading="Surname" key="surname" cellClass="slds-truncate" sortable>
     <template columnCell let-row="row"><b>{{row.surname}}</b></template>
   </acTable-column>
   <acTable-column  fixRight  heading="Points" key="points">

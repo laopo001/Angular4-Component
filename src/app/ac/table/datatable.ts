@@ -5,7 +5,7 @@ import { NglDatatableColumn } from './column';
 import { NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay } from './overlays';
 type Size = 'large' | 'small' | 'middle';
 @Component({
-  selector: 'acTable[ngl-datatable]',
+  selector: 'acTable',
   templateUrl: './datatable.html',
   host: {
 
@@ -179,11 +179,11 @@ export class datatable implements OnChanges {
           if (i == 0) {
             i++
           } else {
-            x.width = 150;
+            i++;
+            x.width = 100;
             maxWidth += x.width as number;
-            console.warn(`表格滚动时,必须总列数减一的列有width属性，否则，除第一个没有width属性的列外，其他默认为150`)
+            console.warn(`表格滚动时,必须总列数减一的列有width属性，否则，除第一个没有width属性的列外，其他默认为100`)
           }
-
         } else {
           maxWidth += x.width as number;
         }
@@ -192,9 +192,10 @@ export class datatable implements OnChanges {
       if (this.scroll.x < maxWidth) {
         if (i == 0) {
           this.scroll.x = maxWidth;
-        } else {
-          this.scroll.x = maxWidth + 150;
-        }
+        } 
+        // else {
+        //   this.scroll.x = maxWidth + 100;
+        // }
       }
       if (this.scroll.x > maxWidth) {
         if (i == 0) {
