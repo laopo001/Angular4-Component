@@ -4,12 +4,6 @@ import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, HostBin
   selector: 'th[datatatable-head]',
   templateUrl: './_head.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // host: {
-  //   'scope': 'col',
-  //   '[class.slds-is-sorted--asc]': `sortOrder === 'asc'`,
-  //   '[class.slds-is-sorted--desc]': `sortOrder === 'desc'`,
-  //   '[class.slds-is-sorted]': `!!sortOrder`,
-  // },
 })
 export class NglInternalDatatableHeadCell {
 

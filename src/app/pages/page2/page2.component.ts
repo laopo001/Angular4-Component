@@ -7,13 +7,14 @@ import { Component,OnInit } from '@angular/core';
     styleUrls: ['./page2.component.scss']
 })
 export default class Page2Component implements OnInit  {
-    sort = { key: 'rank', order: 'asc' };
+    sort = { key: '', order: 'asc' };
 
     onSort($event: any) {
         const { key, order } = $event;
         this.data.sort((a: any, b: any) => {
             return (key === 'rank' ? b[key] - a[key] : b[key].localeCompare(a[key])) * (order === 'desc' ? 1 : -1);
         });
+        console.log(key, order)
     }
     toggleData() {
         this.data = this.data ? null : [
@@ -73,12 +74,12 @@ export default class Page2Component implements OnInit  {
         { rank: 15, name: 'Wilt', surname: 'Chamberlain', points: 31419 },
     ];
     ngOnInit() {
-        let temp=[]
-        for(let i=0;i<100;i++){
-            temp.push({
-                 rank: i, name: i, surname: i, points: i
-            })
-        }
-        this.data=temp;
+        // let temp=[]
+        // for(let i=0;i<100;i++){
+        //     temp.push({
+        //          rank: i, name: i, surname: i, points: i
+        //     })
+        // }
+        // this.data=temp;
     }
 }

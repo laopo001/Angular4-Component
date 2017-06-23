@@ -76,11 +76,7 @@ export class datatable implements OnChanges {
   }
 
   @Input() trackByKey: string;
-
-  // @HostBinding('class.slds-table--bordered')
   @Input() bordered = false;
-
-  // @HostBinding('class.slds-table--striped')
   @Input() striped = true;
   @Input() scroll: any = false
   get fixedStyle() {
@@ -95,7 +91,7 @@ export class datatable implements OnChanges {
     return { maxHeight: this.scroll.y + 'px', overflowY: 'scroll', overflowX: 'auto' }
   }
 
-  @Input() sort: INglDatatableSort;
+  @Input() sort: INglDatatableSort={key:'',order:'asc'};
   @Output() sortChange = new EventEmitter<INglDatatableSort>();
 
   @Input() loading: boolean = false;
@@ -169,6 +165,7 @@ export class datatable implements OnChanges {
   fixLeft: any[] = [];
   fixRight: any[] = [];
   ngAfterContentInit() {
+    console.log(this.noRowsOverlay)
     this._columnsSubscription = this.columns.changes.subscribe(() => this.detector.markForCheck());
 
     if (this.scroll.x) {

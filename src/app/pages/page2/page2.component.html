@@ -24,6 +24,7 @@
 </acTable>-->
 <div >1</div>
 <div style="width:650px">
+  
 <acTable  [scroll]="scroll" [pageSizeData]="pageSizeData" [data]="data" trackByKey="rank" [loading]="loading" [(sort)]="sort" (sortChange)="onSort($event)"
   (onRowClick)="onRowClick($event)" >
   <acTable-column fixLeft [width]='200' heading="Rank" key="rank" sortable></acTable-column>
@@ -35,14 +36,6 @@
     <template columnHead><strong>Points</strong></template>
     <template columnCell let-value><div>{{value | number}}</div></template>
   </acTable-column>
-
-  <!-- Loading overlay -->
-  <template nglLoadingOverlay>
-    <div class="slds-box slds-box--small slds-theme--shade slds-text-align--center">Loading...</div>
-  </template>
-
-  <!-- No rows overlay -->
-  <template nglNoRowsOverlay>No data available in table!</template>
 </acTable>
 
 

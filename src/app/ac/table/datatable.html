@@ -1,3 +1,7 @@
+<template #NoData>没有数据</template>
+<template #Loading>
+    <div class="slds-box slds-box--small slds-theme--shade slds-text-align--center">Loading...</div>
+  </template>
 <div class="ant-table-wrapper">
     <div class="ant-table {{tableSizeClass}} {{bordered||bordered===''?'ant-table-bordered':''}} {{scroll?'ant-table-fixed-header':''}} ant-table-scroll-position-{{position}}">
         <div class="ant-table-content">
@@ -17,7 +21,7 @@
                     <tbody class="ant-table-tbody">
                         <tr *ngIf="!hasRows">
                             <td [attr.colspan]="columns.length">
-                                <template [ngTemplateOutlet]="noRowsOverlay?.templateRef"></template>
+                                <template [ngTemplateOutlet]="noRowsOverlay?.templateRef||NoData"></template>
                             </td>
                         </tr>
                         <template ngIf="hasRows">
@@ -28,7 +32,7 @@
                         </template>
                     </tbody>
                     <div class="ngl-datatable-loading slds-grid slds-grid--vertical-align-center slds-grid--align-center" *ngIf="showLoading">
-                        <template [ngTemplateOutlet]="loadingOverlay.templateRef"></template>
+                        <template [ngTemplateOutlet]="loadingOverlay.templateRef||Loading"></template>
                     </div>
 
                 </table>
@@ -57,7 +61,7 @@
                         <tbody class="ant-table-tbody">
                             <tr *ngIf="!hasRows">
                                 <td [attr.colspan]="columns.length">
-                                    <template [ngTemplateOutlet]="noRowsOverlay?.templateRef"></template>
+                                    <template [ngTemplateOutlet]="noRowsOverlay?.templateRef||NoData"></template>
                                 </td>
                             </tr>
                             <template ngIf="hasRows">
@@ -68,7 +72,7 @@
                             </template>
                         </tbody>
                         <div class="ngl-datatable-loading slds-grid slds-grid--vertical-align-center slds-grid--align-center" *ngIf="showLoading">
-                            <template [ngTemplateOutlet]="loadingOverlay.templateRef"></template>
+                            <template [ngTemplateOutlet]="loadingOverlay.templateRef||Loading"></template>
                         </div>
 
                     </table>
