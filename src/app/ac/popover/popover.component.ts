@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ElementRef, ViewChild, TemplateRef, Output, EventEmitter, ContentChildren, QueryList, ContentChild } from '@angular/core';
 import { contains, stopDefault, stopBubble } from '../util/util';
-import { acTrigger } from '../acTrigger/';
+import { Trigger } from '../trigger/';
 
 
 type Method = 'click' | 'hover' | 'focus';
@@ -12,7 +12,7 @@ type Method = 'click' | 'hover' | 'focus';
     styleUrls: ['./popover.component.scss']
 })
 export default class Popover implements OnInit {
-    @ViewChild(acTrigger) acTrigger: acTrigger;
+    @ViewChild(Trigger) Trigger: Trigger;
     @ViewChild('dom') dom: ElementRef;
     opened = false;
     @Input('title') title: any;
@@ -68,7 +68,7 @@ export default class Popover implements OnInit {
             } else {
                 this.opened = false;
                 this.showChange.emit(this.opened)
-                this.acTrigger.open = false;
+                this.Trigger.open = false;
             }
 
         }

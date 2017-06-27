@@ -9,13 +9,22 @@ type Method = 'click' | 'hover' | 'focus';
 import { Trigger } from '../trigger/';
 
 @Component({
-  selector: '[acTrigger]',
-  templateUrl: '/acTrigger.html'
+  selector: '[acTriggerClick]',
+  template: `<template #tip>
+    <div (click)="stopBubble($event)"  [nglInternalOutlet]="acTrigger">
+
+    </div>
+</template>
+
+<div  [triggerTarget]="tip" placement="bottom" [open]="opened">
+    <ng-content></ng-content>
+</div>`
 })
-export default class acTrigger implements OnInit {
-  @Input('acTrigger') acTrigger: any
+export default class acTriggerClick implements OnInit {
+  @Input('acTriggerClick') acTrigger: any
   @Input() placement = 'bottom';
   opened = false;
+
   @ViewChild(Trigger) Trigger: Trigger;
   @HostListener('click')
   handClick(e: any) {

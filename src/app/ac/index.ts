@@ -11,15 +11,15 @@ import { Popover } from './popover/';
 import { CheckBox } from './checkbox/'
 import {message} from './message/'
 
-import {acTrigger,NglPopover} from './acTrigger/'
-
+import {acTriggerClick,acTriggerHover ,acTriggerFocus} from './acTrigger/'
+import {Trigger,NglPopover} from './trigger/'
 import {Table,NglInternalOutletModule,NglDatatableColumn,NglDatatableCell,NglDatatableHeadingTemplate,NglDatatableLoadingOverlay,NglDatatableNoRowsOverlay,NglInternalDatatableHeadCell,NglInternalDatatableCell} from './table/'
 
 
 enableProdMode();
 
 let output=[
-  Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Option,acTrigger,NglPopover,
+  Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Option,Trigger,NglPopover,acTriggerClick,acTriggerHover,acTriggerFocus,
   Table,
   NglDatatableColumn,
   NglDatatableCell,

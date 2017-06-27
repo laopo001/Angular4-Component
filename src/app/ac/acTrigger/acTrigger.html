@@ -1,0 +1,9 @@
+<template #tip>
+    <div (click)="stopBubble($event)"  [nglInternalOutlet]="acTrigger">
+
+    </div>
+</template>
+
+<div  [triggerTarget]="tip" placement="bottom" [open]="opened">
+    <ng-content></ng-content>
+</div>

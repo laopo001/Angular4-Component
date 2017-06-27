@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ElementRef, ViewChild, Output, EventEmitter, ContentChildren, QueryList, ViewChildren, OnChanges } from '@angular/core';
 // import KeyCode from 'rc-util/lib/KeyCode';
-import { acTrigger } from '../acTrigger/';
+import { Trigger } from '../trigger/';
 
 import Option from './option.component';
 import { contains, stopDefault, stopBubble } from '../util/util';
@@ -14,7 +14,7 @@ type Size = 'large' | 'small' | 'default';
 export default class Select implements OnInit {
     @ViewChild('content') content: ElementRef;
     @ViewChild('inputSearch') inputSearch: ElementRef;
-    @ViewChild(acTrigger) acTrigger: acTrigger;
+    @ViewChild(Trigger) Trigger: Trigger;
     @Input() showSearch: any = null;
     @Input() className: string = '';
     @Input() placeholder: string = '';
@@ -171,7 +171,7 @@ export default class Select implements OnInit {
         } else {
             this.opened = false
             this.focused = false
-            this.acTrigger.open = false;
+            this.Trigger.open = false;
         }
     }
 

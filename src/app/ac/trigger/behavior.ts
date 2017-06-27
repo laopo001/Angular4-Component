@@ -1,5 +1,5 @@
 import {Directive, HostListener, HostBinding} from '@angular/core';
-import acTrigger from './acTrigger';
+import Trigger from './trigger';
 
 @Directive({
   selector: '[nglPopover][nglPopoverBehavior]',
@@ -8,7 +8,7 @@ export class NglPopoverBehavior {
 
   @HostBinding('attr.tabindex') tabindex = 0;
 
-  constructor(private trigger: acTrigger) {}
+  constructor(private trigger: Trigger) {}
 
   @HostListener('mouseenter')
   @HostListener('focus')

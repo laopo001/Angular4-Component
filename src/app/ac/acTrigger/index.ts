@@ -1,4 +1,6 @@
-import acTrigger from './acTrigger';
-import {NglPopover} from './popover';
-import {NglPopoverBehavior} from './behavior';
-export {acTrigger,NglPopover,NglPopoverBehavior};
+// import acTrigger from './acTrigger';
+import acTriggerClick from './acTriggerClick';
+import acTriggerHover from './acTriggerHover';
+import acTriggerFocus from './acTriggerFocus';
+
+export {acTriggerClick,acTriggerHover,acTriggerFocus};

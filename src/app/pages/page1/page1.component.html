@@ -44,6 +44,30 @@
 
   <br/>
 
+  <template #tip>
+    <ButtonGroup>
+      <Button type="primary">
+      <Icon type="left"></Icon>Go back
+    </Button>
+      <Button type="primary">
+      <Icon type="loading"></Icon>Middle
+    </Button>
+      <Button>
+      Go forward
+      <Icon type="right"></Icon>
+    </Button>
+    </ButtonGroup>
+  </template>
+  <button [acTriggerClick]="tip">   
+  acTriggerClick
+  </button>
+
+  <button [acTriggerHover]="tip">   
+  acTriggerHover
+  </button>
+  <button [acTriggerFocus]="tip">   
+  acTriggerFocus
+  </button>
 
 
 

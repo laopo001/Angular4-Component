@@ -18,12 +18,12 @@
         </div>
 </template>
 <ng-container [ngSwitch]="trigger">
-        <Trigger *ngSwitchCase="'click'"  #dom style="display:inline-block" [target]="tip" (click)="handClick($event)" [placement]="placement"
+        <div *ngSwitchCase="'click'"  #dom style="display:inline-block" [triggerTarget]="tip" (click)="handClick($event)" [placement]="placement"
                 [open]="opened">
                 <template [ngTemplateOutlet]="template"></template>
-        </Trigger>
-        <Trigger *ngSwitchCase="'hover'" #dom style="display:inline-block" [nglInteractive]="true" [target]="tip" (mouseenter)="hover($event,true)"
+        </div>
+        <div *ngSwitchCase="'hover'" #dom style="display:inline-block" [nglInteractive]="true" [triggerTarget]="tip" (mouseenter)="hover($event,true)"
                 [placement]="placement" [open]="opened">
                 <template [ngTemplateOutlet]="template"></template>
-        </Trigger>
+        </div>
 </ng-container>
