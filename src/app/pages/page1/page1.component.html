@@ -43,16 +43,9 @@
   <Pagination [total]="100" [showTotal]="showTotal" (onChange)="onChange($event)" [simple]="true"></Pagination>-->
 
   <br/>
-  <!--<Select [showSearch]="true"></Select>
-  <br/>
-  <Select [showSearch]="true" placeholder="asdfasdfazxc"></Select>
-  <br/>-->
 
-  <ng-template #tip>
-    <div class="slds-text-title--caps"><strong>{{ placement }}</strong> placement. Initially open!</div>
-    Dolor sit amet, <i>consectetur adipisicing</i> elit. Cum, quaerat?
-  </ng-template>
-  <a [target]="tip" placement="bottom" [open]="opened" (mouseenter)="opened = true" (mouseleave)="opened = false">hover</a>
+
+
 
   <acSelect placeholder="请选择" [value]="selectValue" width="220" [data]="list"  (onChange)="selectChange($event)">
      <!--<acOption  *ngFor="let item of list" [value]="item.value" [label]="item.label"></acOption>-->
@@ -72,18 +65,16 @@
   <br/>
   <br/>
   <br/>
-  <Popover trigger="click">
-    <div title>title</div>
-    <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
-    <Button content>click触发bottom</Button>
+  <Popover trigger="click" header="title" content="123asdfsadflkasjdflasjflasjfdlasjf">
+    <Button>click</Button>
   </Popover>
   <br/>
-  <Popover trigger="click" placement="top">
-    <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
-    <div content>click触发top</div>
+  <Popover trigger="click" placement="top" content="123asdfsadflkasjdflasjflasjfdlasjf">
+   
+    <div>click触发top</div>
   </Popover>
 
-  <Popover trigger="hover" placement="top">
+  <!--<Popover trigger="hover" placement="top"  content="123asdfsadflkasjdflasjflasjfdlasjf">
     <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
     <div content>hover触发top</div>
   </Popover>
@@ -92,7 +83,7 @@
   <Popover trigger="focus" placement="top">
     <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
     <Button content>focus触发top</Button>
-  </Popover>
+  </Popover>-->
 
   <!--<Trigger>
     <div show>测123123试</div>

@@ -45,7 +45,7 @@ type Method = 'click' | 'hover' | 'focus' | 'focusClick';
 
 
 @Directive({
-  selector: '[target]',
+  selector: 'Trigger[target]',
 
   exportAs: 'nglPopover',
 })
@@ -53,8 +53,8 @@ export default class acTrigger {
 
   @Input() target: string | TemplateRef<any>;
 
-  @Input() nglPopoverHeader: string;
-  @Input() nglPopoverFooter: string;
+  // @Input() nglPopoverHeader: string;
+  // @Input() nglPopoverFooter: string;
 
   @Input() set placement(placement: Direction) {
     this._placement = placement || 'top';
@@ -126,6 +126,10 @@ export default class acTrigger {
     });
   }
 
+  // ngOnChanges(changes: any) {
+  //     console.log(123)
+  // }
+
   ngOnDestroy() {
     this.destroy();
   }
@@ -193,19 +197,19 @@ export default class acTrigger {
 
     this.componentRef = this.viewContainer.createComponent(this.popoverFactory, 0, this.injector, [nodes]);
     this.popover = this.componentRef.instance;
-    this.popover.header = this.nglPopoverHeader;
-    this.popover.footer = this.nglPopoverFooter;
+    // this.popover.header = this.nglPopoverHeader;
+    // this.popover.footer = this.nglPopoverFooter;
     this.popover.afterViewInit.take(1).subscribe(() =>
-        //修改成异步
-        this.position(true)
+      //修改成异步
+      this.position(true)
     );
 
     if (this.nglInteractive) {
       this.interactiveSubscription = this.popover.onInteraction.subscribe((enter: boolean) => this.open = enter);
     }
-    
+
     this.setTether(true);
-    
+
     // To avoid unexpected behavior when template "lives" inside an OnPush
     // component, explicitlly request change detection to run on creation.
     this.popover.changeDetector.markForCheck();

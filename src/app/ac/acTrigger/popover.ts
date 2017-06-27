@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef, Renderer, HostListener, HostBinding} from '@angular/core';
-import { toBoolean, uniqueId} from '../util/util';
+import {replaceClass, toBoolean, uniqueId} from '../util/util';
 
 export type Direction = 'top' | 'right' | 'bottom' | 'left';
 
@@ -20,16 +20,16 @@ export class NglPopover {
   @Input() footer: string;
 
   @Input() set theme(theme: any) {
-    //replaceClass(this, `slds-theme--${this._theme}`, theme ? `slds-theme--${theme}` : '');
+    replaceClass(this, `slds-theme--${this._theme}`, theme ? `slds-theme--${theme}` : '');
     this._theme = theme;
   }
 
   @Input() set nglTooltip(isTooltip: any) {
-    this.renderer.setElementClass(this.element.nativeElement, 'slds-popover--tooltip', toBoolean(isTooltip));
+   // this.renderer.setElementClass(this.element.nativeElement, 'slds-popover--tooltip', toBoolean(isTooltip));
   }
 
   set nubbin(direction: Direction) {
- //   replaceClass(this, `slds-nubbin--${this._nubbin}`, direction ? `slds-nubbin--${direction}` : '');
+   // replaceClass(this, `slds-nubbin--${this._nubbin}`, direction ? `slds-nubbin--${direction}` : '');
     this._nubbin = direction;
   }
 
@@ -44,19 +44,23 @@ export class NglPopover {
   private _theme: string;
 
   constructor(public element: ElementRef, public renderer: Renderer, public changeDetector: ChangeDetectorRef) {
-  //  this.renderer.setElementClass(this.element.nativeElement, 'slds-popover', true);
+   // this.renderer.setElementClass(this.element.nativeElement, 'slds-popover', true);
 
     // Prevent position changes of "close by" elements
     this.renderer.setElementStyle(this.element.nativeElement, 'position', 'absolute');
+    setTimeout(()=>{
+       this.renderer.setElementStyle(this.element.nativeElement, 'visibility', 'visible');
+    })
 
-  //  this.renderer.setElementAttribute(this.element.nativeElement, 'aria-describedby', this.uid);
+    this.renderer.setElementAttribute(this.element.nativeElement, 'aria-describedby', this.uid);
   }
 
   ngAfterContentInit() {
+
     this.afterViewInit.emit();
-    setTimeout(()=>{
-      this.show='visible';
-    })
+    // setTimeout(()=>{
+    //   this.show='visible';
+    // })
   }
 
   @HostBinding('style.z-index') z=10001;

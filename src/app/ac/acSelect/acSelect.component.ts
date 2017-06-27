@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ElementRef, ViewChild, Output, EventEmitter, ContentChildren, QueryList, ViewChildren, OnChanges } from '@angular/core';
 // import KeyCode from 'rc-util/lib/KeyCode';
+import { acTrigger } from '../acTrigger/';
 
 import Option from './option.component';
 import { contains, stopDefault, stopBubble } from '../util/util';
@@ -13,13 +14,13 @@ type Size = 'large' | 'small' | 'default';
 export default class Select implements OnInit {
     @ViewChild('content') content: ElementRef;
     @ViewChild('inputSearch') inputSearch: ElementRef;
-
+    @ViewChild(acTrigger) acTrigger: acTrigger;
     @Input() showSearch: any = null;
     @Input() className: string = '';
     @Input() placeholder: string = '';
     @Input() width: any = '';
     @Input() data: any[] = [];
-    _data:any[]=[];
+    _data: any[] = [];
     @Input() size: Size = 'default'
     get sizeClass() {
         switch (this.size) {
@@ -43,7 +44,7 @@ export default class Select implements OnInit {
     ngOnInit() {
         //  this.width = parseInt(this.width);
     }
-    onClick() {
+    onClick(e: any) {
         this.opened = !this.opened;
         this.focused = !this.focused;
 
@@ -53,14 +54,14 @@ export default class Select implements OnInit {
             })
         }
     }
-    _searchValue="";
-    get searchValue(){
+    _searchValue = "";
+    get searchValue() {
         return this._searchValue;
     }
-    set searchValue(value:any){
-       this._searchValue=value;
-        this._data=this.data.filter((x)=>{
-            if(x.label.toLowerCase().indexOf(this._searchValue.toLowerCase())>-1){
+    set searchValue(value: any) {
+        this._searchValue = value;
+        this._data = this.data.filter((x) => {
+            if (x.label.toLowerCase().indexOf(this._searchValue.toLowerCase()) > -1) {
                 return true;
             }
         })
@@ -133,7 +134,6 @@ export default class Select implements OnInit {
 
     }
     ngAfterContentInit() {
-
         this._data.map((x) => {
             if (x.value == this.value) {
                 x.selected = true;
@@ -164,12 +164,14 @@ export default class Select implements OnInit {
 
     }
     domClick(e: any) {
+        if (this.opened == false) { return; }
         var target = e.target || e.srcElement;
         if (contains(this.content.nativeElement, target)) {
 
         } else {
             this.opened = false
             this.focused = false
+            this.acTrigger.open = false;
         }
     }
 
@@ -179,5 +181,8 @@ export default class Select implements OnInit {
             this['_data'] = changes['data'].currentValue;
         }
         this.ngAfterContentInit()
+    }
+    ngOnDestroy() {
+        this.opened = false;
     }
 }

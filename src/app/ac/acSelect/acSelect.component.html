@@ -1,4 +1,4 @@
-<ng-template #tip>
+<template #tip>
     <div class="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" [ngStyle]="tipStyle">
         <div style="overflow: auto;">
             <ul class="ant-select-dropdown-menu ant-select-dropdown-menu-vertical  ant-select-dropdown-menu-root" role="menu">
@@ -7,9 +7,9 @@
             </ul>
         </div>
     </div>
-</ng-template>
+</template>
 
-<div #content [target]="tip" (click)="onClick($event)" placement="bottom" [open]="opened" [class]="contentClass" [ngStyle]="contentStyle">
+<Trigger #content [target]="tip" (click)="onClick($event)" placement="bottom" [open]="opened" [class]="contentClass" [ngStyle]="contentStyle">
     <div class="ant-select-selection ant-select-selection--single" [attr.aria-expanded]="opened?'true':'false'">
         <div class="ant-select-selection__rendered">
             <div *ngIf="value==null&&searchValue==''" unselectable="unselectable" class="ant-select-selection__placeholder" style="display: block; user-select: none;">{{placeholder}}</div>
@@ -18,13 +18,6 @@
                 <div class="ant-select-search__field__wrap"><input #inputSearch [(ngModel)]="searchValue"  (click)="inputSearchClick($event)" class="ant-select-search__field"><span class="ant-select-search__field__mirror">&nbsp;</span></div>
             </div>
         </div>
-        <!--<div class="ant-select-selection__rendered">
-            <div unselectable="unselectable" class="ant-select-selection__placeholder" style="display: none; user-select: none;">{{placeholder}}</div>
-            <div class="ant-select-selection-selected-value" title="{{selectLabel}}" style="display: block; opacity: 1;">{{selectLabel}}</div>
-            <div class="ant-select-search ant-select-search--inline" style="display: none;">
-                <div class="ant-select-search__field__wrap"><input value="" class="ant-select-search__field"><span class="ant-select-search__field__mirror">&nbsp;</span></div>
-            </div>
-        </div>-->
         <span class="ant-select-arrow" unselectable="unselectable" style="user-select: none;"><b></b></span>
     </div>
-</div>
+</Trigger>

@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
-// import * as Tether from 'tether';
+import { Component, Input, OnInit, ElementRef, ViewChild, TemplateRef, Output, EventEmitter, ContentChildren, QueryList } from '@angular/core';
+import { contains, stopDefault, stopBubble } from '../util/util';
+import { acTrigger } from '../acTrigger/';
 var Tether = require('tether');
 type Direction = 'top' | 'right' | 'bottom' | 'left';
 const attachments = <{ [key: string]: any }>{
@@ -36,17 +37,6 @@ function placement(direction: Direction) {
 }
 type Method = 'click' | 'hover' | 'focus';
 
-var contains = function (root: any, el: any) {
-    if (root.compareDocumentPosition)
-        return root === el || !!(root.compareDocumentPosition(el) & 16);
-    if (root.contains && el.nodeType === 1) {
-        return root.contains(el) && root !== el;
-    }
-    while ((el = el.parentNode))
-        if (el === root) return true;
-    return false;
-}
-
 
 @Component({
     selector: 'Popover',
@@ -54,30 +44,34 @@ var contains = function (root: any, el: any) {
     styleUrls: ['./popover.component.scss']
 })
 export default class Popover implements OnInit {
-    _show: boolean=false;
-    @Input('show') show:any;
-    // set show(x: any) {
-    //     this._show = x;
-    // }
-    // get show() {
-    //     return this._show;
-    // }
+    @ViewChild(acTrigger) acTrigger: acTrigger;
+    @ViewChild('dom') dom: ElementRef;
+    opened = false;
+    @Input() header: any;
+    @Input() content: any;
+    stopBubble(e: any) {
+        stopBubble(e);
+    }
+
+    _show: boolean = false;
+    @Input('show') show: any;
     @Output() showChange = new EventEmitter();
 
     //show: boolean = false;
     private tether = Tether;
     @Input() placement: Direction = 'bottom';
-    placementClass = "ant-popover ant-popover-placement-bottom"
-    @ViewChild('showDom') showDom: ElementRef;
+  //  placementClass = "ant-popover ant-popover-placement-bottom"
+    get placementClass(){
+        return `ant-popover ant-popover-placement-${this.placement}`
+    }
+    @ViewChild('tip') showDom: ElementRef;
     @Input() trigger: Method = 'click';
     @Input() style: any;
+
     @Input() class: string;
     showStyle = { position: 'fixed', top: '0px', left: '0px', visibility: this.show ? 'visible' : 'hidden' };
     showTitle = false;
 
-    dom: any = {
-        content: null
-    }
 
     constructor(private myElement: ElementRef) {
 
@@ -85,124 +79,88 @@ export default class Popover implements OnInit {
     setShowStyle() {
         this.showStyle = { position: 'fixed', top: '0px', left: '0px', visibility: this.show ? 'visible' : 'hidden' };
     }
-    private setTether() {
-        if (!this.tether) return;
 
-        const { attachment, targetAttachment, offset } = placement(this.placement);
-        const options = {
-            element: this.showDom.nativeElement,
-            target: this.dom.content,
-            attachment,
-            targetAttachment,
-            offset,
-        };
-        setTimeout(() => {
-            this.tether = new Tether(options);
-        })
-
-
-    }
 
     ngOnInit() {
-
-        this.showTitle = !!this.myElement.nativeElement.querySelector('[title]');
-        this.dom.content = this.myElement.nativeElement.querySelector('[content]');
-        if (this.dom.content == null) { console.warn('content没定义') }
-        this.placementClass = `ant-popover ant-popover-placement-${this.placement}`
-
-        this.setShowStyle();
-        if (this.myElement.nativeElement.querySelector('[show]') != null) {
-            this.setTether();
-            switch (this.trigger) {
-                case 'click': this.onClick(); break;
-                case 'hover': this.onHover(); break;
-                case 'focus': this.onFocus(); break;
-            }
+     //   this.placementClass = `ant-popover ant-popover-placement-${this.placement}`
+        switch (this.trigger) {
+            case 'click': this.onClick(); break;
+            case 'hover': this.onHover(); break;
+            case 'focus': this.onFocus(); break;
         }
 
+    }
 
+    handClick(e: any) {
+        this.opened = !this.opened;
+        this.showChange.emit(this.opened)
     }
     onClick() {
+        document.body.addEventListener('click', this.close.bind(this), false)
+    }
+    close(e: any) {
+        if (this.opened == false) { return; }
+        var target = e.target || e.srcElement;
+        if (contains(this.dom.nativeElement, target)) {
 
-        var content = this.dom.content;
 
-
-        document.body.addEventListener('click', (e) => {
-            var target = e.target || e.srcElement;
-
-            if (contains(content, target)) {
-
-                if (this.show) {
-                    this.show = false;
-                    this.setShowStyle();
-                    this.showChange.emit(this.show)
-                } else {
-                    this.show = true;
-                    this.setShowStyle();
-                    this.setTether();
-                    this.showChange.emit(this.show)
-                }
-            } else {
-                if (contains(this.showDom.nativeElement, target)) {
-
-                } else {
-                    this.show = false;
-                    this.setShowStyle();
-                    this.showChange.emit(this.show)
-                }
-            }
-
-        }, false)
+        } else {
+            this.opened = false;
+            this.showChange.emit(this.opened)
+            this.acTrigger.open = false;
+            // if (contains(this.showDom.nativeElement, target)) {
+            // } else {
+            //     this.show = false;
+            //     this.setShowStyle();
+            //     this.showChange.emit(this.show)
+            // }
+        }
 
     }
     onHover() {
-        var content = this.dom.content;
-        document.body.addEventListener('mouseover', (e) => {
-            var target = e.target || e.srcElement;
+        // var content = this.dom.content;
+        // document.body.addEventListener('mouseover', (e) => {
+        //     var target = e.target || e.srcElement;
 
-            if (contains(content, target)) {
+        //     if (contains(content, target)) {
 
-                this.show = true;
-                this.setShowStyle();
-                this.setTether();
-                this.showChange.emit(this.show)
-            } else {
-                if (contains(this.showDom.nativeElement, target)) {
+        //         this.show = true;
+        //         this.setShowStyle();
+        //         this.setTether();
+        //         this.showChange.emit(this.show)
+        //     } else {
+        //         if (contains(this.showDom.nativeElement, target)) {
 
-                } else {
-                    this.show = false;
-                    this.setShowStyle();
-                    this.showChange.emit(this.show)
-                }
-            }
+        //         } else {
+        //             this.show = false;
+        //             this.setShowStyle();
+        //             this.showChange.emit(this.show)
+        //         }
+        //     }
 
-        }, false)
+        // }, false)
     }
     onFocus() {
-        var content = this.dom.content;
-        content.addEventListener('focus', () => {
-            this.show = true;
-            this.setShowStyle();
-            this.setTether();
-            this.showChange.emit(this.show)
-        }, false)
-        content.addEventListener('blur', () => {
-            this.show = false;
-            this.setShowStyle();
-            this.showChange.emit(this.show)
-        }, false)
+        // var content = this.dom.content;
+        // content.addEventListener('focus', () => {
+        //     this.show = true;
+        //     this.setShowStyle();
+        //     this.setTether();
+        //     this.showChange.emit(this.show)
+        // }, false)
+        // content.addEventListener('blur', () => {
+        //     this.show = false;
+        //     this.setShowStyle();
+        //     this.showChange.emit(this.show)
+        // }, false)
     }
     ngOnChanges(changes: any) {
 
         if ('show' in changes) {
-            this.show = changes.show.currentValue;
-            this.setShowStyle();
+            this.opened = changes.show.currentValue;
         }
     }
     ngOnDestroy() {
-
-        this.showDom.nativeElement.style.display = "none"
-        this.show = false;
-        this.setShowStyle();
+        this.opened = false;
     }
 }

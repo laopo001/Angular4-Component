@@ -1,19 +1,24 @@
-<div #showDom [ngStyle]="showStyle" [class]="placementClass" >
-        <div class="ant-popover-content"   >
-                <div class="ant-popover-arrow"></div>
-                <div class="ant-popover-inner">
-                        <div >
-                                <div [style.display]="showTitle? 'block' : 'none'"  class="ant-popover-title"><ng-content select="[title]"></ng-content></div>
-                                <div class="ant-popover-inner-content">
-                                        <div >
-                                               <ng-content select="[show]" ></ng-content>
+<template #tip>
+        <div (click)="stopBubble($event)" style="position: relative;" [class]="placementClass">
+                <div class="ant-popover-content">
+                        <div class="ant-popover-arrow"></div>
+                        <div class="ant-popover-inner">
+                                <div>
+                                        <div [style.display]="header? 'block' : 'none'" class="ant-popover-title" [nglInternalOutlet]="header">
+                                            
+                                        </div>
+                                        <div class="ant-popover-inner-content" >
+                                                <div [nglInternalOutlet]="content">
+                                                      
+                                                </div>
                                         </div>
                                 </div>
                         </div>
                 </div>
+
         </div>
-        
-</div>
+</template>
 
-
-<ng-content select="[content]"></ng-content>
+<Trigger #dom style="display:inline-block" [target]="tip" (click)="handClick($event)" [placement]="placement" [open]="opened">
+        <ng-content></ng-content>
+</Trigger>
