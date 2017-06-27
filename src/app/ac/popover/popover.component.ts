@@ -1,40 +1,8 @@
 import { Component, Input, OnInit, ElementRef, ViewChild, TemplateRef, Output, EventEmitter, ContentChildren, QueryList } from '@angular/core';
 import { contains, stopDefault, stopBubble } from '../util/util';
 import { acTrigger } from '../acTrigger/';
-var Tether = require('tether');
-type Direction = 'top' | 'right' | 'bottom' | 'left';
-const attachments = <{ [key: string]: any }>{
-    top: { attachment: 'bottom center', offset: '0 0', opposite: 'bottom' },
-    left: { attachment: 'middle right', offset: '0 0', opposite: 'right' },
-    right: { attachment: 'middle left', offset: '0 0', opposite: 'left' },
-    bottom: { attachment: 'top center', offset: '0 0', opposite: 'top' },
-
-    bottomRight: { attachment: 'top right', offset: '0 0', opposite: 'topRight' },
-    topRight: { attachment: 'bottom right', offset: '0 0', opposite: 'bottomRight' },
-
-    bottomLeft: { attachment: 'top left', offset: '0 0', opposite: 'topLeft' },
-    topLeft: { attachment: 'bottom left', offset: '0 0', opposite: 'bottomLeft' },
-
-    rightBottom: { attachment: 'left bottom', offset: '0 0', opposite: 'leftBottom' },
-    leftBottom: { attachment: 'right bottom', offset: '0 0', opposite: 'rightBottom' },
-
-    rightTop: { attachment: 'left top', offset: '0 0', opposite: 'leftTop' },
-    leftTop: { attachment: 'right top', offset: '0 0', opposite: 'rightTop' },
 
 
-};
-
-const PLACEMENTS = Object.keys(attachments).reduce((placements: any, direction: Direction) => {
-    const { attachment, offset, opposite } = attachments[direction];
-    const targetAttachment = attachments[opposite].attachment;
-
-    placements[direction] = { opposite, attachment, targetAttachment, offset };
-    return placements;
-}, {});
-
-function placement(direction: Direction) {
-    return PLACEMENTS[direction];
-}
 type Method = 'click' | 'hover' | 'focus';
 
 
@@ -47,20 +15,18 @@ export default class Popover implements OnInit {
     @ViewChild(acTrigger) acTrigger: acTrigger;
     @ViewChild('dom') dom: ElementRef;
     opened = false;
-    @Input() header: any;
+    @Input('title') title: any;
     @Input() content: any;
     stopBubble(e: any) {
         stopBubble(e);
     }
 
     _show: boolean = false;
-    @Input('show') show: any;
+    @Input('show') show: any=false;
     @Output() showChange = new EventEmitter();
 
-    //show: boolean = false;
-    private tether = Tether;
-    @Input() placement: Direction = 'bottom';
-  //  placementClass = "ant-popover ant-popover-placement-bottom"
+    @Input() placement = 'bottom';
+
     get placementClass(){
         return `ant-popover ant-popover-placement-${this.placement}`
     }
