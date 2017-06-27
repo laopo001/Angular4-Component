@@ -34,7 +34,7 @@
     </Button>
   </ButtonGroup>
   <br/>
-<!--<Pagination showQuickJumper [total]="100" [showTotal]="showTotal"  [pageSizeData]="pageSizeData" [(current)]="current" [(pageSize)]="pageSize" ></Pagination>
+  <!--<Pagination showQuickJumper [total]="100" [showTotal]="showTotal"  [pageSizeData]="pageSizeData" [(current)]="current" [(pageSize)]="pageSize" ></Pagination>
 <Pagination [total]="100" [showTotal]="showTotal"  [(current)]="current" ></Pagination>
 
 <button (click)="queding()">cs</button>
@@ -47,17 +47,17 @@
 
 
 
-  <acSelect placeholder="请选择" [value]="selectValue" width="220" [data]="list"  (onChange)="selectChange($event)">
-     <!--<acOption  *ngFor="let item of list" [value]="item.value" [label]="item.label"></acOption>-->
+  <acSelect placeholder="请选择" [value]="selectValue" width="220" [data]="list" (onChange)="selectChange($event)">
+    <!--<acOption  *ngFor="let item of list" [value]="item.value" [label]="item.label"></acOption>-->
 
   </acSelect>
   <br/>
-  <acSelect placeholder="请选择" width="120" size="small" [value]="selectValue"   (onChange)="selectChange($event)">
+  <acSelect placeholder="请选择" width="120" size="small" [value]="selectValue" (onChange)="selectChange($event)">
     <acOption value="0" label="A"></acOption>
     <acOption value="1" label="B"></acOption>
     <acOption value="2" label="C"></acOption>
   </acSelect>
-    <acSelect placeholder="请选择" width="120" showSearch  [value]="selectValue"  [data]="list" (onChange)="selectChange($event)">
+  <acSelect placeholder="请选择" width="120" showSearch [value]="selectValue" [data]="list" (onChange)="selectChange($event)">
 
   </acSelect>
   <br/>
@@ -66,14 +66,22 @@
   <br/>
   <br/>
   <Popover trigger="click" title="title" content="123asdfsadflkasjdflasjflasjfdlasjf">
-    <Button>click</Button>
+    <template>
+      <Button>click</Button>
+    </template>
   </Popover>
   <br/>
   <Popover trigger="click" placement="top" content="123asdfsadflkasjdflasjflasjfdlasjf">
-   
-    <div>click触发top</div>
+    <template>
+      <div>click触发top</div>
+    </template>
   </Popover>
-
+  <Popover trigger="hover" title="title" content="123asdfsadflkasjdflasjflasjfdlasjf">
+    <template>
+      <Button>hover</Button>
+    </template>
+  </Popover>
+  <br/>
   <!--<Popover trigger="hover" placement="top"  content="123asdfsadflkasjdflasjflasjfdlasjf">
     <div show>123asdfsadflkasjdflasjflasjfdlasjf;aplacementja;sfjda;sfdjasd f</div>
     <div content>hover触发top</div>

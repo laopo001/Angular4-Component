@@ -58,9 +58,6 @@ export class NglPopover {
   ngAfterContentInit() {
 
     this.afterViewInit.emit();
-    // setTimeout(()=>{
-    //   this.show='visible';
-    // })
   }
 
   @HostBinding('style.z-index') z=10001;
