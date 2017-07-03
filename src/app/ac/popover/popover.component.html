@@ -1,5 +1,7 @@
+
+
 <template #tip>
-        <div (click)="stopBubble($event)" style="position: relative;" [class]="placementClass">
+        <div style="position: relative;" [class]="placementClass">
                 <div class="ant-popover-content">
                         <div class="ant-popover-arrow"></div>
                         <div class="ant-popover-inner">
@@ -15,15 +17,10 @@
                                 </div>
                         </div>
                 </div>
+
         </div>
 </template>
-<ng-container [ngSwitch]="trigger">
-        <div *ngSwitchCase="'click'"  #dom style="display:inline-block" [triggerTarget]="tip" (click)="handClick($event)" [placement]="placement"
-                [open]="opened">
-                <template [ngTemplateOutlet]="template"></template>
-        </div>
-        <div *ngSwitchCase="'hover'" #dom style="display:inline-block" [nglInteractive]="true" [triggerTarget]="tip" (mouseenter)="hover($event,true)"
-                [placement]="placement" [open]="opened">
-                <template [ngTemplateOutlet]="template"></template>
-        </div>
-</ng-container>
+
+<div [acTrigger]="tip" [trigger]="_trigger" [placement]="placement" [focusClick]="focusClick" [(opened)]="open" style="display: inline-block;">
+        <ng-content></ng-content>
+</div>

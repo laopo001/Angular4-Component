@@ -11,6 +11,7 @@ import {
 
 import Page1Component from './pages/page1/page1.component'
 import Page2Component from './pages/page2/page2.component'
+import Page3Component from './pages/page3/page3.component'
 import {
     AppComponent
 } from './app.component';
@@ -24,6 +25,9 @@ export const ROUTES: Routes = [{
 },{
     path: 'page2',
     component: Page2Component
+},{
+    path: 'page3',
+    component: Page3Component
 },{
     path: '**',
     redirectTo: '/page1',
@@ -40,7 +44,7 @@ let R=RouterModule.forRoot(ROUTES, {
     BrowserModule,FormsModule,acModule,R
   ],
   declarations: [
-    AppComponent,Page1Component,Page2Component
+    AppComponent,Page1Component,Page2Component,Page3Component
   ],
   
   bootstrap: [ AppComponent ]

@@ -11,20 +11,22 @@ import { Popover } from './popover/';
 import { CheckBox } from './checkbox/'
 import {message} from './message/'
 
-import {acTriggerClick,acTriggerHover ,acTriggerFocus} from './acTrigger/'
+import {acTrigger,acTriggerClick,acTriggerHover ,acTriggerFocus} from './acTrigger/'
 import {Trigger,NglPopover} from './trigger/'
 import {Table,NglInternalOutletModule,NglDatatableColumn,NglDatatableCell,NglDatatableHeadingTemplate,NglDatatableLoadingOverlay,NglDatatableNoRowsOverlay,NglInternalDatatableHeadCell,NglInternalDatatableCell} from './table/'
 
+import SpinComponent from './spin/'
 
 enableProdMode();
 
 let output=[
-  Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Option,Trigger,NglPopover,acTriggerClick,acTriggerHover,acTriggerFocus,
+  Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Option,Trigger,NglPopover,acTriggerClick,acTriggerHover,acTriggerFocus,acTrigger,
   Table,
   NglDatatableColumn,
   NglDatatableCell,
   NglDatatableHeadingTemplate,
   NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay,
+  SpinComponent,
 ]
 
 @NgModule({

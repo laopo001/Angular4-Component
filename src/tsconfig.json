@@ -26,5 +26,6 @@
       "typings/main",
       "typings/main.d.ts"
     ]
+    // noImplicitAny:true
   }
 }

@@ -1,8 +1,8 @@
 //create time:Tue Jun 13 2017 13:42:10 GMT+0800 (中国标准时间)
-import { Component, Input, ChangeDetectorRef, ContentChild, SimpleChanges, ContentChildren, OnInit, OnChanges, QueryList, ElementRef, Renderer, HostBinding, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, ContentChild, SimpleChanges, ContentChildren, OnInit, OnChanges, QueryList, TemplateRef, ElementRef, Renderer, HostBinding, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NglDatatableColumn } from './column';
-import { NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay } from './overlays';
+import {  NglDatatableNoRowsOverlay } from './overlays';
 type Size = 'large' | 'small' | 'middle';
 @Component({
   selector: 'acTable',
@@ -15,6 +15,9 @@ type Size = 'large' | 'small' | 'middle';
   `],
 })
 export class datatable implements OnChanges {
+  @Input() header: string | TemplateRef<any>;
+  @Input() footer: string | TemplateRef<any>;
+
   @Input() size: Size = 'large'
   get tableSizeClass() {
     switch (this.size) {
@@ -51,12 +54,18 @@ export class datatable implements OnChanges {
     size: 'default',
     showQuickJumper: false
   };
-  @Input() pageSizeData: any[] = [];
+  @Input()
+  set pageSizeData(x:any) {
+    if (typeof this.pagination == 'object') {
+      this.pagination.pageSizeData = x;
+    }
+
+  }
   _data: any[] = [];
   Init() {
     this.data = this.data == null ? [] : this.data;
     if (this.pagination) {
-      this.pagination.pageSizeData = this.pageSizeData;
+
 
       if (this.pagination.pageSizeData.length > 0) {
         this.pageSize = this.pagination.pageSizeData[0]
@@ -91,20 +100,16 @@ export class datatable implements OnChanges {
     return { maxHeight: this.scroll.y + 'px', overflowY: 'scroll', overflowX: 'auto' }
   }
 
-  @Input() sort: INglDatatableSort={key:'',order:'asc'};
+  @Input() sort: INglDatatableSort = { key: '', order: 'asc' };
   @Output() sortChange = new EventEmitter<INglDatatableSort>();
 
   @Input() loading: boolean = false;
-  @ContentChild(NglDatatableLoadingOverlay) loadingOverlay: NglDatatableLoadingOverlay;
+
   @ViewChild('scrollTpl') scrollTpl: ElementRef;
   @ViewChild('scrollHeaderTpl') scrollHeaderTpl: ElementRef;
   @ViewChild('LeftTpl') LeftTpl: ElementRef;
   @ViewChild('RightTpl') RightTpl: ElementRef;
 
-
-  get showLoading() {
-    return this.loading && this.loadingOverlay;
-  }
   get innerStyle() {
 
     return { maxHeight: this.scroll.y + 'px', overflowY: 'scroll' }
@@ -165,16 +170,17 @@ export class datatable implements OnChanges {
   fixLeft: any[] = [];
   fixRight: any[] = [];
   ngAfterContentInit() {
-    console.log(this.noRowsOverlay)
     this._columnsSubscription = this.columns.changes.subscribe(() => this.detector.markForCheck());
 
     if (this.scroll.x) {
       let i = 0;
       let maxWidth = 0;
-      this.columns.forEach((x) => {
+      let tempColumn: NglDatatableColumn;
+      this.columns.forEach((x, index) => {
         if (x.width == null) {
           if (i == 0) {
             i++
+            tempColumn = x;
           } else {
             i++;
             x.width = 100;
@@ -189,15 +195,19 @@ export class datatable implements OnChanges {
       if (this.scroll.x < maxWidth) {
         if (i == 0) {
           this.scroll.x = maxWidth;
-        } 
-        // else {
-        //   this.scroll.x = maxWidth + 100;
-        // }
+        }
+        console.warn(`scroll.x必须大于width之和`)
+
       }
       if (this.scroll.x > maxWidth) {
         if (i == 0) {
           this.scroll.x = maxWidth;
-        } 
+        }
+        if (i > 0) {
+
+          tempColumn.width = this.scroll.x - maxWidth
+
+        }
       }
     }
 

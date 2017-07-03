@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, TemplateRef, Output, EventEmitter, ContentChildren, QueryList, ContentChild } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild, TemplateRef, Output, EventEmitter, ContentChildren, QueryList } from '@angular/core';
 import { contains, stopDefault, stopBubble } from '../util/util';
 import { Trigger } from '../trigger/';
 
-
+type Direction = 'top' | 'right' | 'bottom' | 'left' |
+    'bottomRight' | 'topRight' | 'bottomLeft' | 'topLeft' |
+    'rightBottom' | 'leftBottom' | 'rightTop' | 'leftTop';
 type Method = 'click' | 'hover' | 'focus';
-
 
 @Component({
     selector: 'Popover',
@@ -14,102 +15,40 @@ type Method = 'click' | 'hover' | 'focus';
 export default class Popover implements OnInit {
     @ViewChild(Trigger) Trigger: Trigger;
     @ViewChild('dom') dom: ElementRef;
-    opened = false;
-    @Input('title') title: any;
+    @Input() title: any;
     @Input() content: any;
-    stopBubble(e: any) {
-        stopBubble(e);
+    @Input() opened = false;
+    @Output() openedChange = new EventEmitter<boolean>();
+
+    set open(x) {
+        this.opened = x;
+        this.openedChange.emit(this.opened)
+    };
+    get open() {
+        return this.opened
     }
-    @ContentChild(TemplateRef)
-    private template: TemplateRef<any>;
-
-
-    _show: boolean = false;
-    @Input('show') show: any = false;
-    @Output() showChange = new EventEmitter();
-    @ViewChild('tip') tip: TemplateRef<any>;
-    @Input() placement = 'bottom';
-
+    @Input() placement: Direction = 'bottom';
     get placementClass() {
         return `ant-popover ant-popover-placement-${this.placement}`
     }
-    @Input() trigger: Method = 'click';
-    @Input() className: string;
-    constructor(private myElement: ElementRef) {
-
+    focusClick=false;
+    _trigger='click';
+    @Input()
+    set trigger(x:any){
+        if(x=='click'){this._trigger=x;this.focusClick=false;};
+        if(x=='hover'){this._trigger=x;this.focusClick=false;};
+        if(x=='focus'){this._trigger='click';this.focusClick=true;};
     }
+
+    @Input() className: string;
+
 
     ngOnInit() {
-
-        switch (this.trigger) {
-            case 'click': this.onClick(); break;
-            case 'hover': this.onHover(); break;
-            case 'focus': this.onFocus(); break;
+        if(this.trigger=='focus'){
+            this.trigger='click'
         }
     }
 
-    handClick(e: any) {
-        this.opened = !this.opened;
-        this.showChange.emit(this.opened)
-    }
-    onClick() {
-        document.body.addEventListener('click', this.close.bind(this), false)
-    }
-    close(e: any) {
-
-        if (this.opened == false) { return; }
-        var target = e.target || e.srcElement;
-        if (contains(this.dom.nativeElement, target)) {
-
-
-        } else {
-            if (contains(this.tip.elementRef.nativeElement, target)) {
-
-            } else {
-                this.opened = false;
-                this.showChange.emit(this.opened)
-                this.Trigger.open = false;
-            }
-
-        }
-    }
-    hover(e: any, b: boolean) {
-
-        if (b) {
-            this.opened = true;
-            this.showChange.emit(this.opened)
-        } else {
-
-            this.opened = false;
-            this.showChange.emit(this.opened)
-
-        }
-
-    }
-    onHover() {
-
-        //   document.body.addEventListener('mouseover',this.close.bind(this) , false)
-    }
-    onFocus() {
-        // var content = this.dom.content;
-        // content.addEventListener('focus', () => {
-        //     this.show = true;
-        //     this.setShowStyle();
-        //     this.setTether();
-        //     this.showChange.emit(this.show)
-        // }, false)
-        // content.addEventListener('blur', () => {
-        //     this.show = false;
-        //     this.setShowStyle();
-        //     this.showChange.emit(this.show)
-        // }, false)
-    }
-    ngOnChanges(changes: any) {
-
-        if ('show' in changes) {
-            this.opened = changes.show.currentValue;
-        }
-    }
     ngOnDestroy() {
         this.opened = false;
     }

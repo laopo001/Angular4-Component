@@ -15,11 +15,26 @@ import { Trigger } from '../trigger/';
 export default class acTrigger implements OnInit {
   @Input('acTrigger') acTrigger: any
   @Input() placement = 'bottom';
-  opened = false;
+  @Input() trigger: Method = 'click';
+  _focus = false;
+  @Input()
+  set focusClick(x) {
+    this._focus = toBoolean(x);
+  }
+  get focusClick() {
+    return this._focus;
+  }
+  @Input() opened = false;
+  @Output() openedChange = new EventEmitter<boolean>();
+
   @ViewChild(Trigger) Trigger: Trigger;
   @HostListener('click')
   handClick(e: any) {
-    this.opened = !this.opened;
+    if (this.trigger == 'click') {
+      //stopBubble(e);
+      this.opened = !this.opened;
+      this.openedChange.emit(this.opened)
+    }
   }
   constructor(private myElement: ElementRef) {
 
@@ -31,14 +46,74 @@ export default class acTrigger implements OnInit {
 
 
     } else {
-        this.opened = false;
-        this.Trigger.open = false;
+      this.opened = false;
+      this.Trigger.open = false;
+      this.openedChange.emit(this.opened)
     }
   }
   ngOnInit() {
-    document.body.addEventListener('click', this.close.bind(this), false)
-  } 
+    if (this.trigger == 'click') {
+      document.body.addEventListener('click', this.close.bind(this), false)
+    }
+
+
+  }
+
   stopBubble(e: any) {
-    stopBubble(e);
+    if (this.trigger == 'click') {
+      if (this.focusClick) {
+        return;
+      }
+      stopBubble(e);
+    }
+  }
+  //focus
+  @HostListener('focus')
+  focus() {
+    if (this.trigger == 'focus') {
+      this.opened = true;
+    }
+  }
+
+  @HostListener('blur')
+  blur() {
+    if (this.trigger == 'focus') {
+      this.opened = false;
+    }
+  }
+  //hover
+  timer: any = null;
+  delay = 200;
+  mouseenter() {
+    if (this.trigger == 'hover') {
+      if (this.timer != null) { clearTimeout(this.timer); }
+    }
+  }
+  mouseleave() {
+    if (this.trigger == 'hover') {
+      this.opened = false;
+      this.openedChange.emit(this.opened)
+    }
+  }
+
+  @HostListener('mouseenter')
+  onMouseOver() {
+    if (this.trigger == 'hover') {
+      if (this.timer != null) { clearTimeout(this.timer); }
+      this.opened = true;
+      this.openedChange.emit(this.opened)
+    }
+  }
+
+  @HostListener('mouseleave')
+  onMouseOut() {
+    if (this.trigger == 'hover') {
+      if (this.timer != null) { clearTimeout(this.timer); }
+      this.timer = setTimeout(() => {
+        this.opened = false;
+        this.openedChange.emit(this.opened)
+        //   this.Trigger.open=false;
+      }, this.delay);
+    }
   }
 };

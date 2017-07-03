@@ -3,7 +3,7 @@
         <div style="overflow: auto;">
             <ul class="ant-select-dropdown-menu ant-select-dropdown-menu-vertical  ant-select-dropdown-menu-root" role="menu">
                 <ng-content></ng-content>
-                <acOption *ngFor="let item of _data" [value]="item.value" [label]="item.label" (click)="childClick(item)"></acOption>
+                <acOption *ngFor="let item of data" [value]="item.value" [label]="item.label" (click)="childClick(item)" [selected]="item.selected"></acOption>
             </ul>
         </div>
     </div>

@@ -1,9 +1,19 @@
 <template #tip>
-    <div (click)="stopBubble($event)"  [nglInternalOutlet]="acTrigger">
+    <div (click)="stopBubble($event)"  [nglInternalOutlet]="acTrigger" (mouseenter)="mouseenter($event)" (mouseleave)="mouseleave($event)">
 
     </div>
 </template>
 
-<div  [triggerTarget]="tip" placement="bottom" [open]="opened">
+<div  [triggerTarget]="tip" [placement]="placement" [open]="opened">
     <ng-content></ng-content>
 </div>
+
+<!--<div *ngIf="trigger=='click'" [acTriggerClick]="tip" [placement]="placement" [(opened)]="open" style="display:inline-block;" >
+    <template  [ngTemplateOutlet]="template"></template>
+</div>
+<div *ngIf="trigger=='hover'" [acTriggerHover]="tip" [placement]="placement" [(opened)]="open"style="display:inline-block;">
+    <template [ngTemplateOutlet]="template"></template>
+</div>
+<div *ngIf="trigger=='focus'" [acTriggerClick]="tip" focus [placement]="placement" [(opened)]="open" style="display:inline-block;">
+    <template [ngTemplateOutlet]="template"></template>
+</div>-->

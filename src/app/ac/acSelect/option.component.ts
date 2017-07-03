@@ -10,7 +10,7 @@ export default class Option implements OnInit {
 
     @Input() value: any = '';
     @Input() label: string = '';
-    selected=false;
+    @Input() selected=false;
     get Tclass(){
 
         return 'ant-select-dropdown-menu-item '+(this.selected?'ant-select-dropdown-menu-item-selected':'');

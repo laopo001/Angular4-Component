@@ -20,7 +20,7 @@ export default class Select implements OnInit {
     @Input() placeholder: string = '';
     @Input() width: any = '';
     @Input() data: any[] = [];
-    _data: any[] = [];
+
     @Input() size: Size = 'default'
     get sizeClass() {
         switch (this.size) {
@@ -37,7 +37,9 @@ export default class Select implements OnInit {
     @ContentChildren(Option)
     childCmps: QueryList<Output>;
 
-    opened = false;
+    @Input() opened = false;
+    @Output() openedChange = new EventEmitter<boolean>();
+
     focused = false;
     @Input() value: any = null;
     selectLabel = ""
@@ -47,7 +49,7 @@ export default class Select implements OnInit {
     onClick(e: any) {
         this.opened = !this.opened;
         this.focused = !this.focused;
-
+        this.openedChange.emit(this.opened);
         if (this.opened && (this.showSearch || this.showSearch == '')) {
             setTimeout(() => {
                 this.inputSearch.nativeElement.focus();
@@ -60,7 +62,7 @@ export default class Select implements OnInit {
     }
     set searchValue(value: any) {
         this._searchValue = value;
-        this._data = this.data.filter((x) => {
+        this.data = this.data.filter((x) => {
             if (x.label.toLowerCase().indexOf(this._searchValue.toLowerCase()) > -1) {
                 return true;
             }
@@ -125,29 +127,32 @@ export default class Select implements OnInit {
     }
 
     childClick(x: any) {
-        this.onChange.emit(x.value);
+
         this.valueChange.emit(x.value);
+        this.onChange.emit(x.value);
         this.opened = false;
+        this.openedChange.emit(this.opened)
         setTimeout(function () {
             this.focused = true
         });
 
     }
-    ngAfterContentInit() {
-        this._data.map((x) => {
-            if (x.value == this.value) {
+    Init() {
+        this.data.map((x) => {
+            if (x.value === this.value) {
                 x.selected = true;
                 this.value = x.value;
                 this.selectLabel = x.label;
             } else {
                 x.selected = false;
             }
+            return x;
         })
 
 
         if (this.childCmps == null) return;
         this.childCmps.map((x: any) => {
-            if (x.value == this.value) {
+            if (x.value === this.value) {
                 x.selected = true;
                 this.value = x.value;
                 this.selectLabel = x.label;
@@ -169,18 +174,17 @@ export default class Select implements OnInit {
         if (contains(this.content.nativeElement, target)) {
 
         } else {
-            this.opened = false
-            this.focused = false
+            this.opened = false;
+            this.openedChange.emit(this.opened)
+            this.focused = false;
             this.Trigger.open = false;
         }
     }
 
 
     ngOnChanges(changes: any) {
-        if ('data' in changes) {
-            this['_data'] = changes['data'].currentValue;
-        }
-        this.ngAfterContentInit()
+
+        this.Init()
     }
     ngOnDestroy() {
         this.opened = false;
