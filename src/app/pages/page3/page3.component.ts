@@ -7,12 +7,12 @@ const formatMetadataKey = Symbol("format");
 declare var Reflect: any;
 
 function format(formatString: string) {
-debugger;
+
     return Reflect.metadata(formatMetadataKey, formatString);
 }
 
 function getFormat(target: any, propertyKey: string) {
-    debugger
+
     return Reflect.getMetadata(formatMetadataKey, target, propertyKey);
 }
 

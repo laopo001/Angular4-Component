@@ -15,7 +15,7 @@ import Page3Component from './pages/page3/page3.component'
 import {
     AppComponent
 } from './app.component';
-
+import {message} from './ac/message/'
 
 import acModule from './ac/'
 
@@ -41,10 +41,10 @@ let R=RouterModule.forRoot(ROUTES, {
 })
 @NgModule({
   imports: [
-    BrowserModule,FormsModule,acModule,R
+    BrowserModule,FormsModule,acModule,R,BrowserAnimationsModule
   ],
   declarations: [
-    AppComponent,Page1Component,Page2Component,Page3Component
+    AppComponent,Page1Component,Page2Component,Page3Component,message
   ],
   
   bootstrap: [ AppComponent ]

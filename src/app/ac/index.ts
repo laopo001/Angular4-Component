@@ -1,41 +1,43 @@
-import { NgModule, ModuleWithProviders,enableProdMode } from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule, ModuleWithProviders, enableProdMode } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Icon } from './icon/';
 import { Button, ButtonGroup } from './button/';
 import { Pagination } from './pagination/';
-import {Select ,Option} from './acSelect/';
+import { Select, Option } from './acSelect/';
 import { Popover } from './popover/';
 import { CheckBox } from './checkbox/'
-import {message} from './message/'
+import { message } from './message/'
 
-import {acTrigger,acTriggerClick,acTriggerHover ,acTriggerFocus} from './acTrigger/'
-import {Trigger,NglPopover} from './trigger/'
-import {Table,NglInternalOutletModule,NglDatatableColumn,NglDatatableCell,NglDatatableHeadingTemplate,NglDatatableLoadingOverlay,NglDatatableNoRowsOverlay,NglInternalDatatableHeadCell,NglInternalDatatableCell} from './table/'
+import { acTrigger, acTriggerClick, acTriggerHover, acTriggerFocus } from './acTrigger/'
+import { Trigger, NglPopover } from './trigger/'
+import { Table, NglInternalOutletModule, NglDatatableColumn, NglDatatableCell, NglDatatableHeadingTemplate, NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay, NglInternalDatatableHeadCell, NglInternalDatatableCell } from './table/'
 
 import SpinComponent from './spin/'
+import { RowComponent, ColComponent } from './grid/'
 
 enableProdMode();
 
-let output=[
-  Icon,message,Button,ButtonGroup,Pagination,Select,Popover,CheckBox,Option,Trigger,NglPopover,acTriggerClick,acTriggerHover,acTriggerFocus,acTrigger,
+let output = [
+  Icon, Button, ButtonGroup, Pagination, Select, Popover, CheckBox, Option, Trigger, NglPopover, acTriggerClick, acTriggerHover, acTriggerFocus, acTrigger,
   Table,
   NglDatatableColumn,
   NglDatatableCell,
   NglDatatableHeadingTemplate,
   NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay,
   SpinComponent,
+  RowComponent, ColComponent
 ]
 
 @NgModule({
-  declarations:[...output,NglInternalDatatableHeadCell, NglInternalDatatableCell],
+  declarations: [...output, NglInternalDatatableHeadCell, NglInternalDatatableCell],
   exports: [...output],
-  entryComponents: [ NglPopover ],
-  imports: [CommonModule,FormsModule,BrowserAnimationsModule,NglInternalOutletModule],
+  entryComponents: [NglPopover],
+  imports: [CommonModule, FormsModule, NglInternalOutletModule],
 })
 export default class acModule {
 
 }
-export {message}
+export { message }
