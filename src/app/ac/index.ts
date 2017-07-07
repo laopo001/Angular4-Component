@@ -13,26 +13,38 @@ import { message } from './message/'
 
 import { acTrigger, acTriggerClick, acTriggerHover, acTriggerFocus } from './acTrigger/'
 import { Trigger, NglPopover } from './trigger/'
-import { Table, NglInternalOutletModule, NglDatatableColumn, NglDatatableCell, NglDatatableHeadingTemplate, NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay, NglInternalDatatableHeadCell, NglInternalDatatableCell } from './table/'
+import { Table, NglInternalOutletModule, NglDatatableColumn, NglDatatableCell, NglDatatableHeadingTemplate,  NglDatatableNoRowsOverlay, NglInternalDatatableHeadCell, NglInternalDatatableCell } from './table/'
 
-import SpinComponent from './spin/'
-import { RowComponent, ColComponent } from './grid/'
+import {SpinComponent} from './spin/'
+import { RowComponent, ColComponent, RowComponent2, ColComponent2 } from './grid/'
+
+
+import {FormComponent, FormItemComponent } from './form/'
+import {RadioComponent,RadioGroupComponent } from './radio';
+
 
 enableProdMode();
 
 let output = [
-  Icon, Button, ButtonGroup, Pagination, Select, Popover, CheckBox, Option, Trigger, NglPopover, acTriggerClick, acTriggerHover, acTriggerFocus, acTrigger,
+  Icon, Button, ButtonGroup, CheckBox,
+  Select, Option,
+  Trigger, NglPopover, acTriggerClick, acTriggerHover, acTriggerFocus, acTrigger,
+  Popover,
+  Pagination,
   Table,
   NglDatatableColumn,
   NglDatatableCell,
   NglDatatableHeadingTemplate,
-  NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay,
+  NglDatatableNoRowsOverlay,
   SpinComponent,
-  RowComponent, ColComponent
+  RowComponent2, ColComponent2,
+  FormComponent, FormItemComponent,
+  RadioComponent,RadioGroupComponent
+  // RowComponent, ColComponent
 ]
 
 @NgModule({
-  declarations: [...output, NglInternalDatatableHeadCell, NglInternalDatatableCell],
+  declarations: [...output, NglInternalDatatableHeadCell, NglInternalDatatableCell, RowComponent, ColComponent],
   exports: [...output],
   entryComponents: [NglPopover],
   imports: [CommonModule, FormsModule, NglInternalOutletModule],

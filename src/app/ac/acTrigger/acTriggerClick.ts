@@ -16,19 +16,30 @@ import { Trigger } from '../trigger/';
     </div>
 </template>
 
-<div  [triggerTarget]="tip" placement="bottom" [open]="opened">
+<div  [triggerTarget]="tip" [placement]="placement" [open]="opened">
     <ng-content></ng-content>
 </div>`
 })
 export default class acTriggerClick implements OnInit {
   @Input('acTriggerClick') acTrigger: any
   @Input() placement = 'bottom';
-  opened = false;
 
+  _focus = false;
+  @Input()
+  set focus(x) {
+    this._focus = toBoolean(x);
+  }
+  get focus() {
+    return this._focus;
+  }
+  @Input() opened = false;
+  @Output() openedChange = new EventEmitter<boolean>();
   @ViewChild(Trigger) Trigger: Trigger;
   @HostListener('click')
   handClick(e: any) {
+    //stopBubble(e);
     this.opened = !this.opened;
+    this.openedChange.emit(this.opened)
   }
   constructor(private myElement: ElementRef) {
 
@@ -40,14 +51,19 @@ export default class acTriggerClick implements OnInit {
 
 
     } else {
-        this.opened = false;
-        this.Trigger.open = false;
+      this.opened = false;
+      this.Trigger.open = false;
+      this.openedChange.emit(this.opened)
     }
   }
   ngOnInit() {
     document.body.addEventListener('click', this.close.bind(this), false)
-  } 
+  }
+
   stopBubble(e: any) {
+    if (this.focus) {
+      return;
+    }
     stopBubble(e);
   }
 };

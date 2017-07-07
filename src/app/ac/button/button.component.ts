@@ -1,25 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter, HostBinding, HostListener } from '@angular/core';
 
 var classnames = require('classnames');
-
-function classNames(obj: Button) {
-
-    var { prefixCls, type, shape, iconOnly, sizeCls, icon, loading, clicked, ghost } = obj;
-
-    return classnames({
-        [`${prefixCls}`]: true,
-        [`${prefixCls}-${type}`]: !!type,
-        [`${prefixCls}-${shape}`]: !!shape,
-        [`${prefixCls}-${sizeCls}`]: !!sizeCls,
-        [`${prefixCls}-icon-only`]: iconOnly,
-        [`${prefixCls}-loading`]: loading,
-        [`${prefixCls}-clicked`]: clicked,
-        [`${prefixCls}-background-ghost`]: ghost,
-
-        [`${obj.class}`]: !!obj.class
-    })
-}
-
+import { toBoolean } from '../util/util'
 @Component({
     selector: 'Button',
     templateUrl: './button.component.html',
@@ -27,7 +9,7 @@ function classNames(obj: Button) {
 })
 export class Button implements OnInit {
     @Input() loading: boolean = false;
-    clicked: boolean = false;
+    
     @Input() ghost: boolean = false;
     @Input() iconOnly: boolean = false;
     @Input() shape: string;
@@ -35,49 +17,68 @@ export class Button implements OnInit {
     @Input() icon: string;
     @Input() type: string;
     @Input() htmlType: string = 'button';
-    @Input() class: string;
+    @Input() className: string;
     @Input() style: any;
-    currClasses = {};
-    prefixCls = 'ant-btn';
-    sizeCls = '';
-    iconType = "";
-    timeout = 0;
-    @HostBinding('class') Tclass: any = '';
-    @HostBinding('type') Ttype: any = '';
 
+    prefixCls = 'ant-btn';
+    get sizeCls() {
+        return ({
+            large: 'lg',
+            small: 'sm',
+        })[this.size] || '';
+    }
+    get iconType(){
+        return this.loading ? 'loading' : this.icon;
+    }
+    timeout = null;
+    clicked: boolean = false;
+    @HostBinding('class')
+    get Tclass() {
+        var { prefixCls, type, shape, iconOnly, sizeCls, icon, loading, clicked, ghost } = this;
+        return classnames({
+            [`${prefixCls}`]: true,
+            [`${prefixCls}-${type}`]: !!type,
+            [`${prefixCls}-${shape}`]: !!shape,
+            [`${prefixCls}-${sizeCls}`]: !!sizeCls,
+            [`${prefixCls}-icon-only`]: iconOnly,
+            [`${prefixCls}-loading`]: loading,
+            [`${prefixCls}-clicked`]: clicked,
+            [`${prefixCls}-background-ghost`]: ghost,
+
+            [`${this.className}`]: !!this.className
+        })
+
+    }
+    @HostBinding('type')
+    get Ttype() {
+        return this.htmlType;;
+    }
     @Output() onClick = new EventEmitter();
     constructor() {
 
     }
 
+    Init() {
+        this.ghost = toBoolean(this.ghost)
+        this.loading = toBoolean(this.loading)
+    }
     ngOnInit() {
-        if (typeof this.ghost == 'string') {
-            this.ghost = true;
-        }
-        if (typeof this.loading == 'string') {
-            this.loading = true;
-        }
-        this.sizeCls = ({
-            large: 'lg',
-            small: 'sm',
-        })[this.size] || '';
-        //  this.currClasses = classNames(this);
-        this.Tclass = classNames(this);
-        this.Ttype = this.htmlType;
-
-        this.iconType = this.loading ? 'loading' : this.icon;
-
+        
+    }
+    ngOnChanges(changes: any) {
+        this.Init();
     }
 
-
     @HostListener('click', ['$event']) handleClick(e: any) {
+
+        if (this.timeout != null) {
+            return;
+        }
         this.clicked = true;
-        this.Tclass = classNames(this);
-        clearTimeout(this.timeout);
         this.timeout = Number(setTimeout(() => {
             this.clicked = false;
-            this.Tclass = classNames(this);
-        }, 500));
+            this.timeout = null;
+        }, 200));
 
         this.onClick.emit(e);
     }

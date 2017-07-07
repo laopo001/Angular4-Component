@@ -58,7 +58,6 @@ export class Pagination implements OnInit {
             this._currentTemp = this._current;
             this.currentChange.emit(this._current)
         }
-
         this.pageSizeChange.emit(this._pageSize)
         this.onChange.emit({ current: this._current, pageSize: this._pageSize });
         if (this.current == null && this.pageSize == null) {

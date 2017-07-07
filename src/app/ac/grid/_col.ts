@@ -1,18 +1,18 @@
-import { Component, OnInit, Input,  HostBinding } from '@angular/core';
-var classnames = require('classnames');
+
+import { Component, OnInit, Input } from '@angular/core';
+
 
 
 @Component({
-    selector: 'div[Col]',
+    selector: 'RCol',
     template: `
-
+    <div [ngClass]="Colclass" [ngStyle]="ColStyle">
         <ng-content></ng-content>
-
+    </div>
     `,
 
 })
 export default class ColComponent implements OnInit {
-    @HostBinding('class')
     get Colclass() {
         let res = {
             [`ant-col-${this.span}`]: !!this.span,
@@ -84,7 +84,7 @@ export default class ColComponent implements OnInit {
                 [`ant-col-xl-offset-${this.xl.order}`]: !!this.xl.order,
             })
         }
-        return classnames(res);
+        return res;
     }
     @Input() span: number | string = 0;
     @Input() offset: number | string = 0;
@@ -98,15 +98,16 @@ export default class ColComponent implements OnInit {
     @Input() lg: number | any;
     @Input() xl: number | any;
 
-    @HostBinding('style.padding')
     get ColStyle() {
         if (this.gutter > 0) {
-            return `0 ${this.gutter}px`
+            return {
+                [`padding-left`]: (this.gutter) + 'px',
+                [`padding-right`]: (this.gutter) + 'px',
+            }
         } else {
-            return ""
+            return {}
         }
     }
-
 
     @Input() className: string = ''
 

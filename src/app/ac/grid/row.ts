@@ -1,46 +1,46 @@
 
-import { Component, OnInit, Input ,ContentChildren ,QueryList} from '@angular/core';
+import { Component, OnInit, Input, ContentChildren, QueryList, HostBinding } from '@angular/core';
 
-import ColComponent  from './col';
-
+import ColComponent from './col';
+var classnames = require('classnames');
 
 @Component({
-    selector: 'Row',
+    selector: 'div[Row]',
     template: `
-    <div [ngClass]="Rowclass" [ngStyle]="RowStyle">
+   
          <ng-content></ng-content>
-    </div>
+ 
     `,
     styles: [`
   
   `]
 })
 export default class RowComponent implements OnInit {
+    @HostBinding('class')
     get Rowclass() {
-        return {
+        return classnames({
             [`ant-row`]: !this.type,
             [`ant-row-${this.type}`]: !!this.type,
-            [`ant-row-${this.type}-${this.justify}`]:this.type&&this.justify,
-            [`ant-row-${this.type}-${this.align}`]:this.type&&this.align,
+            [`ant-row-${this.type}-${this.justify}`]: this.type && this.justify,
+            [`ant-row-${this.type}-${this.align}`]: this.type && this.align,
             [`${this.className}`]: !!this.className
-        }
+        })
     }
+    @HostBinding('style.margin')
     get RowStyle() {
         if (this.gutter > 0) {
-            return {
-                [`margin-left`]: (this.gutter as number * -1) + 'px',
-                [`margin-right`]: (this.gutter as number * -1) + 'px',
-            }
+            return `0 ${this.gutter as number * -1}px`
         } else {
-            return {}
+            return ""
         }
     }
+
     @Input() className: string = ''
     @Input() gutter: number | string = 0
 
-    @Input() type:string;
-    @Input() justify:string;
-    @Input() align:string;
+    @Input() type: string;
+    @Input() justify: string;
+    @Input() align: string;
 
     @ContentChildren(ColComponent) cols: QueryList<ColComponent>;
 
@@ -48,7 +48,7 @@ export default class RowComponent implements OnInit {
     ngOnInit() {
 
     }
-    ngAfterContentInit(){
-        this.cols.map(x=>{x.gutter=this.gutter;return x;})
-    }  
+    ngAfterContentInit() {
+        this.cols.map(x => { x.gutter = this.gutter; return x; })
+    }
 }

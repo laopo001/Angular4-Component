@@ -16,21 +16,20 @@ import { Trigger } from '../trigger/';
             </div>
         </template>
 
-        <div  [triggerTarget]="tip" placement="bottom" [open]="opened">
+        <div  [triggerTarget]="tip" [placement]="placement" [open]="opened">
             <ng-content></ng-content>
         </div>`
 })
 export default class acTriggerClick implements OnInit {
     @Input('acTriggerHover') acTrigger: any
     @Input() placement = 'bottom';
-    opened = false;
-
+    @Input() opened = false;
+    @Output() openedChange = new EventEmitter<boolean>();
     @ViewChild(Trigger) Trigger: Trigger;
 
     constructor(private myElement: ElementRef) {
 
     }
-
     ngOnInit() {
 
     }
@@ -42,12 +41,14 @@ export default class acTriggerClick implements OnInit {
     }
     mouseleave() {
         this.opened = false;
+        this.openedChange.emit(this.opened)
     }
 
     @HostListener('mouseenter')
     onMouseOver() {
         if (this.timer != null) { clearTimeout(this.timer); }
         this.opened = true;
+        this.openedChange.emit(this.opened)
     }
 
     @HostListener('mouseleave')
@@ -55,6 +56,7 @@ export default class acTriggerClick implements OnInit {
         if (this.timer != null) { clearTimeout(this.timer); }
         this.timer = setTimeout(() => {
             this.opened = false;
+            this.openedChange.emit(this.opened)
             //   this.Trigger.open=false;
         }, this.delay);
     }

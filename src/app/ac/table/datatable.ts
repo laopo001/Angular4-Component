@@ -2,22 +2,99 @@
 import { Component, Input, ChangeDetectorRef, ContentChild, SimpleChanges, ContentChildren, OnInit, OnChanges, QueryList, TemplateRef, ElementRef, Renderer, HostBinding, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NglDatatableColumn } from './column';
-import {  NglDatatableNoRowsOverlay } from './overlays';
+import { NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay } from './overlays';
+import * as clonedeep from 'lodash.clonedeep'
+import { waining } from '../util/util'
 type Size = 'large' | 'small' | 'middle';
 @Component({
   selector: 'acTable',
   templateUrl: './datatable.html',
-  host: {
-
-  },
-  styles: [`
-
-  `],
+  styleUrls: [`datatable.scss`]
 })
 export class datatable implements OnChanges {
   @Input() header: string | TemplateRef<any>;
   @Input() footer: string | TemplateRef<any>;
+  @Input() rowSelection: any;
+  Allchecked = false;
+  indeterminate = false;
+  selects = [];
+  ngOnInit() {
+    waining(this.rowKey == null, 'rowKey是必须的。')
+  }
+  cellCheckedChange(e, row) {
+    if (this.rowSelection && this.rowSelection.type == 'radio') {
+      if (e) {
+        this.selects = [];
+        this.selects.push(row);
+        this.data.map((x) => {
+          if (x[this.rowKey] != row[this.rowKey]) {
+            x.__check__ = false;
+          }
+        })
+      } else {
+        this.selects = [];
+      }
 
+    }
+    if (this.rowSelection && this.rowSelection.type == 'checkbox') {
+      if (e) {
+        this.selects.push(row);
+      } else {
+        this.selects = this.selects.filter((x) => {
+          if (x[this.rowKey] == row[this.rowKey]) { return false } else { return true };
+        })
+      }
+    }
+    this.rowSelection.onChange(this.selects)
+    this.isCheckedAll();
+  }
+  isCheckedAll() {
+    this._data = this._data.map((x) => {
+      let index = this.selects.findIndex((y) => { return x[this.rowKey] === y[this.rowKey] })
+      if (index > -1) {
+        x.__check__ = true;
+      } else {
+        x.__check__ = false;
+      }
+      return x;
+    })
+    let temp = this._data.filter(x => x.__check__);
+    if (temp.length === this._data.length) {
+      this.Allchecked = true;
+      this.indeterminate = false;
+    } else {
+      this.indeterminate = true;
+      this.Allchecked = false;
+    }
+    if (temp.length == 0) {
+      this.indeterminate = false;
+      this.Allchecked = false;
+    }
+  }
+  headCheckedChange(e) {
+    if (this.indeterminate === true || this.Allchecked === true) {
+      this.selects = this.selects.filter((x) => {
+        let index = this._data.findIndex((y) => { return x[this.rowKey] === y[this.rowKey] })
+        if (index > -1) {
+          return false;
+        } else {
+          return true
+        }
+      })
+    } else {
+
+      if (this.rowSelection && this.rowSelection.type == 'checkbox') {
+        if (e) {
+          this.selects = this.selects.concat(this._data);
+        } else {
+          console.error('error')
+        }
+      }
+    }
+
+    this.rowSelection.onChange(this.selects);
+    this.isCheckedAll()
+  }
   @Input() size: Size = 'large'
   get tableSizeClass() {
     switch (this.size) {
@@ -41,7 +118,7 @@ export class datatable implements OnChanges {
     this.current = event.current;
     this.pageSize = event.pageSize;
     this._data = this.data.slice((this.current - 1) * this.pageSize, this.current * this.pageSize);
-
+    this.isCheckedAll();
   }
   showTotal(total: number, range: number[]) {
 
@@ -55,36 +132,44 @@ export class datatable implements OnChanges {
     showQuickJumper: false
   };
   @Input()
-  set pageSizeData(x:any) {
+  set pageSizeData(x: any) {
     if (typeof this.pagination == 'object') {
       this.pagination.pageSizeData = x;
     }
 
   }
   _data: any[] = [];
-  Init() {
+  Init(changes) {
     this.data = this.data == null ? [] : this.data;
-    if (this.pagination) {
 
 
-      if (this.pagination.pageSizeData.length > 0) {
-        this.pageSize = this.pagination.pageSizeData[0]
+    if ('rowSelection' in changes) {
+      if (this.rowSelection && this.rowSelection.selectedRows != null) {
+        this.selects = this.rowSelection.selectedRows;
+        this.isCheckedAll();
       }
-      this._data = this.data.slice((this.current - 1) * this.pageSize, this.current * this.pageSize);
-    } else {
-      this._data = this.data;
+    }
+    if ('data' in changes) {
+      if (this.pagination) {
+        this.current = 1;
+        if (this.pagination.pageSizeData.length > 0) {
+          this.pageSize = this.pagination.pageSizeData[0]
+        }
+        this._data = this.data.slice((this.current - 1) * this.pageSize, this.current * this.pageSize);
+      } else {
+        this._data = this.data;
+      }
+      this.isCheckedAll();
+
     }
 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if ('data' in changes) {
-      this.current = 1;
-    }
-    this.Init();
+    this.Init(changes);
   }
 
-  @Input() trackByKey: string;
+  @Input() rowKey: string;
   @Input() bordered = false;
   @Input() striped = true;
   @Input() scroll: any = false
@@ -104,12 +189,16 @@ export class datatable implements OnChanges {
   @Output() sortChange = new EventEmitter<INglDatatableSort>();
 
   @Input() loading: boolean = false;
-
+  @ContentChild(NglDatatableLoadingOverlay) loadingOverlay: NglDatatableLoadingOverlay;
   @ViewChild('scrollTpl') scrollTpl: ElementRef;
   @ViewChild('scrollHeaderTpl') scrollHeaderTpl: ElementRef;
   @ViewChild('LeftTpl') LeftTpl: ElementRef;
   @ViewChild('RightTpl') RightTpl: ElementRef;
 
+
+  get showLoading() {
+    return this.loading && this.loadingOverlay;
+  }
   get innerStyle() {
 
     return { maxHeight: this.scroll.y + 'px', overflowY: 'scroll' }
@@ -148,7 +237,7 @@ export class datatable implements OnChanges {
   }
 
   dataTrackBy = (index: number, data: any) => {
-    return this.trackByKey ? data[this.trackByKey] : index;
+    return this.rowKey ? data[this.rowKey] : index;
   }
 
   onColumnSort(column: NglDatatableColumn, order: 'asc' | 'desc') {
@@ -170,6 +259,7 @@ export class datatable implements OnChanges {
   fixLeft: any[] = [];
   fixRight: any[] = [];
   ngAfterContentInit() {
+
     this._columnsSubscription = this.columns.changes.subscribe(() => this.detector.markForCheck());
 
     if (this.scroll.x) {

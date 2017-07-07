@@ -4,7 +4,7 @@ import {replaceClass, toBoolean, uniqueId} from '../util/util';
 export type Direction = 'top' | 'right' | 'bottom' | 'left';
 
 @Component({
-  selector: 'ngl-popover',
+  selector: 'ac-popover',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-content></ng-content>

@@ -118,7 +118,10 @@ export default class Trigger {
   position(async = true) {
     this.ngZone.runOutsideAngular(() => {
       if (async) {
-        setTimeout(() => this.tether.position());
+        setTimeout(() => {
+          if (this.tether == null) { return };
+          this.tether.position()
+        });
       } else {
         this.tether.position();
       }

@@ -34,7 +34,7 @@ export default class Popover implements OnInit {
     focusClick=false;
     _trigger='click';
     @Input()
-    set trigger(x:any){
+    set trigger(x){
         if(x=='click'){this._trigger=x;this.focusClick=false;};
         if(x=='hover'){this._trigger=x;this.focusClick=false;};
         if(x=='focus'){this._trigger='click';this.focusClick=true;};

@@ -10,10 +10,18 @@
                 <div *ngIf="scroll?.y==null" class="ant-table-body" #scrollTpl style="overflow-x: auto;">
                     <table class="{{scroll?.x!=null?'ant-table-fixed':''}}" [ngStyle]="fixedStyle">
                         <colgroup>
+                            <col *ngIf="rowSelection">
                             <col *ngFor="let col of columns; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                         </colgroup>
                         <thead class="ant-table-thead">
                             <tr>
+                                <th *ngIf="rowSelection" class="ant-table-selection-column">
+                                    <span>
+                                            <div class="ant-table-selection">
+                                                    <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
+                                            </div>
+                                         </span>
+                                </th>
                                 <th *ngFor="let col of columns; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
                                     [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
                                     class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
@@ -21,6 +29,7 @@
                         </thead>
                         <tbody class="ant-table-tbody">
                             <tr *ngIf="!hasRows">
+
                                 <td [attr.colspan]="columns.length">
                                     <template [ngTemplateOutlet]="noRowsOverlay?.templateRef||NoData"></template>
                                 </td>
@@ -28,6 +37,11 @@
                             <template ngIf="hasRows">
                                 <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
                                     (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
+                                    <td *ngIf="rowSelection" class="ant-table-selection-column">
+                                        <span>
+                                            <Check [(checked)]="d.__check__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                            </span>
+                                    </td>
                                     <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
                                 </tr>
                             </template>
@@ -41,10 +55,20 @@
                     <div class="ant-table-header" #scrollHeaderTpl style="margin-bottom: -17px; padding-bottom: 0px;">
                         <table class="ant-table-fixed" [ngStyle]="fixedStyle">
                             <colgroup>
+                                <!--rowSelection-->
+                                <col *ngIf="rowSelection">
                                 <col *ngFor="let col of columns; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                             </colgroup>
                             <thead class="ant-table-thead">
                                 <tr>
+                                    <!--rowSelection-->
+                                    <th *ngIf="rowSelection" class="ant-table-selection-column">
+                                        <span>
+                                            <div class="ant-table-selection">
+                                                    <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
+                                            </div>
+                                         </span>
+                                    </th>
                                     <th *ngFor="let col of columns; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
                                         [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
                                         class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
@@ -55,17 +79,27 @@
                     <div class="ant-table-body" #scrollTpl (mouseenter)="select($event)" [ngStyle]="bodyStyle">
                         <table class="ant-table-fixed" [ngStyle]="fixedStyle">
                             <colgroup>
+                                <!--rowSelection-->
+                                <col *ngIf="rowSelection">
                                 <col *ngFor="let col of columns; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                             </colgroup>
                             <tbody class="ant-table-tbody">
                                 <tr *ngIf="!hasRows">
+
                                     <td [attr.colspan]="columns.length">
                                         <template [ngTemplateOutlet]="noRowsOverlay?.templateRef||NoData"></template>
                                     </td>
                                 </tr>
                                 <template ngIf="hasRows">
+
                                     <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
                                         (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
+                                        <!--rowSelection-->
+                                        <td *ngIf="rowSelection" class="ant-table-selection-column">
+                                            <span>
+                                            <Check [(checked)]="d.__check__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                            </span>
+                                        </td>
                                         <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
                                     </tr>
                                 </template>
@@ -80,10 +114,20 @@
 
                         <table>
                             <colgroup>
+                                <!--rowSelection-->
+                                <col *ngIf="rowSelection">
                                 <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                             </colgroup>
                             <thead class="ant-table-thead">
                                 <tr>
+                                    <!--rowSelection-->
+                                    <th *ngIf="rowSelection" class="ant-table-selection-column">
+                                        <span>
+                                            <div class="ant-table-selection">
+                                                    <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
+                                            </div>
+                                         </span>
+                                    </th>
                                     <th *ngFor="let col of fixLeft; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
                                         [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
                                         class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
@@ -93,6 +137,12 @@
                                 <template ngIf="hasRows">
                                     <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
                                         (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
+                                        <!--rowSelection-->
+                                        <td *ngIf="rowSelection" class="ant-table-selection-column">
+                                            <span>
+                                            <Check [(checked)]="d.__check__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                            </span>
+                                        </td>
                                         <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
                                     </tr>
                                 </template>
@@ -105,10 +155,20 @@
                         <div class="ant-table-header">
                             <table class="ant-table-fixed">
                                 <colgroup>
+                                    <!--rowSelection-->
+                                    <col *ngIf="rowSelection">
                                     <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                                 </colgroup>
                                 <thead class="ant-table-thead">
                                     <tr>
+                                        <!--rowSelection-->
+                                        <th *ngIf="rowSelection" class="ant-table-selection-column">
+                                            <span>
+                                            <div class="ant-table-selection">
+                                                    <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
+                                            </div>
+                                         </span>
+                                        </th>
                                         <th *ngFor="let col of fixLeft; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
                                             [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
                                             class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
@@ -120,6 +180,8 @@
                             <div class="ant-table-body-inner" [ngStyle]="innerStyle" #LeftTpl (mouseenter)="select($event)">
                                 <table class="ant-table-fixed">
                                     <colgroup>
+                                        <!--rowSelection-->
+                                        <col *ngIf="rowSelection">
                                         <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
                                     </colgroup>
                                     <tbody class="ant-table-tbody">
@@ -127,6 +189,12 @@
                                         <template ngIf="hasRows">
                                             <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
                                                 (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
+                                                <!--rowSelection-->
+                                                <td *ngIf="rowSelection" class="ant-table-selection-column">
+                                                    <span>
+                                            <Check [(checked)]="d.__check__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                            </span>
+                                                </td>
                                                 <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
                                             </tr>
                                         </template>

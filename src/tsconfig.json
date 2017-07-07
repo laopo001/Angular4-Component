@@ -1,17 +1,22 @@
 {
   "compilerOptions": {
-    "allowJs":true,
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "noEmit": true,
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "strictNullChecks": false,
+    "allowJs": true,
     "lib": [
       "es2015",
       "dom"
     ],
-    "noImplicitAny": true,
+    // "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     // "types": [
     //   // add node as an option
@@ -25,7 +30,15 @@
       "node_modules",
       "typings/main",
       "typings/main.d.ts"
-    ]
-    // noImplicitAny:true
+    ],
+    "awesomeTypescriptLoaderOptions": {
+      "forkChecker": true,
+      "useWebpackText": true
+    },
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "atom": {
+      "rewriteTsconfig": false
+    }
   }
 }

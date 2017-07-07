@@ -16,7 +16,7 @@ import { Trigger } from '../trigger/';
             </div>
         </template>
 
-        <div  [triggerTarget]="tip" placement="bottom" [open]="opened">
+        <div  [triggerTarget]="tip" [placement]="placement" [open]="opened">
             <ng-content></ng-content>
         </div>`
 })

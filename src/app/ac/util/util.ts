@@ -52,7 +52,7 @@ export function contains(root: any, el: any) {
   return false;
 }
 
-export function stopDefault(e:any) {
+export function stopDefault(e: any) {
   //阻止默认浏览器动作(W3C)
   if (e && e.preventDefault)
     e.preventDefault();
@@ -62,12 +62,19 @@ export function stopDefault(e:any) {
   return false;
 }
 
-export function stopBubble(e:any) {
-        //如果提供了事件对象，则这是一个非IE浏览器
-        if ( e && e.stopPropagation )
-            //因此它支持W3C的stopPropagation()方法
-            e.stopPropagation();
-        else
-            //否则，我们需要使用IE的方式来取消事件冒泡
-            window.event.cancelBubble = true;
-    }
+export function stopBubble(e: any) {
+  //如果提供了事件对象，则这是一个非IE浏览器
+  if (e && e.stopPropagation)
+    //因此它支持W3C的stopPropagation()方法
+    e.stopPropagation();
+  else
+    //否则，我们需要使用IE的方式来取消事件冒泡
+    window.event.cancelBubble = true;
+}
+
+
+export function waining(b, messsage) {
+  if (process.env.NODE_ENV === 'dev' && b) {
+    console.warn(messsage)
+  }
+}
