@@ -12,7 +12,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.js', '.ts'],
   },
 
   module: {
@@ -23,7 +23,7 @@ module.exports = {
           {
             loader: 'awesome-typescript-loader',
             options: { configFileName: helpers.root('src', 'tsconfig.json') }
-          },'@angularclass/hmr-loader', 'angular2-template-loader'
+          }, '@angularclass/hmr-loader', 'angular2-template-loader'
         ]
       },
       {

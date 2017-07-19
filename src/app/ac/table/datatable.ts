@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { NglDatatableColumn } from './column';
 import { NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay } from './overlays';
 import * as clonedeep from 'lodash.clonedeep'
-import { waining } from '../util/util'
+import { waining, measureScrollbar } from '../util/util'
 type Size = 'large' | 'small' | 'middle';
 @Component({
   selector: 'acTable',
@@ -21,12 +21,24 @@ export class datatable implements OnChanges {
   ngOnInit() {
     waining(this.rowKey == null, 'rowKey是必须的。')
   }
+  get scrollbarWidthStyle() {
+    const scrollbarWidth = measureScrollbar();
+    if (scrollbarWidth > 0) {
+      return {
+        [`margin-bottom`]: `-${scrollbarWidth}px`,
+        [`padding-bottom`]: `0px`
+      }
+    } else {
+      return {}
+    }
+
+  }
   cellCheckedChange(e, row) {
     if (this.rowSelection && this.rowSelection.type == 'radio') {
       if (e) {
         this.selects = [];
         this.selects.push(row);
-        row.__checked__=true;
+        row.__checked__ = true;
         this.data.map((x) => {
           if (x[this.rowKey] != row[this.rowKey]) {
             x.__checked__ = false;
@@ -76,7 +88,7 @@ export class datatable implements OnChanges {
     if (this.indeterminate === true || this.Allchecked === true) {
       this.selects = this.selects.filter((x) => {
         let index = this._data.findIndex((y) => { return x[this.rowKey] === y[this.rowKey] })
-        if(this._data[index].__disabled__){return true;}
+        if (this._data[index].__disabled__) { return true; }
         if (index > -1) {
           return false;
         } else {
@@ -87,7 +99,7 @@ export class datatable implements OnChanges {
 
       if (this.rowSelection && this.rowSelection.type == 'checkbox') {
         if (e) {
-          this.selects = this.selects.concat(this._data.filter(x=>!x.__disabled__));
+          this.selects = this.selects.concat(this._data.filter(x => !x.__disabled__));
         } else {
           console.error('error')
         }
@@ -161,7 +173,7 @@ export class datatable implements OnChanges {
     if ('rowSelection' in changes) {
       if (this.rowSelection && this.rowSelection.selectedRows != null) {
         this.selects = this.rowSelection.selectedRows;
-    
+
         this.isCheckedAll();
       }
     }
@@ -341,6 +353,7 @@ export class datatable implements OnChanges {
 
     if (this.scrollTpl != null) {
       this.scrollTpl.nativeElement.addEventListener('scroll', (e: any) => {
+        if (e.currentTarget != this.currScroll) { return; }
         let left = this.scrollTpl.nativeElement.scrollLeft;
         if (this.scrollHeaderTpl != null) {
           this.scrollHeaderTpl.nativeElement.scrollLeft = left;
@@ -355,10 +368,6 @@ export class datatable implements OnChanges {
           this.position = 'right'
         }
         //console.log(left, this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth)
-
-        if (e.currentTarget != this.currScroll) { return; }
-
-
         let top = this.scrollTpl.nativeElement.scrollTop;
 
 
@@ -368,7 +377,7 @@ export class datatable implements OnChanges {
         if (this.LeftTpl != null) {
           this.LeftTpl.nativeElement.scrollTop = top;
         }
-
+        //console.log(top,left,e.currentTarget)
 
       }, false)
       if (this.RightTpl != null) {

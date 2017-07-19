@@ -53,7 +53,7 @@
                 <div *ngIf="footer&&scroll?.y==null" class="ant-table-footer" [ngOut]="footer"></div>
 
                 <div *ngIf="scroll?.y!=null" class="ant-table-scroll">
-                    <div class="ant-table-header" #scrollHeaderTpl style="margin-bottom: -17px; padding-bottom: 0px;">
+                    <div class="ant-table-header" #scrollHeaderTpl [ngStyle]="scrollbarWidthStyle">
                         <table class="ant-table-fixed" [ngStyle]="fixedStyle">
                             <colgroup>
                                 <!--rowSelection-->
@@ -77,7 +77,7 @@
                             </thead>
                         </table>
                     </div>
-                    <div class="ant-table-body" #scrollTpl (mouseenter)="select($event)" [ngStyle]="bodyStyle">
+                    <div class="ant-table-body" #scrollTpl (mouseenter)="select($event)" [ngStyle]="bodyStyle" (click)="select($event)">
                         <table class="ant-table-fixed" [ngStyle]="fixedStyle">
                             <colgroup>
                                 <!--rowSelection-->
@@ -180,8 +180,8 @@
                                 </thead>
                             </table>
                         </div>
-                        <div class="ant-table-body-outer" style="margin-bottom: -17px; padding-bottom: 0px;">
-                            <div class="ant-table-body-inner" [ngStyle]="innerStyle" #LeftTpl (mouseenter)="select($event)">
+                        <div class="ant-table-body-outer" [ngStyle]="scrollbarWidthStyle">
+                            <div class="ant-table-body-inner" [ngStyle]="innerStyle" #LeftTpl (mouseenter)="select($event)" (click)="select($event)">
                                 <table class="ant-table-fixed">
                                     <colgroup>
                                         <!--rowSelection-->
@@ -255,8 +255,8 @@
                                 </thead>
                             </table>
                         </div>
-                        <div class="ant-table-body-outer" style="margin-bottom: -17px; padding-bottom: 0px;">
-                            <div class="ant-table-body-inner" [ngStyle]="innerStyle" #RightTpl (mouseenter)="select($event)">
+                        <div class="ant-table-body-outer" [ngStyle]="scrollbarWidthStyle">
+                            <div class="ant-table-body-inner" [ngStyle]="innerStyle" #RightTpl (mouseenter)="select($event)" (click)="select($event)">
                                 <table class="ant-table-fixed">
                                     <colgroup>
                                         <col *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
