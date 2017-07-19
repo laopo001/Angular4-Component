@@ -20,10 +20,6 @@ export class RadioGroupComponent implements OnInit {
     @ContentChildren(RadioComponent) radios: QueryList<RadioComponent>;
     @Output() onChange = new EventEmitter();
     @Output() valueChange = new EventEmitter();
-    Init() {
-
-    }
-
 
     ngOnInit() {
 
@@ -35,20 +31,36 @@ export class RadioGroupComponent implements OnInit {
         this.valueChange.emit(x.value);
     }
 
-    ngAfterContentInit() {
+    Init() {
         if (this.radios == null) return;
-        this.radios.map((x: any) => {
+        this.radios.forEach((x: any) => {
             if (x.value == this.value) {
                 x.checked = true;
-           //     this.value = x.value || x.label;
             } else {
                 x.checked = false;
             }
+        })
+    }
+
+    ngAfterContentInit() {
+        if (this.radios == null) return;
+        this.radios.forEach((x: any) => {
+            if (x.value == this.value) {
+                x.checked = true;
+                //     this.value = x.value || x.label;
+            } else {
+                x.checked = false;
+            }
+            // x.checkedChange.subscribe((x)=>{
+            //     this.childClick.bind(this, x)
+            // })
             x.handClick = this.childClick.bind(this, x)
-            return x;
         })
     }
     ngOnChanges(changes: any) {
-        this.ngAfterContentInit()
+        if('value' in changes){
+            this.Init();
+        }
+       // this.ngAfterContentInit()
     }
 }

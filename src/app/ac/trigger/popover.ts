@@ -19,14 +19,14 @@ export class NglPopover {
   @Input() header: string;
   @Input() footer: string;
 
-  @Input() set theme(theme: any) {
-    replaceClass(this, `slds-theme--${this._theme}`, theme ? `slds-theme--${theme}` : '');
-    this._theme = theme;
-  }
+  // @Input() set theme(theme: any) {
+  //   replaceClass(this, `slds-theme--${this._theme}`, theme ? `slds-theme--${theme}` : '');
+  //   this._theme = theme;
+  // }
 
-  @Input() set nglTooltip(isTooltip: any) {
-   // this.renderer.setElementClass(this.element.nativeElement, 'slds-popover--tooltip', toBoolean(isTooltip));
-  }
+  // @Input() set nglTooltip(isTooltip: any) {
+  //   this.renderer.setElementClass(this.element.nativeElement, 'slds-popover--tooltip', toBoolean(isTooltip));
+  // }
 
   set nubbin(direction: Direction) {
    // replaceClass(this, `slds-nubbin--${this._nubbin}`, direction ? `slds-nubbin--${direction}` : '');

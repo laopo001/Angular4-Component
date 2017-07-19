@@ -1,6 +1,7 @@
 
-import { Component, OnInit, Input, ContentChildren, QueryList, HostBinding, TemplateRef } from '@angular/core';
+import { Component, OnInit, Input, Output, ContentChildren, QueryList, HostBinding, TemplateRef, HostListener, EventEmitter } from '@angular/core';
 import { toBoolean } from '../util/util'
+import { FormItemComponent } from './formitem'
 var classnames = require('classnames');
 
 @Component({
@@ -13,7 +14,8 @@ var classnames = require('classnames');
   
   `]
 })
-export  class FormComponent implements OnInit {
+export class FormComponent implements OnInit {
+    @ContentChildren(FormItemComponent) FormItems: QueryList<FormItemComponent>;
     @HostBinding('class')
     get HostClass() {
         return classnames({
@@ -21,12 +23,29 @@ export  class FormComponent implements OnInit {
             [`ant-form-${this.layout}`]: !!this.layout
         });
     }
+    @Output() onSubmit = new EventEmitter<any>();
     @Input() layout: 'horizontal' | 'vertical' | 'inline' = "horizontal"
 
     Init() {
 
     }
-
+    @HostListener('submit', ['$event'])
+    async submit(e) {
+        e.preventDefault();
+        let err=[];
+        for (let x of this.FormItems['_results']) {
+            if (x.descriptor != null||x.toSuccess) {
+                await x.validate()
+                if(x.validateStatus==='error'){
+                    err.push(x.err_message)
+                }
+            }
+            // if(x.toSuccess){
+            //     x.validateStatus='success'
+            // }
+        }
+        this.onSubmit.emit(err)
+    }
 
     ngOnInit() {
 
@@ -34,4 +53,5 @@ export  class FormComponent implements OnInit {
     ngOnChanges(changes: any) {
         this.Init();
     }
+
 }

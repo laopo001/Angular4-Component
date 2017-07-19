@@ -11,7 +11,7 @@ import { Trigger } from '../trigger/';
 @Component({
     selector: '[acTriggerHover]',
     template: `<template #tip>
-    <div  [nglInternalOutlet]="acTrigger" (mouseenter)="mouseenter($event)" (mouseleave)="mouseleave($event)">
+    <div  [ngOut]="acTrigger" (mouseenter)="mouseenter($event)" (mouseleave)="mouseleave($event)">
 
             </div>
         </template>

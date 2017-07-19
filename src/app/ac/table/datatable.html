@@ -4,7 +4,7 @@
     <div class="ant-table-wrapper">
 
         <div class="ant-table {{tableSizeClass}} {{bordered||bordered===''?'ant-table-bordered':''}} {{scroll?'ant-table-fixed-header':''}} ant-table-scroll-position-{{position}}">
-            <div *ngIf="header" class="ant-table-title" [nglInternalOutlet]="header"></div>
+            <div *ngIf="header" class="ant-table-title" [ngOut]="header"></div>
             <div class="ant-table-content">
 
                 <div *ngIf="scroll?.y==null" class="ant-table-body" #scrollTpl style="overflow-x: auto;">
@@ -17,7 +17,7 @@
                             <tr>
                                 <th *ngIf="rowSelection" class="ant-table-selection-column">
                                     <span>
-                                            <div class="ant-table-selection">
+                                            <div  class="ant-table-selection">
                                                     <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
                                             </div>
                                          </span>
@@ -39,8 +39,9 @@
                                     (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
                                     <td *ngIf="rowSelection" class="ant-table-selection-column">
                                         <span>
-                                            <Check [(checked)]="d.__check__" (checkedChange)="cellCheckedChange($event,d)"></Check>
-                                            </span>
+                                            <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                            <Radio *ngIf="rowSelection?.type==='radio'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
+                                        </span>
                                     </td>
                                     <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
                                 </tr>
@@ -49,7 +50,7 @@
 
                     </table>
                 </div>
-                <div *ngIf="footer&&scroll?.y==null" class="ant-table-footer" [nglInternalOutlet]="footer"></div>
+                <div *ngIf="footer&&scroll?.y==null" class="ant-table-footer" [ngOut]="footer"></div>
 
                 <div *ngIf="scroll?.y!=null" class="ant-table-scroll">
                     <div class="ant-table-header" #scrollHeaderTpl style="margin-bottom: -17px; padding-bottom: 0px;">
@@ -64,7 +65,7 @@
                                     <!--rowSelection-->
                                     <th *ngIf="rowSelection" class="ant-table-selection-column">
                                         <span>
-                                            <div class="ant-table-selection">
+                                            <div  class="ant-table-selection">
                                                     <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
                                             </div>
                                          </span>
@@ -97,7 +98,8 @@
                                         <!--rowSelection-->
                                         <td *ngIf="rowSelection" class="ant-table-selection-column">
                                             <span>
-                                            <Check [(checked)]="d.__check__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                              <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                            <Radio *ngIf="rowSelection?.type==='radio'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
                                             </span>
                                         </td>
                                         <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
@@ -106,7 +108,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div *ngIf="footer" class="ant-table-footer" [nglInternalOutlet]="footer"></div>
+                    <div *ngIf="footer" class="ant-table-footer" [ngOut]="footer"></div>
 
                 </div>
                 <div *ngIf="fixLeft.length>0" class="ant-table-fixed-left">
@@ -140,7 +142,9 @@
                                         <!--rowSelection-->
                                         <td *ngIf="rowSelection" class="ant-table-selection-column">
                                             <span>
-                                            <Check [(checked)]="d.__check__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                                <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                                <Radio *ngIf="rowSelection?.type==='radio'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
+                                      
                                             </span>
                                         </td>
                                         <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
@@ -192,7 +196,9 @@
                                                 <!--rowSelection-->
                                                 <td *ngIf="rowSelection" class="ant-table-selection-column">
                                                     <span>
-                                            <Check [(checked)]="d.__check__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                            <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                                            <Radio *ngIf="rowSelection?.type==='radio'"  [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
+                                      
                                             </span>
                                                 </td>
                                                 <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>

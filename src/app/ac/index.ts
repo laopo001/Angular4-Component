@@ -8,25 +8,29 @@ import { Button, ButtonGroup } from './button/';
 import { Pagination } from './pagination/';
 import { Select, Option } from './acSelect/';
 import { Popover } from './popover/';
-import { CheckBox } from './checkbox/'
+import { CheckBox,CheckBoxGroup } from './checkbox/'
 import { message } from './message/'
 
 import { acTrigger, acTriggerClick, acTriggerHover, acTriggerFocus } from './acTrigger/'
 import { Trigger, NglPopover } from './trigger/'
-import { Table, NglInternalOutletModule, NglDatatableColumn, NglDatatableCell, NglDatatableHeadingTemplate,  NglDatatableNoRowsOverlay, NglInternalDatatableHeadCell, NglInternalDatatableCell } from './table/'
+import { Popconfirm } from './popconfirm/'
 
-import {SpinComponent} from './spin/'
+import { Table, NglInternalOutletModule, NglDatatableColumn, NglDatatableCell, NglDatatableHeadingTemplate, NglDatatableNoRowsOverlay, NglInternalDatatableHeadCell, NglInternalDatatableCell } from './table/'
+
+import { SpinComponent } from './spin/'
 import { RowComponent, ColComponent, RowComponent2, ColComponent2 } from './grid/'
 
 
-import {FormComponent, FormItemComponent } from './form/'
-import {RadioComponent,RadioGroupComponent } from './radio';
-
+import { FormComponent, FormItemComponent } from './form/'
+import { RadioComponent, RadioGroupComponent } from './radio';
+import { acInput, acTextArea } from './input';
+import { Modal } from './modal';
+import { Tooltip } from './tooltip';
 
 enableProdMode();
 
 let output = [
-  Icon, Button, ButtonGroup, CheckBox,
+  Icon, Button, ButtonGroup, CheckBox,CheckBoxGroup,
   Select, Option,
   Trigger, NglPopover, acTriggerClick, acTriggerHover, acTriggerFocus, acTrigger,
   Popover,
@@ -39,7 +43,11 @@ let output = [
   SpinComponent,
   RowComponent2, ColComponent2,
   FormComponent, FormItemComponent,
-  RadioComponent,RadioGroupComponent
+  RadioComponent, RadioGroupComponent,
+  Popconfirm,
+  acInput, acTextArea,
+  Modal,
+  Tooltip
   // RowComponent, ColComponent
 ]
 

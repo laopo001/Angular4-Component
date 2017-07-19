@@ -1,0 +1,33 @@
+<template #input>
+    <input type="text" [(ngModel)]="_value" placeholder={{placeholder}} [ngStyle]="style" [disabled]="toBoolean(disabled)" [ngClass]="inputClass" (keyup.enter)="_onEnter()">
+</template>
+
+<template #inputPrefix>
+    <span *ngIf="prefix||suffix" class="ant-input-affix-wrapper">
+        <span *ngIf="prefix" class="ant-input-prefix" [ngOut]="prefix">
+            
+        </span>
+        <ng-container [ngTemplateOutlet]="input"></ng-container>
+        <span *ngIf="suffix"  class="ant-input-suffix" [ngOut]="suffix">
+            
+        </span>
+    </span>
+</template>
+
+
+<ng-container *ngIf="!prefix&&!prefix&&!addonBefore&&!addonAfter" [ngTemplateOutlet]="input"></ng-container>
+
+<ng-container *ngIf="(prefix||prefix)&&!addonBefore&&!addonAfter" [ngTemplateOutlet]="inputPrefix"></ng-container>
+
+<span *ngIf="(addonBefore||addonAfter)" [ngStyle]="Tstyle" class="ant-input-group-wrapper">
+    <span class="ant-input-wrapper ant-input-group">
+        <span *ngIf="addonBefore" class="ant-input-group-addon" [ngOut]="addonBefore">
+          
+        </span>
+        <ng-container *ngIf="prefix||prefix" [ngTemplateOutlet]="inputPrefix"></ng-container>
+        <ng-container *ngIf="!prefix&&!prefix" [ngTemplateOutlet]="input"></ng-container>
+        <span *ngIf="addonAfter" class="ant-input-group-addon" [ngOut]="addonAfter">
+                
+        </span>
+</span>
+</span>

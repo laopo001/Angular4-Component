@@ -1,4 +1,4 @@
-<span><span  [attr.title]="heading" [nglInternalOutlet]="header"></span>
+<span><span  [attr.title]="heading" [ngOut]="header"></span>
 <div class="ant-table-column-sorter" *ngIf="sortable">
     <span class="ant-table-column-sorter-up {{ariaSortUp}}" title="↑" (click)="sortChange('asc')"><i class="anticon anticon-caret-up"></i></span>
     <span class="ant-table-column-sorter-down {{ariaSortDown}}" title="↓" (click)="sortChange('desc')"><i class="anticon anticon-caret-down"></i></span>
@@ -6,12 +6,12 @@
 </span>
 
 
-<!--<div class="slds-truncate" *ngIf="!sortable" [attr.title]="heading" [nglInternalOutlet]="header">
+<!--<div class="slds-truncate" *ngIf="!sortable" [attr.title]="heading" [ngOut]="header">
 
 </div>
     <a class="slds-th__action slds-text-link--reset" *ngIf="sortable" (click)="sortChange()"> 
         <span class="slds-assistive-text">Sort Column</span>
-        <span  [attr.title]="heading" [nglInternalOutlet]="header"></span>
+        <span  [attr.title]="heading" [ngOut]="header"></span>
         <div class="ant-table-column-sorter">
             <span class="ant-table-column-sorter-up off" title="↑">
                 <i class="anticon anticon-caret-up"></i>

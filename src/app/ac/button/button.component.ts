@@ -53,6 +53,13 @@ export class Button implements OnInit {
     get Ttype() {
         return this.htmlType;;
     }
+    @Input() disabled: any;
+    @HostBinding('attr.disabled')
+    get Host_disabled() {
+        return this.disabled;;
+    }
+
+
     @Output() onClick = new EventEmitter();
     constructor() {
 

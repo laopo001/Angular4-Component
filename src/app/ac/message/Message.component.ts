@@ -6,15 +6,19 @@ import {
     animate,
     transition, keyframes
 } from '@angular/animations';
-import * as Rx from 'rxjs';
+// import * as Rx from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable, Subject } from 'rxjs';
 
 
 let list: any = []
 
-var subject = new Rx.BehaviorSubject(list);
+var subject = new BehaviorSubject(list);
 
 let id = 0;
+let defaultDuration = 1.5;
+let defaultTop;
+
 
 function log(type: string, content: string, duration = 1500, onClose?: any) {
     id++;
@@ -42,9 +46,15 @@ function log(type: string, content: string, duration = 1500, onClose?: any) {
     return close;
 }
 
+export interface ConfigOptions {
+    top?: number;
+    duration?: number;
+}
+
+
 @Component({
     selector: 'Message',
-    template: `<div data-reactroot="" class="ant-message">
+    template: `<div data-reactroot="" class="ant-message" [ngStyle]="messageStyle">
         <span >
              <ng-container *ngFor="let item of list|async">
                 <div [@flyInOut]="'in'" class="ant-message-notice">
@@ -87,28 +97,41 @@ function log(type: string, content: string, duration = 1500, onClose?: any) {
 export class message {
 
     list: Observable<any>;
-
+    get messageStyle(){
+        return {
+            top: defaultTop+'px',
+            
+        }
+    }
 
     constructor() {
         this.list = subject.asObservable();
     }
-    static success(content: any, duration = 1500, onClose?: any): Function {
-        return log('success', content, duration, onClose)
+    static success(content: any, duration = defaultDuration, onClose?: any): Function {
+        return log('success', content, duration*1000, onClose)
     }
-    static error(content: any, duration = 1500, onClose?: any): Function {
-        return log('error', content, duration, onClose)
+    static error(content: any, duration = defaultDuration, onClose?: any): Function {
+        return log('error', content, duration*1000, onClose)
     }
-    static info(content: any, duration = 1500, onClose?: any): Function {
-        return log('info', content, duration, onClose)
+    static info(content: any, duration = defaultDuration, onClose?: any): Function {
+        return log('info', content, duration*1000, onClose)
     }
-    static warning(content: any, duration = 1500, onClose?: any): Function {
-        return log('warning', content, duration, onClose)
+    static warning(content: any, duration = defaultDuration, onClose?: any): Function {
+        return log('warning', content, duration*1000, onClose)
     }
-    static warn(content: any, duration = 1500, onClose?: any): Function {
-        return log('warning', content, duration, onClose)
+    static warn(content: any, duration = defaultDuration, onClose?: any): Function {
+        return log('warning', content, duration*1000, onClose)
     }
-    static loading(content: any, duration = 1500, onClose?: any): Function {
-        return log('loading', content, duration, onClose)
+    static loading(content: any, duration = defaultDuration, onClose?: any): Function {
+        return log('loading', content, duration*1000, onClose)
+    }
+    static config(options: ConfigOptions) {
+        if (options.top !== undefined) {
+            defaultTop = options.top;
+        }
+        if (options.duration !== undefined) {
+            defaultDuration = options.duration;
+        }
     }
     static destroy() {
         list = [];

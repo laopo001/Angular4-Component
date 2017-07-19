@@ -8,18 +8,30 @@ type Direction = 'top' | 'right' | 'bottom' | 'left' |
 type Method = 'click' | 'hover' | 'focus';
 
 @Component({
-    selector: 'Popover',
-    templateUrl: './popover.component.html',
-    styleUrls: ['./popover.component.scss']
+    selector: 'Popconfirm',
+    templateUrl: './popconfirm.html',
 })
-export default class Popover implements OnInit {
+export  class Popconfirm implements OnInit {
     @ViewChild(Trigger) Trigger: Trigger;
     @ViewChild('dom') dom: ElementRef;
     @Input() title: any;
-    @Input() content: any;
+    @Input() okText: string;
+    @Input() cancelText: string;
     @Input() opened = false;
     @Output() openedChange = new EventEmitter<boolean>();
 
+    @Output() onConfirm = new EventEmitter<boolean>();
+    @Output() onTrue = new EventEmitter<boolean>();
+    @Output() onFalse = new EventEmitter<boolean>();
+    click(b){
+        this.onConfirm.emit(b);
+        if(b){
+            this.onTrue.emit(b)
+        }else{
+            this.onFalse.emit(b)
+        }
+        this.open=false;
+    }
     set open(x) {
         this.opened = x;
         this.openedChange.emit(this.opened)
@@ -33,12 +45,12 @@ export default class Popover implements OnInit {
     }
     focusClick=false;
     _trigger='click';
-    @Input()
-    set trigger(x){
-        if(x=='click'){this._trigger=x;this.focusClick=false;};
-        if(x=='hover'){this._trigger=x;this.focusClick=false;};
-        if(x=='focus'){this._trigger='click';this.focusClick=true;};
-    }
+    // @Input()
+    // set trigger(x){
+    //     if(x=='click'){this._trigger=x;this.focusClick=false;};
+    //     if(x=='hover'){this._trigger=x;this.focusClick=false;};
+    //     if(x=='focus'){this._trigger='click';this.focusClick=true;};
+    // }
 
     @Input() className: string;
 

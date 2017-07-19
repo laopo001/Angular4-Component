@@ -11,7 +11,7 @@ import { Trigger } from '../trigger/';
 @Component({
     selector: '[acTriggerFocus]',
     template: `<template #tip>
-    <div  [nglInternalOutlet]="acTrigger" >
+    <div  [ngOut]="acTrigger" >
 
             </div>
         </template>

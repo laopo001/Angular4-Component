@@ -65,7 +65,7 @@ export default class Trigger {
     this.setPopover();
   }
 
-  @Input() nglTooltip: string | boolean;
+ // @Input() nglTooltip: string | boolean;
 
   @Input() set nglPopoverDelay(delay: any | any[]) {
     delay = Array.isArray(delay) ? delay : [delay, delay];
@@ -187,8 +187,8 @@ export default class Trigger {
 
     const { opposite } = placement(this._placement);
     this.popover.nubbin = opposite;
-    this.popover.theme = this.theme;
-    this.popover.nglTooltip = this.nglTooltip;
+    //this.popover.theme = this.theme;
+    //this.popover.nglTooltip = this.nglTooltip;
   }
 
   private create() {

@@ -1,2 +1,3 @@
-import { CheckBox} from './checkbox.component'
-export {CheckBox};
+export * from './checkbox'
+export * from './checkboxGroup'
+

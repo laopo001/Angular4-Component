@@ -8,14 +8,13 @@ type Direction = 'top' | 'right' | 'bottom' | 'left' |
 type Method = 'click' | 'hover' | 'focus';
 
 @Component({
-    selector: 'Popover',
-    templateUrl: './popover.component.html',
-    styleUrls: ['./popover.component.scss']
+    selector: 'Tooltip',
+    templateUrl: './tooltip.html',
 })
-export default class Popover implements OnInit {
+export class Tooltip implements OnInit {
     @ViewChild(Trigger) Trigger: Trigger;
     @ViewChild('dom') dom: ElementRef;
-    @Input() title: any;
+    @Input() title: any='tooltip';
     @Input() content: any;
     @Input() opened = false;
     @Output() openedChange = new EventEmitter<boolean>();
@@ -27,12 +26,12 @@ export default class Popover implements OnInit {
     get open() {
         return this.opened
     }
-    @Input() placement: Direction = 'bottom';
+    @Input() placement: Direction = 'top';
     get placementClass() {
-        return `ant-popover ant-popover-placement-${this.placement}`
+        return `ant-tooltip ant-tooltip-placement-${this.placement}`
     }
     focusClick=false;
-    _trigger='click';
+    _trigger='hover';
     @Input()
     set trigger(x){
         if(x=='click'){this._trigger=x;this.focusClick=false;};

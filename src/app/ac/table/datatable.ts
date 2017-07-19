@@ -26,9 +26,10 @@ export class datatable implements OnChanges {
       if (e) {
         this.selects = [];
         this.selects.push(row);
+        row.__checked__=true;
         this.data.map((x) => {
           if (x[this.rowKey] != row[this.rowKey]) {
-            x.__check__ = false;
+            x.__checked__ = false;
           }
         })
       } else {
@@ -52,13 +53,13 @@ export class datatable implements OnChanges {
     this._data = this._data.map((x) => {
       let index = this.selects.findIndex((y) => { return x[this.rowKey] === y[this.rowKey] })
       if (index > -1) {
-        x.__check__ = true;
+        x.__checked__ = true;
       } else {
-        x.__check__ = false;
+        x.__checked__ = false;
       }
       return x;
     })
-    let temp = this._data.filter(x => x.__check__);
+    let temp = this._data.filter(x => x.__checked__);
     if (temp.length === this._data.length) {
       this.Allchecked = true;
       this.indeterminate = false;
@@ -75,6 +76,7 @@ export class datatable implements OnChanges {
     if (this.indeterminate === true || this.Allchecked === true) {
       this.selects = this.selects.filter((x) => {
         let index = this._data.findIndex((y) => { return x[this.rowKey] === y[this.rowKey] })
+        if(this._data[index].__disabled__){return true;}
         if (index > -1) {
           return false;
         } else {
@@ -85,7 +87,7 @@ export class datatable implements OnChanges {
 
       if (this.rowSelection && this.rowSelection.type == 'checkbox') {
         if (e) {
-          this.selects = this.selects.concat(this._data);
+          this.selects = this.selects.concat(this._data.filter(x=>!x.__disabled__));
         } else {
           console.error('error')
         }
@@ -143,12 +145,6 @@ export class datatable implements OnChanges {
     this.data = this.data == null ? [] : this.data;
 
 
-    if ('rowSelection' in changes) {
-      if (this.rowSelection && this.rowSelection.selectedRows != null) {
-        this.selects = this.rowSelection.selectedRows;
-        this.isCheckedAll();
-      }
-    }
     if ('data' in changes) {
       if (this.pagination) {
         this.current = 1;
@@ -162,7 +158,13 @@ export class datatable implements OnChanges {
       this.isCheckedAll();
 
     }
-
+    if ('rowSelection' in changes) {
+      if (this.rowSelection && this.rowSelection.selectedRows != null) {
+        this.selects = this.rowSelection.selectedRows;
+    
+        this.isCheckedAll();
+      }
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -339,7 +341,6 @@ export class datatable implements OnChanges {
 
     if (this.scrollTpl != null) {
       this.scrollTpl.nativeElement.addEventListener('scroll', (e: any) => {
-
         let left = this.scrollTpl.nativeElement.scrollLeft;
         if (this.scrollHeaderTpl != null) {
           this.scrollHeaderTpl.nativeElement.scrollLeft = left;

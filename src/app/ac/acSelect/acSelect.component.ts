@@ -3,7 +3,7 @@ import { Component, Input, OnInit, ElementRef, ViewChild, Output, EventEmitter, 
 import { Trigger } from '../trigger/';
 
 import Option from './option.component';
-import { contains, stopDefault, stopBubble,waining } from '../util/util';
+import { contains, stopDefault, stopBubble, waining, toWidth } from '../util/util';
 
 type Size = 'large' | 'small' | 'default';
 
@@ -74,34 +74,46 @@ export default class Select implements OnInit {
         if (this.width == null) {
             return {}
         } else {
-            if (this.width.toString().indexOf('%') > -1) {
-                return { width: this.width }
-            } else {
-                return { width: this.width + 'px' }
+            return {
+                width: toWidth(this.width)
             }
+            // if (this.width.toString().indexOf('%') > -1) {
+            //     return { width: this.width }
+            // } else {
+            //     return { width: this.width + 'px' }
+            // }
 
         }
 
     }
     get tipStyle() {
-
         if (!this.dropdownMatchSelectWidth) {
             return { top: '0px', left: '0px', position: 'relative' };
         } else {
 
-            //if (this.width == null||this.width=='') { console.warn('width is null') }
-            if (this.width.toString().indexOf('%') > -1) {
+            if (this.width == null || this.width == ''||this.width.indexOf('%') > -1) {
                 let width = this.content.nativeElement.offsetWidth
                 return { top: '0px', left: '0px', position: 'relative', width: width + 'px' }
             } else {
-                if (this.width == null || this.width == '') {
-                //    waining(true,'width is null')
-                    let width = this.content.nativeElement.offsetWidth
-                    return { top: '0px', left: '0px', position: 'relative', width: width + 'px' }
-                }else{
-                    return { top: '0px', left: '0px', position: 'relative', width: this.width + 'px' }
+                return {
+                    top: '0px', left: '0px', position: 'relative',
+                    width: toWidth(this.width)
                 }
             }
+
+
+            // if (this.width.toString().indexOf('%') > -1) {
+            //     let width = this.content.nativeElement.offsetWidth
+            //     return { top: '0px', left: '0px', position: 'relative', width: width + 'px' }
+            // } else {
+            //     if (this.width == null || this.width == '') {
+            //         //    waining(true,'width is null')
+            //         let width = this.content.nativeElement.offsetWidth
+            //         return { top: '0px', left: '0px', position: 'relative', width: width + 'px' }
+            //     } else {
+            //         return { top: '0px', left: '0px', position: 'relative', width: this.width + 'px' }
+            //     }
+            // }
 
         }
     }

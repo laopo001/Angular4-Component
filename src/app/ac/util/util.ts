@@ -1,17 +1,62 @@
 import { ElementRef, Renderer } from '@angular/core';
 
 export function toBoolean(value: any): boolean {
+
   switch (value) {
     case '':
       return true;
-
+    case 'true':
+      return true;
     case 'false':
+    case '1':
+      return true;
+    case '0':
+      return false;
+    default:
+      return !!value;
+  }
+}
+
+export function toBoolean2(value: any): boolean {
+  switch (value) {
+    case '':
+      return true;
+    case 'true':
+      return true;
+    case 'false':
+    case '1':
+      return true;
     case '0':
       return false;
 
     default:
-      return !!value;
+      return value;
   }
+}
+export function format(formatFnc: Function) :any{
+    return function (target: any, key: string,descriptor) {
+        //var t = Reflect.getMetadata("design:type", target, key);
+        //console.log(`${key} type: ${t.name}`);
+        Object.defineProperty(target, key, {
+            set: function (x) {
+                this['$_' + key] = formatFnc(x)
+            },
+            get: function () {
+                return this['$_' + key];
+            }
+        })
+    }
+}
+
+
+export function toWidth(width: any): any {
+  if (width == null) { return width }
+  if (width.toString().indexOf('%') > -1) {
+    return width;
+  } else {
+    return width + 'px';
+  }
+
 }
 
 let idCounter = 0;

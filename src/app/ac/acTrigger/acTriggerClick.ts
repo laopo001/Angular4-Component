@@ -11,7 +11,7 @@ import { Trigger } from '../trigger/';
 @Component({
   selector: '[acTriggerClick]',
   template: `<template #tip>
-    <div (click)="stopBubble($event)"  [nglInternalOutlet]="acTrigger">
+    <div (click)="stopBubble($event)"  [ngOut]="acTrigger">
 
     </div>
 </template>
