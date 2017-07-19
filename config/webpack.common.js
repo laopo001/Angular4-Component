@@ -23,12 +23,13 @@ module.exports = {
           {
             loader: 'awesome-typescript-loader',
             options: { configFileName: helpers.root('src', 'tsconfig.json') }
-          }, 'angular2-template-loader'
+          },'@angularclass/hmr-loader', 'angular2-template-loader'
         ]
       },
       {
         test: /\.html$/,
-        loader: 'html-loader'
+        loader: 'html-loader',
+        exclude: [path.resolve(__dirname, '../src/index.html')]
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
@@ -37,7 +38,8 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: helpers.root('src', 'app'),
-        loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' })
+        loader: 'style-loader!css-loader'
+        //  loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' })
       },
       {
         test: /\.css$/,
@@ -47,8 +49,8 @@ module.exports = {
       {
         test: /\.less$/,
         use: [{
-          loader:"raw-loader"
-        },{
+          loader: "raw-loader"
+        }, {
           loader: "style-loader" // creates style nodes from JS strings
         }, {
           loader: "css-loader" // translates CSS into CommonJS
@@ -58,10 +60,15 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-         include: [path.resolve(__dirname, '../src/app')],
-        use: [ {
-          loader:"raw-loader"
-        },{
+        include: [path.resolve(__dirname, '../src/app')],
+        loaders: ['raw-loader', 'sass-loader']
+      },
+      {
+        test: /\.scss$/,
+        exclude: [path.resolve(__dirname, '../src/app')],
+        use: [{
+          loader: "raw-loader"
+        }, {
           loader: "style-loader" // creates style nodes from JS strings
         }, {
           loader: "css-loader" // translates CSS into CommonJS
