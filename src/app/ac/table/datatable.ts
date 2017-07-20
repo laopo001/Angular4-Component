@@ -1,5 +1,8 @@
 //create time:Tue Jun 13 2017 13:42:10 GMT+0800 (中国标准时间)
-import { Component, Input, ChangeDetectorRef, ContentChild, SimpleChanges, ContentChildren, OnInit, OnChanges, QueryList, TemplateRef, ElementRef, Renderer, HostBinding, Output, EventEmitter, ViewChild } from '@angular/core';
+import {
+  Component, Input, ChangeDetectorRef, ContentChild, SimpleChanges, ContentChildren, OnInit, NgZone,
+  OnChanges, QueryList, TemplateRef, ElementRef, Renderer, HostBinding, Output, EventEmitter, ViewChild
+} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NglDatatableColumn } from './column';
 import { NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay } from './overlays';
@@ -242,7 +245,7 @@ export class datatable implements OnChanges {
 
   private _columnsSubscription: Subscription;
 
-  constructor(private detector: ChangeDetectorRef, element: ElementRef, renderer: Renderer) {
+  constructor(private detector: ChangeDetectorRef, element: ElementRef, renderer: Renderer, private ngZone: NgZone, ) {
     // renderer.setElementClass(element.nativeElement, 'slds-table', true);
   }
 
@@ -353,11 +356,9 @@ export class datatable implements OnChanges {
 
     if (this.scrollTpl != null) {
       this.scrollTpl.nativeElement.addEventListener('scroll', (e: any) => {
-        if (e.currentTarget != this.currScroll) { return; }
+
         let left = this.scrollTpl.nativeElement.scrollLeft;
-        if (this.scrollHeaderTpl != null) {
-          this.scrollHeaderTpl.nativeElement.scrollLeft = left;
-        }
+
         if (left == 0) {
           this.position = 'left'
         }
@@ -367,46 +368,52 @@ export class datatable implements OnChanges {
         if (left >= this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth && left > 0) {
           this.position = 'right'
         }
+        if (e.currentTarget != this.currScroll) { return; }
         //console.log(left, this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth)
         let top = this.scrollTpl.nativeElement.scrollTop;
+        console.log(top)
+        this.ngZone.runOutsideAngular(() => {
+          if (this.scrollHeaderTpl != null) {
+            this.scrollHeaderTpl.nativeElement.scrollLeft = left;
+          }
+          if (this.RightTpl != null) {
+            this.RightTpl.nativeElement.scrollTop = top;
+          }
+          if (this.LeftTpl != null) {
+            this.LeftTpl.nativeElement.scrollTop = top;
+          }
+        })
 
-
-        if (this.RightTpl != null) {
-          this.RightTpl.nativeElement.scrollTop = top;
-        }
-        if (this.LeftTpl != null) {
-          this.LeftTpl.nativeElement.scrollTop = top;
-        }
         //console.log(top,left,e.currentTarget)
 
       }, false)
       if (this.RightTpl != null) {
         this.RightTpl.nativeElement.addEventListener('scroll', (e: any) => {
           if (e.currentTarget != this.currScroll) { return; }
-
-          let top = this.RightTpl.nativeElement.scrollTop;
-          if (this.scrollTpl != null) {
-            this.scrollTpl.nativeElement.scrollTop = top;
-          }
-          if (this.LeftTpl != null) {
-            this.LeftTpl.nativeElement.scrollTop = top;
-          }
-
+          this.ngZone.runOutsideAngular(() => {
+            let top = this.RightTpl.nativeElement.scrollTop;
+            if (this.scrollTpl != null) {
+              this.scrollTpl.nativeElement.scrollTop = top;
+            }
+            if (this.LeftTpl != null) {
+              this.LeftTpl.nativeElement.scrollTop = top;
+            }
+          })
         }, false)
       }
       if (this.LeftTpl != null) {
         this.LeftTpl.nativeElement.addEventListener('scroll', (e: any) => {
           if (e.currentTarget != this.currScroll) { return; }
+          this.ngZone.runOutsideAngular(() => {
+            let top = this.LeftTpl.nativeElement.scrollTop;
 
-          let top = this.LeftTpl.nativeElement.scrollTop;
-
-          if (this.scrollTpl != null) {
-            this.scrollTpl.nativeElement.scrollTop = top;
-          }
-          if (this.RightTpl != null) {
-            this.RightTpl.nativeElement.scrollTop = top;
-          }
-
+            if (this.scrollTpl != null) {
+              this.scrollTpl.nativeElement.scrollTop = top;
+            }
+            if (this.RightTpl != null) {
+              this.RightTpl.nativeElement.scrollTop = top;
+            }
+          })
 
         }, false)
       }
