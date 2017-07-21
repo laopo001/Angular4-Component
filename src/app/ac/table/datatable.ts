@@ -1,5 +1,8 @@
 //create time:Tue Jun 13 2017 13:42:10 GMT+0800 (中国标准时间)
-import { Component, Input, ChangeDetectorRef, ContentChild, SimpleChanges, ContentChildren, OnInit, OnChanges, QueryList, TemplateRef, ElementRef, Renderer, HostBinding, Output, EventEmitter, ViewChild } from '@angular/core';
+import {
+  Component, Input, ChangeDetectorRef, ContentChild, SimpleChanges, ContentChildren, OnInit, NgZone,
+  OnChanges, QueryList, TemplateRef, ElementRef, Renderer, HostBinding, Output, EventEmitter, ViewChild
+} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NglDatatableColumn } from './column';
 import { NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay } from './overlays';
@@ -29,7 +32,7 @@ export class datatable implements OnChanges {
 
   scrollbarWidth = measureScrollbar();
   get scrollbarWidthStyle() {
-    if (this.scrollbarWidth > 0) {
+    if (this.scrollbarWidth > 0&&this.scroll.y!=null) {
       return {
         [`margin-bottom`]: `-${this.scrollbarWidth}px`,
         [`padding-bottom`]: `0px`
@@ -195,7 +198,12 @@ export class datatable implements OnChanges {
   @Input() scroll: any = false
 
   get bodyStyle() {
-    return { maxHeight: this.scroll.y + 'px', overflowY: 'scroll', overflowX: 'auto', zIndex: 0 }
+    if (this.scroll.y == null) {
+      return { overflowX: 'auto' }
+    } else {
+      return { overflowX: 'auto', maxHeight: this.scroll.y + 'px', overflowY: 'scroll', }
+    }
+
   }
 
   @Input() sort: INglDatatableSort = { key: '', order: 'asc' };
@@ -213,8 +221,12 @@ export class datatable implements OnChanges {
     return this.loading && this.loadingOverlay;
   }
   get innerStyle() {
+    if (this.scroll.y == null) {
+      return {}
+    } else {
+      return { maxHeight: this.scroll.y + 'px', overflowY: 'scroll' }
+    }
 
-    return { maxHeight: this.scroll.y + 'px', overflowY: 'scroll' }
   }
 
 
@@ -241,8 +253,9 @@ export class datatable implements OnChanges {
 
   private _columnsSubscription: Subscription;
 
-  constructor(private detector: ChangeDetectorRef, element: ElementRef, private renderer: Renderer) {
-    // renderer.setElementClass(element.nativeElement, 'slds-table', true);
+
+  constructor(private detector: ChangeDetectorRef, element: ElementRef, renderer: Renderer, private ngZone: NgZone, ) {
+
 
   }
 
@@ -335,10 +348,7 @@ export class datatable implements OnChanges {
   }
 
   position = 'left'
-  currScroll: any = null;
-  select(e: any) {
-    this.currScroll = e.currentTarget;
-  }
+
   hoverKey: number = -1;
   hover(isHover: boolean, key: number) {
     if (isHover) {
@@ -353,73 +363,163 @@ export class datatable implements OnChanges {
 
   }
   lastScrollLeft = 0;
+  currScroll: any = null;
+  select(e: any) {
+    this.currScroll = e.currentTarget;
+  }
+
+  timer = null;
   ngAfterViewInit() {
 
     if (this.scrollTpl != null) {
+      this.ngZone.runOutsideAngular(() => {
+        //    this.renderer.setElementStyle(this.scrollTpl.nativeElement, 'overflow', 'hidden')
+        // this.renderer.listen(this.scrollTpl.nativeElement,'scroll', (e: any) => {
+        this.scrollTpl.nativeElement.addEventListener('scroll', (e: any) => {
 
-      //    this.renderer.setElementStyle(this.scrollTpl.nativeElement, 'overflow', 'hidden')
-      // this.renderer.listen(this.scrollTpl.nativeElement,'scroll', (e: any) => {
-      this.scrollTpl.nativeElement.addEventListener('scroll', (e: any) => {
-        let left = e.currentTarget.scrollLeft;
-        if (this.scrollHeaderTpl != null && left != this.lastScrollLeft) {
-          this.scrollHeaderTpl.nativeElement.scrollLeft = left;
-        }
-        if (left == 0) {
-          this.position = 'left'
-        }
-        if (left > 0 && left < this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth) {
-          this.position = 'middle'
-        }
-        if (left >= this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth && left > 0) {
-          this.position = 'right'
-        }
+          let left = this.scrollTpl.nativeElement.scrollLeft;
 
-        if (e.currentTarget != this.currScroll) { return; }
-        //console.log(left, this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth)
-        let top = e.currentTarget.scrollTop;
+          if (this.lastScrollLeft != left) {
+            this.ngZone.run(() => {
+              if (left == 0) {
+                this.position = 'left'
+              }
+              if (left > 0 && left < this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth) {
+                this.position = 'middle'
+              }
+              if (left >= this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth && left > 0) {
+                this.position = 'right'
+              }
+            })
+            if (this.scrollHeaderTpl != null) {
+              this.scrollHeaderTpl.nativeElement.scrollLeft = left;
+            }
+          }
+          this.lastScrollLeft = left;
 
-
-        if (this.RightTpl != null) {
-          this.RightTpl.nativeElement.scrollTop = top;
-        }
-        if (this.LeftTpl != null) {
-          this.LeftTpl.nativeElement.scrollTop = top;
-        }
-        this.lastScrollLeft = e.currentTarget.scrollLeft;
-        //console.log(top,left,e.currentTarget)
-
-      }, false)
-      if (this.RightTpl != null) {
-        this.RightTpl.nativeElement.addEventListener('scroll', (e: any) => {
           if (e.currentTarget != this.currScroll) { return; }
 
-          let top = this.RightTpl.nativeElement.scrollTop;
-          if (this.scrollTpl != null) {
-            this.scrollTpl.nativeElement.scrollTop = top;
+          //console.log(left, this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth)
+          let top = this.scrollTpl.nativeElement.scrollTop;
+
+          if (this.RightTpl != null) {
+            this.RightTpl.nativeElement.scrollTop = top;
           }
           if (this.LeftTpl != null) {
             this.LeftTpl.nativeElement.scrollTop = top;
           }
 
-        }, false)
-      }
-      if (this.LeftTpl != null) {
-        this.LeftTpl.nativeElement.addEventListener('scroll', (e: any) => {
-          if (e.currentTarget != this.currScroll) { return; }
-
-          let top = this.LeftTpl.nativeElement.scrollTop;
-
-          if (this.scrollTpl != null) {
-            this.scrollTpl.nativeElement.scrollTop = top;
-          }
-          if (this.RightTpl != null) {
-            this.RightTpl.nativeElement.scrollTop = top;
-          }
-
 
         }, false)
-      }
+        if (this.RightTpl != null) {
+          this.RightTpl.nativeElement.addEventListener('scroll', (e: any) => {
+            if (e.currentTarget != this.currScroll) { return; }
+
+            let top = this.RightTpl.nativeElement.scrollTop;
+            if (this.scrollTpl != null) {
+              this.scrollTpl.nativeElement.scrollTop = top;
+            }
+            if (this.LeftTpl != null) {
+              this.LeftTpl.nativeElement.scrollTop = top;
+            }
+            console.log(top)
+          })
+
+        }
+        if (this.LeftTpl != null) {
+          this.LeftTpl.nativeElement.addEventListener('scroll', (e: any) => {
+            if (e.currentTarget != this.currScroll) { return; }
+
+            let top = this.LeftTpl.nativeElement.scrollTop;
+
+            if (this.scrollTpl != null) {
+              this.scrollTpl.nativeElement.scrollTop = top;
+            }
+            if (this.RightTpl != null) {
+              this.RightTpl.nativeElement.scrollTop = top;
+            }
+
+
+          }, false)
+        }
+      })
     }
+
+    // this.ngZone.runOutsideAngular(() => {
+
+    //   var currScroll = null;
+    //   function hover() {
+    //     currScroll = event.currentTarget;
+    //     console.log(currScroll)
+    //   }
+
+    //   var scrollTpl = document.getElementById('scrollTpl')
+    //   var scrollHeaderTpl = document.getElementById('scrollHeaderTpl')
+    //   var RightTpl = document.getElementById('RightTpl')
+    //   var LeftTpl = document.getElementById('LeftTpl')
+
+    //   scrollTpl.onmouseover = hover;
+    //   scrollHeaderTpl.onmouseover = hover;
+    //   RightTpl.onmouseover = hover;
+    //   LeftTpl.onmouseover = hover;
+
+    //   scrollTpl.addEventListener('scroll', function (e) {
+
+    //     let left = scrollTpl.scrollLeft;
+
+
+    //     if (e.currentTarget != currScroll) { return; }
+    //     //console.log(left, scrollTpl.scrollWidth - scrollTpl.offsetWidth)
+    //     let top = scrollTpl.scrollTop;
+    //     console.log(top)
+
+    //     if (scrollHeaderTpl != null) {
+    //       scrollHeaderTpl.scrollLeft = left;
+    //     }
+
+    //     if (RightTpl != null) {
+    //       RightTpl.scrollTop = top;
+    //     }
+    //     if (LeftTpl != null) {
+    //       LeftTpl.scrollTop = top;
+    //     }
+
+
+    //     //console.log(top,left,e.currentTarget)
+
+    //   }, false)
+    //   if (RightTpl != null) {
+    //     RightTpl.addEventListener('scroll', function (e) {
+    //       if (e.currentTarget != currScroll) { return; }
+
+    //       let top = RightTpl.scrollTop;
+    //       if (scrollTpl != null) {
+    //         scrollTpl.scrollTop = top;
+    //       }
+    //       if (LeftTpl != null) {
+    //         LeftTpl.scrollTop = top;
+    //       }
+
+    //     }, false)
+    //   }
+    //   if (LeftTpl != null) {
+    //     LeftTpl.addEventListener('scroll', function (e) {
+    //       if (e.currentTarget != currScroll) { return; }
+
+    //       let top = LeftTpl.scrollTop;
+
+    //       if (scrollTpl != null) {
+    //         scrollTpl.scrollTop = top;
+    //       }
+    //       if (RightTpl != null) {
+    //         RightTpl.scrollTop = top;
+    //       }
+
+
+    //     }, false)
+    //   }
+    // })
+
 
   }
 

@@ -1,55 +1,77 @@
-
 <strong>基本用法</strong>
-<acTable   [data]="data" rowKey="key"  [pagination]="pagination" [rowSelection]="rowSelection"
-    [(sort)]="sort" (sortChange)="onSort($event)">
+<acTable [data]="data" rowKey="key" [pagination]="pagination" [rowSelection]="rowSelection" [(sort)]="sort" (sortChange)="onSort($event)">
     <acTable-column [width]='200' heading="Name" key="name" sortable></acTable-column>
     <acTable-column [width]='200' heading="Age" key="age" sortable></acTable-column>
     <acTable-column [width]='200' heading="Address" key="address" sortable></acTable-column>
     <acTable-column [width]='200' heading="Action" key="key">
-        <template columnCell let-row="row" let-index="index" let-item="$implicit"><a >{{item}} Action {{index}}</a></template>
+        <template columnCell let-row="row" let-index="index" let-item="$implicit"><a>{{item}} Action {{index}}</a></template>
     </acTable-column>
 </acTable>
+
 <strong>固定表头</strong>
-<acTable   [data]="data2" [scroll]="scroll" rowKey="key"  [pagination]="pagination"
->
-    <acTable-column [width]='200' heading="Name" key="name" ></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
+<acTable [data]="data2" [scroll]="scroll" rowKey="key" [pagination]="pagination">
+    <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
     <acTable-column [width]='200' heading="Action" key="key">
-        <template columnCell let-row="row"><a >Action</a></template>
+        <template columnCell let-row="row"><a>Action</a></template>
+    </acTable-column>
+</acTable>
+<strong>固定列</strong>
+<acTable [data]="data" [scroll]="{x:600}" rowKey="key" [pagination]="pagination">
+    <acTable-column [width]='200' heading="Name" key="name" fixLeft></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Action" key="key" fixRight>
+        <template columnCell let-row="row"><a>Action</a></template>
     </acTable-column>
 </acTable>
 <strong>固定列+表头</strong>
-<acTable  [data]="data2" [header]="'已经选择'+ selects.length+ '项'" [scroll]="scroll2" [rowSelection]="rowSelection2" rowKey="key"  [pagination]="pagination"
->
+<acTable [data]="data3" [header]="'已经选择'+ selects.length+ '项'" [scroll]="scroll2" [rowSelection]="rowSelection2" rowKey="key"
+    [pagination]="pagination">
     <acTable-column [width]='200' heading="Name" key="name" fixLeft></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
     <acTable-column [width]='200' heading="Action" key="key" fixRight>
-        <template columnCell let-row="row"><a >Action</a></template>
+        <template columnCell let-row="row"><a>Action</a></template>
     </acTable-column>
 </acTable>
 <label class="l">Header:
     <input type="checkbox" [(ngModel)]="showTableHeader">
 </label>
-<label  class="l">Footer:
+<label class="l">Footer:
     <input type="checkbox" [(ngModel)]="showTableFooter">
 </label>
-<label  class="l">Loading:
+<label class="l">Loading:
     <input type="checkbox" [(ngModel)]="loading">
 </label>
-<label  class="l">NoData:
+<label class="l">NoData:
     <input type="checkbox" [(ngModel)]="nodata">
 </label>
-<label  class="l">Size:
+<label class="l">Size:
    <acSelect [(value)]="size">
     <acOption label="large" value="large"></acOption>
     <acOption label="middle" value="middle"></acOption>
@@ -59,22 +81,22 @@
 
 <br/>
 <strong>动态控制表格属性</strong>
-<acTable  [data]="data3" [header]="header" [footer]="footer" [size]="size" [scroll]="scroll2" rowKey="key" [loading]="loading" [pagination]="pagination"
->
+<acTable [data]="data3" [header]="header" [footer]="footer" [size]="size" [scroll]="scroll2" rowKey="key" [loading]="loading"
+    [pagination]="pagination">
     <acTable-column [width]='200' heading="Name" key="name" fixLeft></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" ></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" ></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
     <acTable-column [width]='200' heading="Action" key="key" fixRight>
-        <template columnHead ><strong style="color:greenyellow;">Action</strong></template>
-        <template columnCell let-row="row" ><a >Action</a></template>
+        <template columnHead><strong style="color:greenyellow;">Action</strong></template>
+        <template columnCell let-row="row"><a>Action</a></template>
     </acTable-column>
     <template acNoData>
         NoData++++

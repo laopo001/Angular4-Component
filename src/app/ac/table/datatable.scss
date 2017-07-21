@@ -601,3 +601,7 @@
 // .ant-table.ant-table-scroll-position-right .ant-table-fixed-right {
 //   box-shadow: none;
 // }
+
+.ant-table-small .ant-table-header > table, .ant-table-small .ant-table-body > table{
+    padding: 0 0px; 
+}

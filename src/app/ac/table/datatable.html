@@ -1,22 +1,36 @@
 <template #NoData>没有数据</template>
 
-<template #getColGroup>
+<template #getColGroup let-columns="columns" let-showSelect="showSelect">
     <colgroup>
-        <col *ngIf="rowSelection">
+        <col *ngIf="showSelect&&rowSelection">
         <col *ngFor="let col of columns; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
     </colgroup>
 </template>
 
-<template #tableHeader>
+<template #HeadRowSelection>
+
+    <th *ngIf="rowSelection" class="ant-table-selection-column">
+        <span>
+                <div  class="ant-table-selection">
+                             <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
+                </div>
+        </span>
+    </th>
+</template>
+
+<template #BodyRowSelection let-d="d">
+    <td *ngIf="rowSelection" class="ant-table-selection-column">
+        <span>
+                          <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
+                          <Radio *ngIf="rowSelection?.type==='radio'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
+                    </span>
+    </td>
+</template>
+
+<template #tableHeader let-columns="columns" let-showSelect="showSelect">
     <thead class="ant-table-thead">
         <tr>
-            <th *ngIf="rowSelection" class="ant-table-selection-column">
-                <span>
-                        <div  class="ant-table-selection">
-                             <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
-                        </div>
-                </span>
-            </th>
+            <template *ngIf="showSelect" [ngTemplateOutlet]="HeadRowSelection"></template>
             <th *ngFor="let col of columns; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
                 [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)" class="{{col.key==sort.key?'ant-table-column-sort':''}}"
                 [ngClass]="col.headClass"></th>
@@ -24,19 +38,13 @@
     </thead>
 </template>
 
-<template #tableHeader2>
-    <div class="ant-table-header" [ngStyle]="scrollbarWidthStyle" #scrollHeaderTpl>
-        <table class="{{scroll?.x?'ant-table-fixed':''}}" [ngStyle]="fixedStyle">
-            <template [ngTemplateOutlet]="getColGroup"></template>
+<template #tableHeader2 let-columns="columns" let-fixed="fixed" let-showSelect="showSelect">
+    <div class="ant-table-header" [ngStyle]="!fixed?scrollbarWidthStyle:{}" #scrollHeaderTpl >
+        <table class="{{scroll?.x?'ant-table-fixed':''}}" [ngStyle]="!fixed?fixedStyle:{}">
+            <template [ngTemplateOutlet]="getColGroup" [ngOutletContext]="{ columns: columns,showSelect:showSelect }"></template>
             <thead class="ant-table-thead">
                 <tr>
-                    <th *ngIf="rowSelection" class="ant-table-selection-column">
-                        <span>
-                        <div  class="ant-table-selection">
-                             <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
-                        </div>
-                </span>
-                    </th>
+                    <template *ngIf="showSelect" [ngTemplateOutlet]="HeadRowSelection"></template>
                     <th *ngFor="let col of columns; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
                         [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
                         class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
@@ -47,7 +55,7 @@
     </div>
 </template>
 
-<template #tableBody>
+<template #tableBody let-columns="columns" let-showSelect="showSelect">
     <tbody class="ant-table-tbody">
         <tr *ngIf="!hasRows">
             <td [attr.colspan]="columns.length">
@@ -57,21 +65,17 @@
         <template ngIf="hasRows">
             <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
                 (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                <td *ngIf="rowSelection" class="ant-table-selection-column">
-                    <span>
-                          <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
-                          <Radio *ngIf="rowSelection?.type==='radio'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
-                    </span>
-                </td>
+                <template *ngIf="showSelect" [ngTemplateOutlet]="BodyRowSelection" [ngOutletContext]="{ d: d }"></template>
+
                 <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
             </tr>
         </template>
     </tbody>
 </template>
-<template #tableBody2>
-    <div class="ant-table-body" [ngStyle]="bodyStyle" #scrollTpl (mouseenter)="select($event)">
-        <table class="{{scroll?.x?'ant-table-fixed':''}}" [ngStyle]="fixedStyle">
-            <template [ngTemplateOutlet]="getColGroup"></template>
+<template #tableBody2 let-columns="columns" let-fixed="fixed" let-showSelect="showSelect">
+    <div class="ant-table-body" [ngStyle]="!fixed?bodyStyle:{}" #scrollTpl  (mouseenter)="select($event)">
+        <table class="{{scroll?.x?'ant-table-fixed':''}}" [ngStyle]="!fixed?fixedStyle:{}">
+            <template [ngTemplateOutlet]="getColGroup" [ngOutletContext]="{ columns: columns,showSelect:showSelect  }"></template>
             <tbody class="ant-table-tbody">
                 <tr *ngIf="!hasRows">
                     <td [attr.colspan]="columns.length">
@@ -81,12 +85,8 @@
                 <template ngIf="hasRows">
                     <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
                         (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                        <td *ngIf="rowSelection" class="ant-table-selection-column">
-                            <span>
-                          <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
-                          <Radio *ngIf="rowSelection?.type==='radio'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
-                    </span>
-                        </td>
+                        <template *ngIf="showSelect" [ngTemplateOutlet]="BodyRowSelection" [ngOutletContext]="{ d: d }"></template>
+
                         <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
                     </tr>
                 </template>
@@ -95,189 +95,56 @@
     </div>
 </template>
 
-<template #table>
+<template #table let-columns="columns" let-showSelect="showSelect">
     <table className={tableClassName} key="table">
-        <template [ngTemplateOutlet]="getColGroup"></template>
-        <template [ngTemplateOutlet]="tableHeader"></template>
-        <template [ngTemplateOutlet]="tableBody"></template>
+        <template [ngTemplateOutlet]="getColGroup" [ngOutletContext]="{ columns: columns ,showSelect:showSelect}"></template>
+        <template [ngTemplateOutlet]="tableHeader" [ngOutletContext]="{ columns: columns,showSelect:showSelect }"></template>
+        <template [ngTemplateOutlet]="tableBody" [ngOutletContext]="{ columns: columns ,showSelect:showSelect}"></template>
         <div *ngIf="footer" class="ant-table-footer" [ngOut]="footer"></div>
     </table>
 </template>
 
 
 
-<template #scrollTable>
+<template #scrollTable let-columns="columns" let-showSelect="showSelect">
     <div class="ant-table-scroll">
-        <template [ngTemplateOutlet]="tableHeader2"></template>
-        <template [ngTemplateOutlet]="tableBody2"></template>
+        <template [ngTemplateOutlet]="tableHeader2" [ngOutletContext]="{ columns: columns ,fixed:false,showSelect:showSelect}"></template>
+        <template [ngTemplateOutlet]="tableBody2" [ngOutletContext]="{ columns: columns,fixed:false,showSelect:showSelect }"></template>
         <div *ngIf="footer" class="ant-table-footer" [ngOut]="footer"></div>
     </div>
 </template>
 
 
-<template #fixLeftTable>
-    <div *ngIf="fixLeft.length>0" class="ant-table-fixed-left">
-        <ng-container *ngIf="scroll?.y==null">
-
-            <table>
-                <colgroup>
-                    <!--rowSelection-->
-                    <col *ngIf="rowSelection">
-                    <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                </colgroup>
-                <thead class="ant-table-thead">
-                    <tr>
-                        <!--rowSelection-->
-                        <th *ngIf="rowSelection" class="ant-table-selection-column">
-                            <span>
-                                            <div class="ant-table-selection">
-                                                    <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
-                                            </div>
-                                         </span>
-                        </th>
-                        <th *ngFor="let col of fixLeft; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
-                            [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
-                            class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
-                    </tr>
-                </thead>
-                <tbody class="ant-table-tbody">
-                    <template ngIf="hasRows">
-                        <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                            (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                            <!--rowSelection-->
-                            <td *ngIf="rowSelection" class="ant-table-selection-column">
-                                <span>
-                                                <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
-                                                <Radio *ngIf="rowSelection?.type==='radio'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
-                                      
-                                            </span>
-                            </td>
-                            <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-
-
-        </ng-container>
-        <ng-container *ngIf="scroll?.y!=null">
+<template #fixLeftTable let-columns="columns" let-showSelect="showSelect">
+    <div class="ant-table-fixed-left">
+        <!-- <ng-container *ngIf="scroll?.y==null">
+            <template *ngIf="!scroll" [ngTemplateOutlet]="table" [ngOutletContext]="{ columns: columns,showSelect:showSelect }"></template>
+        </ng-container> -->
+        <ng-container >
             <div class="ant-table-header">
-                <table class="ant-table-fixed">
-                    <colgroup>
-                        <!--rowSelection-->
-                        <col *ngIf="rowSelection">
-                        <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                    </colgroup>
-                    <thead class="ant-table-thead">
-                        <tr>
-                            <!--rowSelection-->
-                            <th *ngIf="rowSelection" class="ant-table-selection-column">
-                                <span>
-                                            <div class="ant-table-selection">
-                                                    <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
-                                            </div>
-                                         </span>
-                            </th>
-                            <th *ngFor="let col of fixLeft; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
-                                [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
-                                class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
-                        </tr>
-                    </thead>
-                </table>
+                <template [ngTemplateOutlet]="tableHeader2" [ngOutletContext]="{ columns: columns,fixed:true,showSelect:showSelect }"></template>
             </div>
             <div class="ant-table-body-outer" [ngStyle]="scrollbarWidthStyle">
-                <div class="ant-table-body-inner" [ngStyle]="innerStyle" #LeftTpl (mouseenter)="select($event)" (click)="select($event)">
-                    <table class="ant-table-fixed">
-                        <colgroup>
-                            <!--rowSelection-->
-                            <col *ngIf="rowSelection">
-                            <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                        </colgroup>
-                        <tbody class="ant-table-tbody">
-
-                            <template ngIf="hasRows">
-                                <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                    (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                                    <!--rowSelection-->
-                                    <td *ngIf="rowSelection" class="ant-table-selection-column">
-                                        <span>
-                                            <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
-                                            <Radio *ngIf="rowSelection?.type==='radio'"  [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
-                                      
-                                            </span>
-                                    </td>
-                                    <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                                </tr>
-                            </template>
-                        </tbody>
-
-                    </table>
+                <div class="ant-table-body-inner" [ngStyle]="innerStyle" #LeftTpl  (mouseenter)="select($event)" (click)="select($event)">
+                    <template [ngTemplateOutlet]="tableBody2" [ngOutletContext]="{ columns: columns,fixed:true ,showSelect:showSelect}"></template>
                 </div>
             </div>
         </ng-container>
     </div>
 </template>
-<template #fixRightTable>
-    <div *ngIf="fixRight.length>0" class="ant-table-fixed-right">
-
-        <ng-container *ngIf="scroll?.y==null">
-
-            <table>
-                <colgroup>
-                    <col *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                </colgroup>
-                <thead class="ant-table-thead">
-                    <tr>
-                        <th *ngFor="let col of fixRight; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
-                            [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
-                            class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
-                    </tr>
-                </thead>
-                <tbody class="ant-table-tbody">
-                    <template ngIf="hasRows">
-                        <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                            (mouseleave)="hover(false,i)" class="abc ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                            <td *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-
-
-        </ng-container>
-
-        <ng-container *ngIf="scroll?.y!=null">
+<template #fixRightTable let-columns="columns" let-showSelect="showSelect">
+    <div class="ant-table-fixed-right">
+        <!-- <ng-container *ngIf="scroll?.y==null">
+            <template *ngIf="!scroll" [ngTemplateOutlet]="table" [ngOutletContext]="{ columns: columns,showSelect:showSelect }"></template>
+        </ng-container> -->
+        <ng-container>
             <div class="ant-table-header">
-                <table class="ant-table-fixed">
-                    <colgroup>
-                        <col *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                    </colgroup>
-                    <thead class="ant-table-thead">
-                        <tr>
-                            <th *ngFor="let col of fixRight; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
-                                [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
-                                class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
-                        </tr>
-                    </thead>
-                </table>
+                <template [ngTemplateOutlet]="tableHeader2" [ngOutletContext]="{ columns: columns,fixed:true,showSelect:showSelect }"></template>
             </div>
             <div class="ant-table-body-outer" [ngStyle]="scrollbarWidthStyle">
-                <div class="ant-table-body-inner" [ngStyle]="innerStyle" #RightTpl (mouseenter)="select($event)" (click)="select($event)">
-                    <table class="ant-table-fixed">
-                        <colgroup>
-                            <col *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                        </colgroup>
-                        <tbody class="ant-table-tbody">
+                <div class="ant-table-body-inner" [ngStyle]="innerStyle"  #RightTpl (mouseenter)="select($event)" (click)="select($event)">
 
-                            <template ngIf="hasRows">
-                                <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                    (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                                    <td *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                                </tr>
-                            </template>
-                        </tbody>
-
-                    </table>
+                    <template [ngTemplateOutlet]="tableBody2" [ngOutletContext]="{ columns: columns,fixed:true ,showSelect:showSelect}"></template>
                 </div>
             </div>
         </ng-container>
@@ -294,296 +161,17 @@
                 <div *ngIf="header" class="ant-table-title" [ngOut]="header"></div>
                 <div class="ant-table-content">
 
-                    <template *ngIf="!scroll" [ngTemplateOutlet]="table"></template>
-                    <template *ngIf="scroll?.x||scroll?.y" [ngTemplateOutlet]="scrollTable"></template>
-                    <template [ngTemplateOutlet]="fixLeftTable"></template>
-                    <template [ngTemplateOutlet]="fixRightTable"></template>
+                    <template *ngIf="!scroll" [ngTemplateOutlet]="table" [ngOutletContext]="{ columns: columns,showSelect:true }"></template>
+                    <template *ngIf="scroll?.x||scroll?.y" [ngTemplateOutlet]="scrollTable" [ngOutletContext]="{ columns: columns,showSelect:true }"></template>
+
+                    <template *ngIf="fixLeft.length>0" [ngTemplateOutlet]="fixLeftTable" [ngOutletContext]="{ columns: fixLeft,showSelect:true }"></template>
+
+                    <template *ngIf="fixRight.length>0" [ngTemplateOutlet]="fixRightTable" [ngOutletContext]="{ columns: fixRight,showSelect:false }"></template>
+                    <Pagination *ngIf="pagination" [size]="PaginationSize" [showQuickJumper]="showQuickJumper" className="ant-table-pagination"
+                        [total]="data?.length" [showTotal]="showTotal" [pageSizeData]="pagination.pageSizeData" size="pagination.size"
+                        [current]="current" [pageSize]="pageSize" (onChange)="pageChange($event)"></Pagination>
                 </div>
             </div>
         </div>
     </Spin>
 </ng-container>
-
-<Spin [spin]="loading">
-    <div class="ant-table-wrapper">
-
-        <div class="ant-table {{tableSizeClass}} {{bordered||bordered===''?'ant-table-bordered':''}} {{scroll?'ant-table-fixed-header':''}} ant-table-scroll-position-{{position}}">
-            <div *ngIf="header" class="ant-table-title" [ngOut]="header"></div>
-            <div class="ant-table-content">
-
-                <div *ngIf="scroll?.y==null" class="ant-table-body" #scrollTpl style="overflow-x: auto;">
-                    <table class="{{scroll?.x!=null?'ant-table-fixed':''}}" [ngStyle]="fixedStyle">
-                        <colgroup>
-                            <col *ngIf="rowSelection">
-                            <col *ngFor="let col of columns; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                        </colgroup>
-                        <thead class="ant-table-thead">
-                            <tr>
-                                <th *ngIf="rowSelection" class="ant-table-selection-column">
-                                    <span>
-                                            <div  class="ant-table-selection">
-                                                    <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
-                                            </div>
-                                         </span>
-                                </th>
-                                <th *ngFor="let col of columns; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
-                                    [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
-                                    class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="ant-table-tbody">
-                            <tr *ngIf="!hasRows">
-
-                                <td [attr.colspan]="columns.length">
-                                    <template [ngTemplateOutlet]="noRowsOverlay?.templateRef||NoData"></template>
-                                </td>
-                            </tr>
-                            <template ngIf="hasRows">
-                                <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                    (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                                    <td *ngIf="rowSelection" class="ant-table-selection-column">
-                                        <span>
-                                            <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
-                                            <Radio *ngIf="rowSelection?.type==='radio'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
-                                        </span>
-                                    </td>
-                                    <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                                </tr>
-                            </template>
-                        </tbody>
-
-                    </table>
-                </div>
-                <div *ngIf="footer&&scroll?.y==null" class="ant-table-footer" [ngOut]="footer"></div>
-
-                <div *ngIf="scroll?.y!=null" class="ant-table-scroll">
-                    <div class="ant-table-header" #scrollHeaderTpl [ngStyle]="scrollbarWidthStyle">
-                        <table class="ant-table-fixed" [ngStyle]="fixedStyle">
-                            <colgroup>
-                                <!--rowSelection-->
-                                <col *ngIf="rowSelection">
-                                <col *ngFor="let col of columns; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                            </colgroup>
-                            <thead class="ant-table-thead">
-                                <tr>
-                                    <!--rowSelection-->
-                                    <th *ngIf="rowSelection" class="ant-table-selection-column">
-                                        <span>
-                                            <div  class="ant-table-selection">
-                                                    <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
-                                            </div>
-                                         </span>
-                                    </th>
-                                    <th *ngFor="let col of columns; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
-                                        [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
-                                        class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <div class="ant-table-body" #scrollTpl (mouseenter)="select($event)" [ngStyle]="bodyStyle" (click)="select($event)">
-                        <table class="ant-table-fixed" [ngStyle]="fixedStyle">
-                            <colgroup>
-                                <!--rowSelection-->
-                                <col *ngIf="rowSelection">
-                                <col *ngFor="let col of columns; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                            </colgroup>
-                            <tbody class="ant-table-tbody">
-                                <tr *ngIf="!hasRows">
-
-                                    <td [attr.colspan]="columns.length">
-                                        <template [ngTemplateOutlet]="noRowsOverlay?.templateRef||NoData"></template>
-                                    </td>
-                                </tr>
-                                <template ngIf="hasRows">
-
-                                    <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                        (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                                        <!--rowSelection-->
-                                        <td *ngIf="rowSelection" class="ant-table-selection-column">
-                                            <span>
-                                              <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
-                                            <Radio *ngIf="rowSelection?.type==='radio'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
-                                            </span>
-                                        </td>
-                                        <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                                    </tr>
-                                </template>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div *ngIf="footer" class="ant-table-footer" [ngOut]="footer"></div>
-
-                </div>
-                <div *ngIf="fixLeft.length>0" class="ant-table-fixed-left">
-                    <ng-container *ngIf="scroll?.y==null">
-
-                        <table>
-                            <colgroup>
-                                <!--rowSelection-->
-                                <col *ngIf="rowSelection">
-                                <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                            </colgroup>
-                            <thead class="ant-table-thead">
-                                <tr>
-                                    <!--rowSelection-->
-                                    <th *ngIf="rowSelection" class="ant-table-selection-column">
-                                        <span>
-                                            <div class="ant-table-selection">
-                                                    <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
-                                            </div>
-                                         </span>
-                                    </th>
-                                    <th *ngFor="let col of fixLeft; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
-                                        [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
-                                        class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
-                                </tr>
-                            </thead>
-                            <tbody class="ant-table-tbody">
-                                <template ngIf="hasRows">
-                                    <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                        (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                                        <!--rowSelection-->
-                                        <td *ngIf="rowSelection" class="ant-table-selection-column">
-                                            <span>
-                                                <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
-                                                <Radio *ngIf="rowSelection?.type==='radio'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
-                                      
-                                            </span>
-                                        </td>
-                                        <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                                    </tr>
-                                </template>
-                            </tbody>
-                        </table>
-
-
-                    </ng-container>
-                    <ng-container *ngIf="scroll?.y!=null">
-                        <div class="ant-table-header">
-                            <table class="ant-table-fixed">
-                                <colgroup>
-                                    <!--rowSelection-->
-                                    <col *ngIf="rowSelection">
-                                    <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                                </colgroup>
-                                <thead class="ant-table-thead">
-                                    <tr>
-                                        <!--rowSelection-->
-                                        <th *ngIf="rowSelection" class="ant-table-selection-column">
-                                            <span>
-                                            <div class="ant-table-selection">
-                                                    <Check [checked]="Allchecked" [indeterminate]="indeterminate" (checkedChange)="headCheckedChange($event)"></Check>
-                                            </div>
-                                         </span>
-                                        </th>
-                                        <th *ngFor="let col of fixLeft; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
-                                            [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
-                                            class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="ant-table-body-outer" [ngStyle]="scrollbarWidthStyle">
-                            <div class="ant-table-body-inner" [ngStyle]="innerStyle" #LeftTpl (mouseenter)="select($event)" (click)="select($event)">
-                                <table class="ant-table-fixed">
-                                    <colgroup>
-                                        <!--rowSelection-->
-                                        <col *ngIf="rowSelection">
-                                        <col *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                                    </colgroup>
-                                    <tbody class="ant-table-tbody">
-
-                                        <template ngIf="hasRows">
-                                            <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                                (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                                                <!--rowSelection-->
-                                                <td *ngIf="rowSelection" class="ant-table-selection-column">
-                                                    <span>
-                                            <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
-                                            <Radio *ngIf="rowSelection?.type==='radio'"  [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Radio>
-                                      
-                                            </span>
-                                                </td>
-                                                <td *ngFor="let col of fixLeft; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </div>
-                    </ng-container>
-                </div>
-
-                <div *ngIf="fixRight.length>0" class="ant-table-fixed-right">
-
-                    <ng-container *ngIf="scroll?.y==null">
-
-                        <table>
-                            <colgroup>
-                                <col *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                            </colgroup>
-                            <thead class="ant-table-thead">
-                                <tr>
-                                    <th *ngFor="let col of fixRight; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
-                                        [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
-                                        class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
-                                </tr>
-                            </thead>
-                            <tbody class="ant-table-tbody">
-                                <template ngIf="hasRows">
-                                    <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                        (mouseleave)="hover(false,i)" class="abc ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                                        <td *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                                    </tr>
-                                </template>
-                            </tbody>
-                        </table>
-
-
-                    </ng-container>
-
-                    <ng-container *ngIf="scroll?.y!=null">
-                        <div class="ant-table-header">
-                            <table class="ant-table-fixed">
-                                <colgroup>
-                                    <col *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                                </colgroup>
-                                <thead class="ant-table-thead">
-                                    <tr>
-                                        <th *ngFor="let col of fixRight; trackBy:columnTrackBy" datatatable-head [heading]="col.heading" [headingTpl]="col.headingTpl?.templateRef"
-                                            [sortable]="col.sortable" [sortOrder]="getColumnSortOrder(col)" (onSort)="onColumnSort(col, $event)"
-                                            class="{{col.key==sort.key?'ant-table-column-sort':''}}" [ngClass]="col.headClass"></th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="ant-table-body-outer" [ngStyle]="scrollbarWidthStyle">
-                            <div class="ant-table-body-inner" [ngStyle]="innerStyle" #RightTpl (mouseenter)="select($event)" (click)="select($event)">
-                                <table class="ant-table-fixed">
-                                    <colgroup>
-                                        <col *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
-                                    </colgroup>
-                                    <tbody class="ant-table-tbody">
-
-                                        <template ngIf="hasRows">
-                                            <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                                                (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                                                <td *ngFor="let col of fixRight; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </div>
-                    </ng-container>
-                </div>
-                <Pagination *ngIf="pagination" [size]="PaginationSize" [showQuickJumper]="showQuickJumper" className="ant-table-pagination"
-                    [total]="data?.length" [showTotal]="showTotal" [pageSizeData]="pagination.pageSizeData" size="pagination.size"
-                    [current]="current" [pageSize]="pageSize" (onChange)="pageChange($event)"></Pagination>
-            </div>
-        </div>
-    </div>
-</Spin>
