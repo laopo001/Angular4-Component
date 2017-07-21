@@ -40,7 +40,7 @@ export class TableDemoComponent implements OnInit {
 		pageSizeData: [10, 20, 50, 100]
 	}
 	scroll: any = { y: 400 }
-	scroll2: any = { x: 2400, y: 400 }
+	scroll2: any = { x: 2400, y: 300 }
 	sort = { key: 'age', order: 'asc' };
 	onSort($event: any) {
 		const { key, order } = $event;

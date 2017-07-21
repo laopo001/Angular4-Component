@@ -18,14 +18,20 @@ export class datatable implements OnChanges {
   Allchecked = false;
   indeterminate = false;
   selects = [];
-  ngOnInit() {
-    waining(this.rowKey == null, 'rowKey是必须的。')
+
+  get fixedStyle() {
+    if (this.scroll && this.scroll.x) {
+      return { width: this.scroll.x + 'px' }
+    } else {
+      return {}
+    }
   }
+
+  scrollbarWidth = measureScrollbar();
   get scrollbarWidthStyle() {
-    const scrollbarWidth = measureScrollbar();
-    if (scrollbarWidth > 0) {
+    if (this.scrollbarWidth > 0) {
       return {
-        [`margin-bottom`]: `-${scrollbarWidth}px`,
+        [`margin-bottom`]: `-${this.scrollbarWidth}px`,
         [`padding-bottom`]: `0px`
       }
     } else {
@@ -187,16 +193,9 @@ export class datatable implements OnChanges {
   @Input() bordered = false;
   @Input() striped = true;
   @Input() scroll: any = false
-  get fixedStyle() {
-    if (this.scroll.x == null) {
-      return {}
-    } else {
-      return { width: this.scroll.x + 'px' }
-    }
 
-  }
   get bodyStyle() {
-    return { maxHeight: this.scroll.y + 'px', overflowY: 'scroll', overflowX: 'auto' }
+    return { maxHeight: this.scroll.y + 'px', overflowY: 'scroll', overflowX: 'auto', zIndex: 0 }
   }
 
   @Input() sort: INglDatatableSort = { key: '', order: 'asc' };
@@ -242,8 +241,9 @@ export class datatable implements OnChanges {
 
   private _columnsSubscription: Subscription;
 
-  constructor(private detector: ChangeDetectorRef, element: ElementRef, renderer: Renderer) {
+  constructor(private detector: ChangeDetectorRef, element: ElementRef, private renderer: Renderer) {
     // renderer.setElementClass(element.nativeElement, 'slds-table', true);
+
   }
 
   columnTrackBy(index: number, column: NglDatatableColumn) {
@@ -348,14 +348,20 @@ export class datatable implements OnChanges {
     }
 
   }
+  ngOnInit() {
+    waining(this.rowKey == null, 'rowKey是必须的。')
 
+  }
+  lastScrollLeft = 0;
   ngAfterViewInit() {
 
     if (this.scrollTpl != null) {
+
+      //    this.renderer.setElementStyle(this.scrollTpl.nativeElement, 'overflow', 'hidden')
+      // this.renderer.listen(this.scrollTpl.nativeElement,'scroll', (e: any) => {
       this.scrollTpl.nativeElement.addEventListener('scroll', (e: any) => {
-        if (e.currentTarget != this.currScroll) { return; }
-        let left = this.scrollTpl.nativeElement.scrollLeft;
-        if (this.scrollHeaderTpl != null) {
+        let left = e.currentTarget.scrollLeft;
+        if (this.scrollHeaderTpl != null && left != this.lastScrollLeft) {
           this.scrollHeaderTpl.nativeElement.scrollLeft = left;
         }
         if (left == 0) {
@@ -367,8 +373,10 @@ export class datatable implements OnChanges {
         if (left >= this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth && left > 0) {
           this.position = 'right'
         }
+
+        if (e.currentTarget != this.currScroll) { return; }
         //console.log(left, this.scrollTpl.nativeElement.scrollWidth - this.scrollTpl.nativeElement.offsetWidth)
-        let top = this.scrollTpl.nativeElement.scrollTop;
+        let top = e.currentTarget.scrollTop;
 
 
         if (this.RightTpl != null) {
@@ -377,6 +385,7 @@ export class datatable implements OnChanges {
         if (this.LeftTpl != null) {
           this.LeftTpl.nativeElement.scrollTop = top;
         }
+        this.lastScrollLeft = e.currentTarget.scrollLeft;
         //console.log(top,left,e.currentTarget)
 
       }, false)
