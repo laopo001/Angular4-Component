@@ -1,9 +1,9 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, Output, EventEmitter, ContentChildren, QueryList, ViewChildren, OnChanges, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild, Output, EventEmitter, TemplateRef, ContentChildren, QueryList, ViewChildren, OnChanges, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 // import KeyCode from 'rc-util/lib/KeyCode';
 import { Trigger } from '../trigger/';
 
 import Option from './option.component';
-import { contains, stopDefault, stopBubble, waining, toWidth } from '../util/util';
+import { contains, stopDefault, stopBubble, waining, toWidth, format, toBoolean } from '../util/util';
 
 type Size = 'large' | 'small' | 'default';
 
@@ -14,12 +14,15 @@ type Size = 'large' | 'small' | 'default';
 })
 export default class Select implements OnInit {
     @ViewChild('content') content: ElementRef;
+    @ViewChild('tip') tip: TemplateRef<any>;
+
     @ViewChild('inputSearch') inputSearch: ElementRef;
     @ViewChild(Trigger) Trigger: Trigger;
-    @Input() showSearch: any = null;
+    @Input() @format(toBoolean) showSearch: boolean = false;
+    @Input() @format(toBoolean) disabled: boolean = false;
     @Input() className: string = '';
     @Input() placeholder: string = '';
-    @Input() width: any = '';
+    @Input() width: any = '80';
     @Input() data: any[] = [];
     _data: any[] = [];
     @Input() size: Size = 'default'
@@ -41,14 +44,16 @@ export default class Select implements OnInit {
         //  this.width = parseInt(this.width);
     }
     onClick(e: any) {
+        if (this.disabled) { return; }
         this.opened = !this.opened;
         this.focused = !this.focused;
 
-        if (this.opened && (this.showSearch || this.showSearch == '')) {
+        if (this.opened && (this.showSearch)) {
             setTimeout(() => {
                 this.inputSearch.nativeElement.focus();
             })
         }
+
     }
     _searchValue = "";
     get searchValue() {
@@ -94,7 +99,7 @@ export default class Select implements OnInit {
     }
 
     get SearchStyle() {
-        if (this.showSearch || this.showSearch == '') {
+        if (this.showSearch) {
             if (this.opened) {
                 return { display: 'block' }
             } else {
@@ -104,7 +109,7 @@ export default class Select implements OnInit {
         return { display: 'none' }
     }
     get valueStyle() {
-        if (this.showSearch || this.showSearch == '') {
+        if (this.showSearch) {
             if (this.opened) {
                 return { display: 'block', opacity: 0.4 }
             } else {
@@ -121,7 +126,8 @@ export default class Select implements OnInit {
             [`ant-select-sm`]: this.size === 'small',
             [`ant-select-open`]: this.opened,
             [`ant-select-focused`]: this.focused,
-            [`ant-select-enabled`]: true,
+            [`ant-select-enabled`]: !this.disabled,
+            [`ant-select-disabled`]: this.disabled,
             [`${this.className}`]: !!this.className,
         }
         //   return `${this.sizeClass}${!this.opened ? '' : ' ant-select-open'}${!this.focused ? '' : ' ant-select-focused'} ant-select-enabled${' ' + this.className}`;
@@ -131,7 +137,7 @@ export default class Select implements OnInit {
         this.onChange.emit(x.value);
         this.valueChange.emit(x.value);
         this.opened = false;
-
+        this.searchValue = ''
         setTimeout(() => {
             this.focused = true
         });
@@ -160,7 +166,8 @@ export default class Select implements OnInit {
                 x.selected = false;
             }
             x.cdRef.markForCheck()
-            x.click = this.childClick.bind(this, x)
+            x.onClick.subscribe(this.childClick.bind(this, x))
+            //  x.click = this.childClick.bind(this, x)
             return x;
         })
 

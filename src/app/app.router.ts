@@ -6,6 +6,8 @@ import Page3Component from './pages/page3/page3.component'
 import { TableDemoComponent } from './pages/table/demo.component'
 import { CheckboxDemoComponent } from './pages/checkbox/demo.component'
 import { InputDemoComponent } from './pages/input/demo.component'
+import { SelectDemoComponent } from './pages/select/demo.component'
+
 
 export const ROUTES: Routes = [{
     path: 'page1',
@@ -25,4 +27,7 @@ export const ROUTES: Routes = [{
 }, {
     path: 'input',
     component: InputDemoComponent
+}, {
+    path: 'select',
+    component: SelectDemoComponent
 }];

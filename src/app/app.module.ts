@@ -12,7 +12,7 @@ import Page3Component from './pages/page3/page3.component'
 import { TableDemoComponent } from './pages/table/demo.component'
 import { CheckboxDemoComponent } from './pages/checkbox/demo.component'
 import { InputDemoComponent } from './pages/input/demo.component'
-
+import { SelectDemoComponent } from './pages/select/demo.component'
 import { AppComponent } from './app.component';
 import { message } from './ac/message/'
 
@@ -28,7 +28,7 @@ import { ROUTES } from './app.router'
         }), BrowserAnimationsModule
     ],
     declarations: [
-        AppComponent, Page1Component, Page2Component, Page3Component, message, TableDemoComponent, CheckboxDemoComponent, InputDemoComponent
+        AppComponent, Page1Component, Page2Component, Page3Component, message, TableDemoComponent, CheckboxDemoComponent, InputDemoComponent,SelectDemoComponent
     ],
 
     bootstrap: [AppComponent]

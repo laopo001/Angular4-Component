@@ -3,7 +3,7 @@
         <div style="overflow: auto;">
             <ul class="ant-select-dropdown-menu ant-select-dropdown-menu-vertical  ant-select-dropdown-menu-root" role="menu">
                 <ng-content></ng-content>
-                <acOption *ngFor="let item of _data" [value]="item.value" [label]="item.label" (click)="childClick(item)" [selected]="item.selected"></acOption>
+                <acOption *ngFor="let item of _data" [value]="item.value" [label]="item.label"  (onClick)="childClick(item)" [disabled]="item.disabled" [selected]="item.selected"></acOption>
             </ul>
         </div>
     </div>
@@ -14,7 +14,7 @@
         <div class="ant-select-selection__rendered">
             <div *ngIf="value==null&&searchValue==''" unselectable="unselectable" class="ant-select-selection__placeholder" style="display: block; user-select: none;">{{placeholder}}</div>
             <div *ngIf="value!=null&&searchValue==''" class="ant-select-selection-selected-value" title="{{selectLabel}}" [ngStyle]="valueStyle">{{selectLabel}}</div>
-            <div *ngIf="showSearch||showSearch==''" class="ant-select-search ant-select-search--inline" [ngStyle]="SearchStyle">
+            <div *ngIf="showSearch" class="ant-select-search ant-select-search--inline" [ngStyle]="SearchStyle">
                 <div class="ant-select-search__field__wrap"><input #inputSearch [(ngModel)]="searchValue"  (click)="inputSearchClick($event)" class="ant-select-search__field"><span class="ant-select-search__field__mirror">&nbsp;</span></div>
             </div>
         </div>

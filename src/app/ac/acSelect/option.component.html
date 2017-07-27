@@ -1,4 +1,4 @@
-<li (click)="click($event)" unselectable="unselectable" [class]="Tclass" role="menuitem" aria-selected="false" style="user-select: none;">    
+<li (click)="click($event)" unselectable="unselectable" [ngClass]="Tclass" role="menuitem" aria-selected="false" style="user-select: none;">    
     {{label}}
     <ng-content></ng-content>
 </li>
