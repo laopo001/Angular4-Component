@@ -1,0 +1,71 @@
+<strong>基本用法</strong>
+<acInput size="small" value="mysite" placeholder="mysite"></acInput>
+<acInput  value="mysite" placeholder="mysite"></acInput>
+<acInput size="large" disabled value="mysite" placeholder="mysite"></acInput>
+
+<div style="margin-top:10px"></div>
+<strong>事件valueChange|onEnter(回车触发)|debounceChange(防抖)|throttleChange(节流)--(默认1s)</strong>
+
+<acInput [(value)]="value1" (valueChange)="valueChange()" (onEnter)="onEnter()" (debounceChange)="debounceChange()" (throttleChange)="throttleChange()"
+    placeholder="请输入"></acInput>
+
+<div style="margin-top:10px"></div>
+
+<strong>前置/后置标签</strong>
+<div style="margin-top:10px"></div>
+
+<acInput addonAfter=".com" addonBefore="http:" value="mysite" placeholder="mysite"></acInput>
+<div style="margin-top:10px"></div>
+<template #addonBefore>
+    <acSelect [(value)]="Value">
+        <acOption value="http" label="http:"></acOption>
+        <acOption value="https" label="https:"></acOption>
+    </acSelect>
+</template>
+<template #addonAfter>
+    <acSelect [(value)]="Value2">
+        <acOption value=".com" label=".com"></acOption>
+        <acOption value=".jp" label=".jp"></acOption>
+        <acOption value=".cn" label=".cn"></acOption>
+    </acSelect>
+</template>
+<acInput [addonBefore]="addonBefore" [addonAfter]="addonAfter" placeholder="请输入"></acInput>
+<div style="margin-top:10px"></div>
+<template #search>
+    <Icon type="search"></Icon>
+</template>
+<acInput [addonAfter]="search" placeholder="请输入"></acInput>
+
+
+<div style="margin-top:10px"></div>
+<strong>前缀和后缀</strong>
+<template #prefix>
+    <Icon type="search"></Icon>
+</template>
+<template #suffix>
+    <Icon type="close-circle" (click)="searchInput=''"></Icon>
+</template>
+
+<acInput [prefix]="prefix" [suffix]="searchInput?suffix:null" [(value)]="searchInput" placeholder="请输入"></acInput>
+
+<div style="margin-top:10px"></div>
+
+<div style="margin-top:50px"></div>
+<strong>固定3行高度的文本域(大于3滚动显示)</strong>
+<acTextArea placeholder="请输入描述" row="3"></acTextArea>
+<strong>自动调整高度的文本域(最小2，最大3，大于3滚动显示)</strong>
+<acTextArea placeholder="请输入描述" [autosize]="{minRows:2,maxRows:3}"></acTextArea>
+<div style="margin-top:50px"></div>
+<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="acInput">
+    <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
+    <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
+    <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
+    <acTable-column [width]='200' heading="默认值" key="dValue"></acTable-column>
+</acTable>
+<div style="margin-top:10px"></div>
+<acTable size="small" [data]="data2" rowKey="id" [pagination]='false' header="acTextArea">
+    <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
+    <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
+    <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
+    <acTable-column [width]='200' heading="默认值" key="dValue"></acTable-column>
+</acTable>

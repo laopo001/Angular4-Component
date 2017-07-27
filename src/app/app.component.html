@@ -1,2 +1,31 @@
-<router-outlet></router-outlet>
+<header style="min-height:51px;background:#2e2c2c">
+    <div style="padding:5px;color:#3aa597;font-size:28px;">Angular4 Component</div>
+</header>
+<main>
+    <Row>
+        <RCol span="5">
+            <ul class="ant-menu ant-menu-inline  ant-menu-dark ant-menu-root" role="menu" aria-activedescendant="" tabindex="0" style="width: 100%;min-height:800px;">
+                <li class="ant-menu-submenu-inline ant-menu-submenu-open  ant-menu-submenu">
+                    <div class="ant-menu-submenu-title" aria-expanded="true" aria-owns="sub1$Menu" aria-haspopup="true" style="padding-left: 24px;"><span><i class="anticon anticon-appstore"></i><span>Component</span></span>
+                    </div>
+                    <ul class="ant-menu ant-menu-inline ant-menu-sub" role="menu" aria-activedescendant="">
+                        <li class="ant-menu-item" role="menuitem" aria-selected="false" style="padding-left: 48px;" *ngFor="let item of ROUTES" [routerLink]="['/'+ item.path]">{{item?.path}}</li>
+                    </ul>
+                </li>
+
+
+            </ul>
+        </RCol>
+        <RCol span="19">
+            <div style="padding:30px;">
+                <router-outlet></router-outlet>
+            </div>
+
+        </RCol>
+    </Row>
+
+
+
+</main>
+
 <Message></Message>

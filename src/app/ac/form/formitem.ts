@@ -157,7 +157,8 @@ export class FormItemComponent implements OnInit {
                 resolve(this.validateStatus);
                 return;
             }
-            if (this.descriptor.type === 'async') {
+
+            if (this.descriptor.type === 'custom') {
                 let cb = (res) => {
                     if (res) {
                         this.validateStatus = 'success';
@@ -168,11 +169,12 @@ export class FormItemComponent implements OnInit {
                     resolve(this.validateStatus)
                 }
                 this.validateStatus = 'validating';
-                this.descriptor.validate(cb,Schema)
+                this.descriptor.validate(cb, value, Schema)
             } else {
+
                 if (this.CurrContent[this.valuePropName] == null) return;
-                let schema = new Schema(Object.assign({ type: 'string', require: true }, this.descriptor))
-                let source = value || this.CurrContent[this.valuePropName];;
+                let schema = new Schema(Object.assign({ type: 'string', }, this.descriptor))
+                let source = value || this.CurrContent[this.valuePropName];
                 schema.validate(source, (err, res) => {
                     if (err) {
                         throw err;
@@ -197,7 +199,10 @@ export class FormItemComponent implements OnInit {
     ngAfterContentInit() {
         if (this.async != null) {
             this.async.subscribe((x) => {
-                this.validate()
+                setTimeout(() => {
+                    this.validate()
+                })
+
             })
             return;
         }

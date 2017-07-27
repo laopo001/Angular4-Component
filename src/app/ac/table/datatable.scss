@@ -605,3 +605,7 @@
 .ant-table-small .ant-table-header > table, .ant-table-small .ant-table-body > table{
     padding: 0 0px; 
 }
+
+.ant-table-small .ant-table-title, .ant-table-small .ant-table-footer, .ant-table-small .ant-table-thead > tr > th {
+    padding: 10px 8px;
+}

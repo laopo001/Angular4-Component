@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, QueryList, ContentChildren } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter, QueryList, ContentChildren } from '@angular/core';
 
 import { CheckBox } from './checkbox'
 @Component({
@@ -8,7 +8,7 @@ import { CheckBox } from './checkbox'
     </div>`,
 })
 // @classDecorator
-export class CheckBoxGroup implements OnInit {
+export class CheckBoxGroup implements OnChanges {
     @ContentChildren(CheckBox) CheckBoxs: QueryList<CheckBox>;
     @Input() style: any = {};
 
@@ -25,9 +25,7 @@ export class CheckBoxGroup implements OnInit {
     @Input() options: string[];
     @Output() onChange = new EventEmitter();
     @Output() valueChange = new EventEmitter();
-    ngOnInit() {
 
-    }
 
     childClick(x) {
         if (x.checked) {
@@ -44,6 +42,7 @@ export class CheckBoxGroup implements OnInit {
     }
 
     Init() {
+        
         if (this.CheckBoxs == null) return;
         this.CheckBoxs.forEach((x: any) => {
             if (this.value.indexOf(x.value) > -1) {
@@ -56,7 +55,7 @@ export class CheckBoxGroup implements OnInit {
 
     ngAfterContentInit() {
         if (this.CheckBoxs == null) return;
-
+        
         this.CheckBoxs.forEach((x: any) => {
             if (this.value.indexOf(x.value) > -1) {
                 x.checked = true;

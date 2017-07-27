@@ -1,15 +1,16 @@
-import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter, ViewChild,ChangeDetectionStrategy,ChangeDetectorRef ,ElementRef} from '@angular/core';
 
 import { toBoolean,format } from '../util/util'
 
 @Component({
     selector: 'Check',
     templateUrl: './checkbox.html',
-    styleUrls: ['./checkbox.scss']
+//    styleUrls: ['./checkbox.scss'],
+    changeDetection:ChangeDetectionStrategy.OnPush
 })
-export class CheckBox implements OnInit {
+export class CheckBox implements OnChanges {
     @Input() @format(toBoolean) disabled: boolean = false;
-    @Input() value: any =[];
+    @Input() value: any ;
     
     @Input() @format(toBoolean) checked: boolean = false;
     @Input() className: string;
@@ -23,24 +24,24 @@ export class CheckBox implements OnInit {
         this.onChange.emit(!this.checked)
     }
     ngOnChanges(changes: any) {
-    
         // this.checked = toBoolean(this.checked)
         // this.disabled = toBoolean(this.disabled)
+        //this.cdRef.markForCheck();
     }
-    ngOnInit() {
+    constructor(private cdRef: ChangeDetectorRef,private element: ElementRef){
+        
     }
     get currClasses() {
         return {
             [`ant-checkbox`]: true,
             [`ant-checkbox-disabled`]: this.disabled,
             [`ant-checkbox-checked`]: this.checked,
-            [`ant-checkbox-indeterminate`]: (!this.checked && this.indeterminate),
+            [`ant-checkbox-indeterminate`]: (this.indeterminate),
             [`${this.className}`]: !!this.className
         }
     };
 
     ngAfterContentInit() {
-
         this.show_ngContent = this.ngContent.nativeElement.childNodes.length > 0;
     }
 

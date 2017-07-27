@@ -2,13 +2,14 @@
 
 <template #getColGroup let-columns="columns" let-showSelect="showSelect">
     <colgroup>
+        <col *ngIf="showSelect&&expandedRow" class="ant-table-expand-icon-col">
         <col *ngIf="showSelect&&rowSelection">
         <col *ngFor="let col of columns; trackBy:columnTrackBy" [ngStyle]="colgroupStyle(col)">
     </colgroup>
 </template>
 
 <template #HeadRowSelection>
-
+    <th *ngIf="expandedRow" class="ant-table-expand-icon-th" title="" rowspan="1"></th>
     <th *ngIf="rowSelection" class="ant-table-selection-column">
         <span>
                 <div  class="ant-table-selection">
@@ -19,6 +20,7 @@
 </template>
 
 <template #BodyRowSelection let-d="d">
+    <td *ngIf="expandedRow" class="ant-table-row-expand-icon-cell"><span [(open)]="d.__expandedRow__" expandedRow></span></td>
     <td *ngIf="rowSelection" class="ant-table-selection-column">
         <span>
                           <Check *ngIf="rowSelection?.type==='checkbox'" [disabled]="d.__disabled__" [(checked)]="d.__checked__" (checkedChange)="cellCheckedChange($event,d)"></Check>
@@ -39,7 +41,8 @@
 </template>
 
 <template #tableHeader2 let-columns="columns" let-fixed="fixed" let-showSelect="showSelect">
-    <div class="ant-table-header" [ngStyle]="!fixed?scrollbarWidthStyle:{}" #scrollHeaderTpl >
+    <div class="ant-table-header" [ngStyle]="!fixed?scrollbarWidthStyle:{}" #scrollHeaderTpl (mouseenter)="select($event,fixed)"
+        (touchstart)="select($event)">
         <table class="{{scroll?.x?'ant-table-fixed':''}}" [ngStyle]="!fixed?fixedStyle:{}">
             <template [ngTemplateOutlet]="getColGroup" [ngOutletContext]="{ columns: columns,showSelect:showSelect }"></template>
             <thead class="ant-table-thead">
@@ -55,40 +58,60 @@
     </div>
 </template>
 
-<template #tableBody let-columns="columns" let-showSelect="showSelect">
+<template #tableBody let-cols="columns" let-showSelect="showSelect">
     <tbody class="ant-table-tbody">
         <tr *ngIf="!hasRows">
-            <td [attr.colspan]="columns.length">
+            <td [attr.colspan]="this.cols.length+otherLength">
                 <template [ngTemplateOutlet]="noRowsOverlay?.templateRef||NoData"></template>
             </td>
         </tr>
         <template ngIf="hasRows">
-            <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                <template *ngIf="showSelect" [ngTemplateOutlet]="BodyRowSelection" [ngOutletContext]="{ d: d }"></template>
+            <ng-container *ngFor="let d of _data; let i = index; trackBy:dataTrackBy">
+                <tr (mouseenter)="hover(true,i)" (mouseleave)="hover(false,i)" [ngClass]="getRowClass(d,i)">
+                    <template *ngIf="showSelect" [ngTemplateOutlet]="BodyRowSelection" [ngOutletContext]="{ d: d }"></template>
 
-                <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-            </tr>
+                    <td *ngFor="let col of cols; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
+                </tr>
+                <tr *ngIf="d.__expandedRow__" class="ant-table-expanded-row">
+                    <td *ngIf="showSelect"><span class="ant-table-expanded-row-indent"></span>
+                        <!-- react-empty: 5941 -->
+                    </td>
+                    <td [ngClass]="expandedRow?.className" [attr.colspan]="this.cols.length+otherLength-1">
+                        <template [ngTemplateOutlet]="expandedRow?.templateRef" [ngOutletContext]="{ row: d ,index:i}"></template>
+                    </td>
+                </tr>
+            </ng-container>
+
+
         </template>
     </tbody>
 </template>
-<template #tableBody2 let-columns="columns" let-fixed="fixed" let-showSelect="showSelect">
-    <div class="ant-table-body" [ngStyle]="!fixed?bodyStyle:{}" #scrollTpl  (mouseenter)="select($event)">
+<template #tableBody2 let-cols="columns" let-fixed="fixed" let-showSelect="showSelect">
+    <div class="ant-table-body" [ngStyle]="!fixed?bodyStyle:{}" #scrollTpl (mouseenter)="select($event,fixed)" (touchstart)="select($event)">
         <table class="{{scroll?.x?'ant-table-fixed':''}}" [ngStyle]="!fixed?fixedStyle:{}">
-            <template [ngTemplateOutlet]="getColGroup" [ngOutletContext]="{ columns: columns,showSelect:showSelect  }"></template>
+            <template [ngTemplateOutlet]="getColGroup" [ngOutletContext]="{ columns: cols,showSelect:showSelect  }"></template>
             <tbody class="ant-table-tbody">
                 <tr *ngIf="!hasRows">
-                    <td [attr.colspan]="columns.length">
+                    <td [attr.colspan]="this.cols.length+otherLength">
                         <template [ngTemplateOutlet]="noRowsOverlay?.templateRef||NoData"></template>
                     </td>
                 </tr>
                 <template ngIf="hasRows">
-                    <tr *ngFor="let d of _data; let i = index; trackBy:dataTrackBy" (click)="rowClick($event, d)" (mouseenter)="hover(true,i)"
-                        (mouseleave)="hover(false,i)" class="ant-table-row{{hoverKey===i?' ant-table-row-hover':''}}">
-                        <template *ngIf="showSelect" [ngTemplateOutlet]="BodyRowSelection" [ngOutletContext]="{ d: d }"></template>
+                    <ng-container *ngFor="let d of _data; let i = index; trackBy:dataTrackBy">
+                        <tr (mouseenter)="hover(true,i)" (mouseleave)="hover(false,i)" [ngClass]="getRowClass(d,i)">
+                            <template *ngIf="showSelect" [ngTemplateOutlet]="BodyRowSelection" [ngOutletContext]="{ d: d }"></template>
 
-                        <td *ngFor="let col of columns; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
-                    </tr>
+                            <td *ngFor="let col of cols; trackBy:columnTrackBy" [ngClass]="col.cellClass" table-cell [row]="d" [column]="col" [index]="i"></td>
+                        </tr>
+                        <tr *ngIf="d.__expandedRow__" class="ant-table-expanded-row">
+                            <td *ngIf="showSelect"><span class="ant-table-expanded-row-indent"></span>
+                            </td>
+                            <td [ngClass]="expandedRow?.className" [attr.colspan]="this.cols.length+otherLength-1">
+                                <template *ngIf="cols==columns" [ngTemplateOutlet]="expandedRow?.templateRef" [ngOutletContext]="{ row: d ,index:i}"></template>
+                                <ng-container *ngIf="cols!=columns">&nbsp;</ng-container>
+                            </td>
+                        </tr>
+                    </ng-container>
                 </template>
             </tbody>
         </table>
@@ -120,12 +143,12 @@
         <!-- <ng-container *ngIf="scroll?.y==null">
             <template *ngIf="!scroll" [ngTemplateOutlet]="table" [ngOutletContext]="{ columns: columns,showSelect:showSelect }"></template>
         </ng-container> -->
-        <ng-container >
+        <ng-container>
             <div class="ant-table-header">
                 <template [ngTemplateOutlet]="tableHeader2" [ngOutletContext]="{ columns: columns,fixed:true,showSelect:showSelect }"></template>
             </div>
             <div class="ant-table-body-outer" [ngStyle]="scrollbarWidthStyle">
-                <div class="ant-table-body-inner" [ngStyle]="innerStyle" #LeftTpl  (mouseenter)="select($event)" (click)="select($event)">
+                <div class="ant-table-body-inner" [ngStyle]="innerStyle" #LeftTpl (mouseenter)="select($event)" (touchstart)="select($event)">
                     <template [ngTemplateOutlet]="tableBody2" [ngOutletContext]="{ columns: columns,fixed:true ,showSelect:showSelect}"></template>
                 </div>
             </div>
@@ -142,7 +165,7 @@
                 <template [ngTemplateOutlet]="tableHeader2" [ngOutletContext]="{ columns: columns,fixed:true,showSelect:showSelect }"></template>
             </div>
             <div class="ant-table-body-outer" [ngStyle]="scrollbarWidthStyle">
-                <div class="ant-table-body-inner" [ngStyle]="innerStyle"  #RightTpl (mouseenter)="select($event)" (click)="select($event)">
+                <div class="ant-table-body-inner" [ngStyle]="innerStyle" #RightTpl (mouseenter)="select($event)" (touchstart)="select($event)">
 
                     <template [ngTemplateOutlet]="tableBody2" [ngOutletContext]="{ columns: columns,fixed:true ,showSelect:showSelect}"></template>
                 </div>

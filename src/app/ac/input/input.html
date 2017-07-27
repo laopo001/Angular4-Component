@@ -1,5 +1,5 @@
 <template #input>
-    <input type="text" [(ngModel)]="_value" placeholder={{placeholder}} [ngStyle]="style" [disabled]="toBoolean(disabled)" [ngClass]="inputClass" (keyup.enter)="_onEnter()">
+    <input  [attr.type]="type" [(ngModel)]="_value" placeholder={{placeholder}}  [disabled]="disabled"  [ngClass]="inputClass" (keyup.enter)="_onEnter()">
 </template>
 
 <template #inputPrefix>

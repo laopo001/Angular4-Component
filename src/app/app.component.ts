@@ -1,5 +1,5 @@
 import { Component, ViewChild, TemplateRef, OnInit, ElementRef } from '@angular/core';
-
+import { ROUTES } from './app.router'
 
 @Component({
   selector: 'my-app',
@@ -8,5 +8,5 @@ import { Component, ViewChild, TemplateRef, OnInit, ElementRef } from '@angular/
   styleUrls: ['./app.component.css']
 })
 export class AppComponent  {
-
+   ROUTES=ROUTES;
 }

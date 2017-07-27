@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, ElementRef, ViewChild, TemplateRef, Output, EventEmitter, ContentChildren, QueryList, HostBinding } from '@angular/core';
-import { contains, stopDefault, stopBubble, toBoolean } from '../util/util';
+import { Component, Input, OnChanges, ElementRef, ViewChild, TemplateRef, Output, EventEmitter, ContentChildren, QueryList, HostBinding,ChangeDetectionStrategy } from '@angular/core';
+import { contains, stopDefault, stopBubble, toBoolean, format } from '../util/util';
 var classnames = require('classnames');
 import calculateNodeHeight from './calculateNodeHeight';
 
@@ -11,8 +11,9 @@ export interface AutoSizeType {
 
 @Component({
     selector: 'acTextArea',
-    template: `<textarea #textAreaRef [(ngModel)]="_value" [ngStyle]="textareaStyles" [ngClass]="inputClass" placeholder={{placeholder}}>{{value}}</textarea>
+    template: `<textarea #textAreaRef [(ngModel)]="_value" [ngStyle]="textareaStyles" [disabled]="disabled" [ngClass]="inputClass" placeholder={{placeholder}}>{{value}}</textarea>
     `,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class acTextArea implements OnChanges {
     @Input() placeholder: string;
@@ -20,11 +21,11 @@ export class acTextArea implements OnChanges {
     @Input() row: number = 1;
     @Output() onEnter = new EventEmitter<string>();
     @ViewChild('textAreaRef') textAreaRef: ElementRef;
-
+    @Input() @format(toBoolean) disabled: any = false;
     get inputClass() {
-        return {
+        return classnames({
             [`ant-input`]: true,
-        }
+        })
     }
 
 
@@ -56,24 +57,25 @@ export class acTextArea implements OnChanges {
         this.onEnter.emit(this._value);
     }
 
-    __value='';
-    set _value(x){
-        this.__value=x;
+    __value = '';
+    set _value(x) {
+        if (x === this.__value) { return; }
+        this.__value = x;
         this.valueChange.emit(x);
     }
-    get _value(){
+    get _value() {
         return this.__value;
     }
 
     @Input()
-    set value(x){
-        this.__value=x;
-      //  this.valueChange.emit(x);
+    set value(x) {
+        this.__value = x;
+        //  this.valueChange.emit(x);
     }
-    get value(){
+    get value() {
         return this.__value;
     }
-    
+
 
 
     @Input() className: string;

@@ -1,14 +1,14 @@
 import {Component, ChangeDetectionStrategy, Input, HostBinding, OnChanges} from '@angular/core';
-import {NglDatatableColumn} from './column';
+import {acTableColumn} from './column';
 
 @Component({
   selector: 'td[table-cell]',
   templateUrl: './_cell.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NglInternalDatatableCell implements OnChanges {
+export class _Cell implements OnChanges {
   @Input() row: any;
-  @Input() column: NglDatatableColumn;
+  @Input() column: acTableColumn;
   @Input() index: number;
 
   @HostBinding('attr.data-label')

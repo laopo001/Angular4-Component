@@ -8,4 +8,4 @@ import {ngOut} from './outlet';
   declarations: [ngOut],
   exports: [ngOut],
 })
-export class NglInternalOutletModule {}
+export class ngOutModule {}

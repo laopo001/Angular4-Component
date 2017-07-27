@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import LOCALE from './locale/zh_CN';
 
 function classNames(obj: Pagination) {
@@ -7,7 +7,7 @@ function classNames(obj: Pagination) {
 
     return {
         [`${prefixCls}`]: true,
-        'mini': size=='small',
+        'mini': size == 'small',
         [`${obj.className}`]: !!obj.className
     }
 }
@@ -15,18 +15,18 @@ function noop() {
 }
 
 
-type Size='small'|'default';
+type Size = 'small' | 'default';
 
 @Component({
     selector: 'Pagination',
     templateUrl: './pagination.component.html',
-
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Pagination implements OnInit {
 
 
 
-    @Input() size:Size ='default'
+    @Input() size: Size = 'default'
 
     @Input() total = 0;
 
@@ -37,7 +37,7 @@ export class Pagination implements OnInit {
     @Input() showTitle = true;
     @Input() onShowSizeChange = noop;
     @Input() locale = LOCALE;
-    @Input() showTotal: any=()=>{return ''};
+    @Input() showTotal: any = () => { return '' };
 
     @Input() defaultCurrent = 1;
     @Input() current: number;
@@ -95,7 +95,7 @@ export class Pagination implements OnInit {
     }
 
     ngOnInit() {
-        this._pageSize=this.pageSizeData.length>0?this.pageSizeData[0]:this._pageSize;
+        this._pageSize = this.pageSizeData.length > 0 ? this.pageSizeData[0] : this._pageSize;
         this._pageSize = this.defaultPageSize == null ? this._pageSize : this.defaultPageSize;
 
         this._current = this.defaultCurrent == null ? this._current : this.defaultCurrent;
@@ -115,9 +115,9 @@ export class Pagination implements OnInit {
         this.currClasses = classNames(this);
         this.showTotalClass = { [`${this.prefixCls}-total-text`]: true };
 
-        let currQ=(this._current - 1) * this._pageSize + 1> this.total ? this.total : (this._current - 1) * this._pageSize + 1;
-        if(currQ<0){
-            currQ=0;
+        let currQ = (this._current - 1) * this._pageSize + 1 > this.total ? this.total : (this._current - 1) * this._pageSize + 1;
+        if (currQ < 0) {
+            currQ = 0;
         }
 
         this.showTotalText = this.showTotal(
@@ -320,7 +320,7 @@ export class Pagination implements OnInit {
 
 
             this.currentChange.emit(page)
-            this.onChange.emit({current:page, pageSize });
+            this.onChange.emit({ current: page, pageSize });
             return page;
         }
 
@@ -334,9 +334,9 @@ export class Pagination implements OnInit {
         return Math.floor((this.total - 1) / pageSize) + 1;
     }
 
-    Count=0;
+    Count = 0;
     ngOnChanges(changes: any) {
-        if(this.Count==0){
+        if (this.Count == 0) {
             this.Count++;
             return;
         }

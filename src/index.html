@@ -5,93 +5,14 @@
   <base href="/">
   <title>Angular With Webpack</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="renderer" content="webkit" />
 </head>
 
 <body>
   <my-app>Loading...</my-app>
 </body>
-<!-- <script>
-  var currScroll = null;
-  function hover() {
-    currScroll = event.currentTarget;
-    console.log(currScroll)
-  }
-  window['hover'] = hover;
-  var scrollTpl = document.getElementById('scrollTpl')
-  var scrollHeaderTpl = document.getElementById('scrollHeaderTpl')
-  var RightTpl = document.getElementById('RightTpl')
-  var LeftTpl = document.getElementById('LeftTpl')
-
-  scrollTpl.onmouseover = hover;
-  scrollHeaderTpl.onmouseover = hover;
-  RightTpl.onmouseover = hover;
-  LeftTpl.onmouseover = hover;
-
-  scrollTpl.addEventListener('scroll',function (e){
-
-    let left = scrollTpl.scrollLeft;
-
-    if (left == 0) {
-      position = 'left'
-    }
-    if (left > 0 && left < scrollTpl.scrollWidth - scrollTpl.offsetWidth) {
-      position = 'middle'
-    }
-    if (left >= scrollTpl.scrollWidth - scrollTpl.offsetWidth && left > 0) {
-      position = 'right'
-    }
-    if (e.currentTarget != currScroll) { return; }
-    //console.log(left, scrollTpl.scrollWidth - scrollTpl.offsetWidth)
-    let top = scrollTpl.scrollTop;
-    console.log(top)
-
-    if (scrollHeaderTpl != null) {
-      scrollHeaderTpl.scrollLeft = left;
-    }
-    if (RightTpl != null) {
-      RightTpl.scrollTop = top;
-    }
-    if (LeftTpl != null) {
-      LeftTpl.scrollTop = top;
-    }
-
-
-    //console.log(top,left,e.currentTarget)
-
-  }, false)
-  if (RightTpl != null) {
-    RightTpl.addEventListener('scroll',function (e) {
-      if (e.currentTarget != currScroll) { return; }
-
-      let top = RightTpl.scrollTop;
-      if (scrollTpl != null) {
-        scrollTpl.scrollTop = top;
-      }
-      if (LeftTpl != null) {
-        LeftTpl.scrollTop = top;
-      }
-
-    }, false)
-  }
-  if (LeftTpl != null) {
-    LeftTpl.addEventListener('scroll',function (e) {
-      if (e.currentTarget != currScroll) { return; }
-
-      let top = LeftTpl.scrollTop;
-
-      if (scrollTpl != null) {
-        scrollTpl.scrollTop = top;
-      }
-      if (RightTpl != null) {
-        RightTpl.scrollTop = top;
-      }
-
-
-    }, false)
-  }
-
-</script> -->
 
 </html>

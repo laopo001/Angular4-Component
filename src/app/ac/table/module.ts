@@ -1,32 +1,32 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {NglInternalOutletModule} from '../util/outlet.module';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ngOutModule } from '../util/outlet.module';
 
-import {datatable as NglDatatable} from './datatable';
-import {NglDatatableColumn} from './column';
-import {NglDatatableCell} from './cell';
-import {NglDatatableHeadingTemplate} from './heading';
-import {NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay} from './overlays';
-
-
-import {NglInternalDatatableHeadCell} from './_head';
-import {NglInternalDatatableCell} from './_cell';
+import { datatable as NglDatatable } from './datatable';
+import { acTableColumn } from './column';
+import { columnCell } from './cell';
+import { columnHead } from './heading';
+import { LoadingOverlay, NoData, ExpandedRow } from './overlays';
 
 
-export {INglDatatableSort, INglDatatableRowClick} from './datatable';
+import { _HeadCell } from './_head';
+import { _Cell } from './_cell';
+
+
+export { INglDatatableSort, INglDatatableRowClick } from './datatable';
 
 const NGL_DATATABLE_DIRECTIVES = [
   NglDatatable,
-  NglDatatableColumn,
-  NglDatatableCell,
-  NglDatatableHeadingTemplate,
-  NglDatatableLoadingOverlay, NglDatatableNoRowsOverlay,
+  acTableColumn,
+  columnCell,
+  columnHead,
+  LoadingOverlay, NoData,ExpandedRow
 
 ];
 
 @NgModule({
-  declarations: [...NGL_DATATABLE_DIRECTIVES, NglInternalDatatableHeadCell, NglInternalDatatableCell],
+  declarations: [...NGL_DATATABLE_DIRECTIVES, _HeadCell, _Cell],
   exports: [NGL_DATATABLE_DIRECTIVES],
-  imports: [CommonModule, NglInternalOutletModule],
+  imports: [CommonModule, ngOutModule],
 })
-export class NglDatatablesModule {}
+export class NglDatatablesModule { }

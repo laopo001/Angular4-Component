@@ -1,16 +1,18 @@
-import {datatable as Table} from './datatable'
+import { datatable as Table } from './datatable'
 
-import {NglInternalOutletModule} from '../util/outlet.module';
+import { ngOutModule } from '../util/outlet.module';
 
-import {NglDatatableColumn} from './column';
-import {NglDatatableCell} from './cell';
-import {NglDatatableHeadingTemplate} from './heading';
-import { NglDatatableNoRowsOverlay} from './overlays';
+import { acTableColumn } from './column';
+import { columnCell } from './cell';
 
-
-import {NglInternalDatatableHeadCell} from './_head';
-import {NglInternalDatatableCell} from './_cell';
+import { columnHead } from './heading';
+import { NoData, ExpandedRow } from './overlays';
 
 
-export {Table,NglInternalOutletModule,NglDatatableColumn,NglDatatableCell,NglDatatableHeadingTemplate,NglDatatableNoRowsOverlay,NglInternalDatatableHeadCell,NglInternalDatatableCell}
+import { _HeadCell } from './_head';
+import { _Cell } from './_cell';
+import { Tabletr } from './_tr';
+import { expandedRowIcon } from './expandedRow';
+
+export { Table, ngOutModule, Tabletr,acTableColumn, columnCell, columnHead, NoData, ExpandedRow, _HeadCell, _Cell,expandedRowIcon }
 

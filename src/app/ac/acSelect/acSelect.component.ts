@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, Output, EventEmitter, ContentChildren, QueryList, ViewChildren, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild, Output, EventEmitter, ContentChildren, QueryList, ViewChildren, OnChanges, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 // import KeyCode from 'rc-util/lib/KeyCode';
 import { Trigger } from '../trigger/';
 
@@ -10,6 +10,7 @@ type Size = 'large' | 'small' | 'default';
 @Component({
     selector: 'acSelect',
     templateUrl: './acSelect.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Select implements OnInit {
     @ViewChild('content') content: ElementRef;
@@ -22,14 +23,9 @@ export default class Select implements OnInit {
     @Input() data: any[] = [];
     _data: any[] = [];
     @Input() size: Size = 'default'
-    get sizeClass() {
-        switch (this.size) {
-            case 'large': return 'ant-select ant-select-lg';
-            case 'default': return 'ant-select';
-            case 'small': return 'ant-select ant-select-sm';
-            default: return 'ant-select';
+    constructor(private cdRef: ChangeDetectorRef) {
 
-        }
+
     }
 
     @Output() onChange = new EventEmitter();
@@ -77,12 +73,6 @@ export default class Select implements OnInit {
             return {
                 width: toWidth(this.width)
             }
-            // if (this.width.toString().indexOf('%') > -1) {
-            //     return { width: this.width }
-            // } else {
-            //     return { width: this.width + 'px' }
-            // }
-
         }
 
     }
@@ -91,7 +81,7 @@ export default class Select implements OnInit {
             return { top: '0px', left: '0px', position: 'relative' };
         } else {
 
-            if (this.width == null || this.width == ''||this.width.indexOf('%') > -1) {
+            if (this.width == null || this.width == '' || this.width.indexOf('%') > -1) {
                 let width = this.content.nativeElement.offsetWidth
                 return { top: '0px', left: '0px', position: 'relative', width: width + 'px' }
             } else {
@@ -100,21 +90,6 @@ export default class Select implements OnInit {
                     width: toWidth(this.width)
                 }
             }
-
-
-            // if (this.width.toString().indexOf('%') > -1) {
-            //     let width = this.content.nativeElement.offsetWidth
-            //     return { top: '0px', left: '0px', position: 'relative', width: width + 'px' }
-            // } else {
-            //     if (this.width == null || this.width == '') {
-            //         //    waining(true,'width is null')
-            //         let width = this.content.nativeElement.offsetWidth
-            //         return { top: '0px', left: '0px', position: 'relative', width: width + 'px' }
-            //     } else {
-            //         return { top: '0px', left: '0px', position: 'relative', width: this.width + 'px' }
-            //     }
-            // }
-
         }
     }
 
@@ -140,14 +115,24 @@ export default class Select implements OnInit {
     }
 
     get contentClass() {
-        return `${this.sizeClass}${!this.opened ? '' : ' ant-select-open'}${!this.focused ? '' : ' ant-select-focused'} ant-select-enabled${' ' + this.className}`
+        return {
+            [`ant-select`]: true,
+            [`ant-select-lg`]: this.size === 'large',
+            [`ant-select-sm`]: this.size === 'small',
+            [`ant-select-open`]: this.opened,
+            [`ant-select-focused`]: this.focused,
+            [`ant-select-enabled`]: true,
+            [`${this.className}`]: !!this.className,
+        }
+        //   return `${this.sizeClass}${!this.opened ? '' : ' ant-select-open'}${!this.focused ? '' : ' ant-select-focused'} ant-select-enabled${' ' + this.className}`;
     }
 
     childClick(x: any) {
         this.onChange.emit(x.value);
         this.valueChange.emit(x.value);
         this.opened = false;
-        setTimeout(function () {
+
+        setTimeout(() => {
             this.focused = true
         });
 
@@ -174,6 +159,7 @@ export default class Select implements OnInit {
             } else {
                 x.selected = false;
             }
+            x.cdRef.markForCheck()
             x.click = this.childClick.bind(this, x)
             return x;
         })
@@ -192,6 +178,7 @@ export default class Select implements OnInit {
             this.opened = false
             this.focused = false
             this.Trigger.open = false;
+            this.cdRef.markForCheck();
         }
     }
 

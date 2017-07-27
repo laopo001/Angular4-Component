@@ -1,16 +1,20 @@
-import { Component, Input, OnInit, Output, EventEmitter, HostBinding, HostListener } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, HostBinding, HostListener, ElementRef, Renderer ,ChangeDetectionStrategy} from '@angular/core';
 
 var classnames = require('classnames');
-import { toBoolean } from '../util/util'
+import { toBoolean, format } from '../util/util'
 @Component({
     selector: 'Button',
     templateUrl: './button.component.html',
-    styleUrls: ['./button.component.css']
+//    styleUrls: ['./button.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Button implements OnInit {
-    @Input() loading: boolean = false;
-    
-    @Input() ghost: boolean = false;
+    @Input() @format(toBoolean) loading: boolean = false;
+
+    @Input() @format(toBoolean) ghost: boolean = false;
+    @Input() @format(toBoolean) disabled: string | boolean = false;
+
+
     @Input() iconOnly: boolean = false;
     @Input() shape: string;
     @Input() size: string;
@@ -27,7 +31,7 @@ export class Button implements OnInit {
             small: 'sm',
         })[this.size] || '';
     }
-    get iconType(){
+    get iconType() {
         return this.loading ? 'loading' : this.icon;
     }
     timeout = null;
@@ -53,27 +57,27 @@ export class Button implements OnInit {
     get Ttype() {
         return this.htmlType;;
     }
-    @Input() disabled: any;
+    // $_disabled=false
+    // @Input('disabled') 
+    // set disabled(x:any){this.$_disabled=x};
+    // get disabled(){return this.$_disabled}
+
     @HostBinding('attr.disabled')
     get Host_disabled() {
-        return this.disabled;;
+        return this.disabled ? 'disabled' : null;
     }
+
 
 
     @Output() onClick = new EventEmitter();
-    constructor() {
+    constructor(private element: ElementRef, private renderer: Renderer) {
 
-    }
-
-    Init() {
-        this.ghost = toBoolean(this.ghost)
-        this.loading = toBoolean(this.loading)
     }
     ngOnInit() {
-        
+
     }
     ngOnChanges(changes: any) {
-        this.Init();
+        //  this.renderer.setElementAttribute(this.element.nativeElement, 'disabled', this.disabled ? 'disabled' : null)
     }
 
     @HostListener('click', ['$event']) handleClick(e: any) {

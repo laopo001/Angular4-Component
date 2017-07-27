@@ -1,26 +1,32 @@
 <strong>基本用法</strong>
-<acTable [data]="data" rowKey="key" [pagination]="pagination" [rowSelection]="rowSelection" [(sort)]="sort" (sortChange)="onSort($event)">
-    <acTable-column [width]='200' heading="Name" key="name" sortable></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age" sortable></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address" sortable></acTable-column>
-    <acTable-column [width]='200' heading="Action" key="key">
+<acTable [data]="data" rowKey="key" [pagination]="pagination" [rowSelection]="rowSelection" [(sort)]="sort" (sortChange)="onSort($event)" [rowClassName]="rowClassName">
+    <acTable-column [width]='300' heading="Name" key="name" sortable headClass="headClass" cellClass="cellClass"></acTable-column>
+    <acTable-column [width]='300' heading="Age" key="age" sortable></acTable-column>
+    <acTable-column [width]='300' heading="Address" key="address" sortable></acTable-column>
+    <acTable-column [width]='300' heading="Action" key="key">
         <template columnCell let-row="row" let-index="index" let-item="$implicit"><a>{{item}} Action {{index}}</a></template>
     </acTable-column>
+    <template acExpandedRow let-row="row" let-index="index" className="qpqp">
+        ExpandedRow {{index}} ++++{{row.name}}
+    </template>
 </acTable>
 
 <strong>固定表头</strong>
 <acTable [data]="data2" [scroll]="scroll" rowKey="key" [pagination]="pagination">
-    <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
+    <acTable-column [width]='200' heading="Name" key="name" ></acTable-column>
     <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
     <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
     <acTable-column [width]='200' heading="Action" key="key">
         <template columnCell let-row="row"><a>Action</a></template>
     </acTable-column>
+    <template acExpandedRow let-row="row" let-index="index">
+        ExpandedRow {{index}} ++++{{row.name}}
+    </template>
 </acTable>
 <strong>固定列</strong>
-<acTable [data]="data" [scroll]="{x:600}" rowKey="key" [pagination]="pagination">
+<acTable [data]="data" [scroll]="{x:2400}" rowKey="key" [pagination]="pagination">
     <acTable-column [width]='200' heading="Name" key="name" fixLeft></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
+    <acTable-column [width]='200' heading="Age" key="age" fixLeft></acTable-column>
     <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
     <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
     <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
@@ -31,18 +37,13 @@
     <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
     <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
     <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
-    <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
-    <acTable-column [width]='200' heading="Name" key="name"></acTable-column>
-    <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
-    <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
+
     <acTable-column [width]='200' heading="Action" key="key" fixRight>
         <template columnCell let-row="row"><a>Action</a></template>
     </acTable-column>
 </acTable>
 <strong>固定列+表头</strong>
-<acTable [data]="data3" [header]="'已经选择'+ selects.length+ '项'" [scroll]="scroll2" [rowSelection]="rowSelection2" rowKey="key"
+<acTable [data]="data2" [header]="'已经选择'+ selects.length+ '项'" [scroll]="scroll2" [rowSelection]="rowSelection2" rowKey="key"
     [pagination]="pagination">
     <acTable-column [width]='200' heading="Name" key="name" fixLeft></acTable-column>
     <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
@@ -58,6 +59,7 @@
     <acTable-column [width]='200' heading="Action" key="key" fixRight>
         <template columnCell let-row="row"><a>Action</a></template>
     </acTable-column>
+
 </acTable>
 <label class="l">Header:
     <input type="checkbox" [(ngModel)]="showTableHeader">
@@ -71,6 +73,13 @@
 <label class="l">NoData:
     <input type="checkbox" [(ngModel)]="nodata">
 </label>
+<label class="l">rowSelect:
+    <input type="checkbox" [(ngModel)]="rowSelect">
+</label>
+
+<label class="l">ExpandedRow:
+    <input type="checkbox" [(ngModel)]="ExpandedRow">
+</label>
 <label class="l">Size:
    <acSelect [(value)]="size">
     <acOption label="large" value="large"></acOption>
@@ -81,9 +90,9 @@
 
 <br/>
 <strong>动态控制表格属性</strong>
-<acTable [data]="data3" [header]="header" [footer]="footer" [size]="size" [scroll]="scroll2" rowKey="key" [loading]="loading"
+<acTable [data]="data3" [header]="header" [footer]="footer" [size]="size" [scroll]="scroll2" rowKey="key" [loading]="loading" [rowSelection]="rowSelection3"
     [pagination]="pagination">
-    <acTable-column [width]='200' heading="Name" key="name" fixLeft></acTable-column>
+    <acTable-column [width]='200' heading="Name" key="name" ></acTable-column>
     <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
     <acTable-column [width]='200' heading="Address" key="address"></acTable-column>
     <acTable-column [width]='200' heading="Age" key="age"></acTable-column>
@@ -101,6 +110,10 @@
     <template acNoData>
         NoData++++
     </template>
+    <template *ngIf="ExpandedRow" acExpandedRow let-row="row" let-index="index" className="jsaafaz">
+        ExpandedRow {{index}} ++++{{row.name}}
+    </template>
+
 </acTable>
 <pre>
 <code >

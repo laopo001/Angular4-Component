@@ -1,6 +1,6 @@
 
 
-import { Component, ViewChild, TemplateRef, OnInit, ElementRef, Input } from '@angular/core';
+import { Component, ViewChild, TemplateRef, OnInit, ElementRef, Input, ChangeDetectionStrategy } from '@angular/core';
 import { toBoolean } from '../util/util'
 
 
@@ -9,9 +9,7 @@ import { toBoolean } from '../util/util'
     selector: 'Spin',
     // template:` <acIcon type="loading"></acIcon>`,
     templateUrl: `./spin.html`,
-    styles: [`
-  
-  `]
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class SpinComponent implements OnInit {
 
@@ -19,13 +17,13 @@ export default class SpinComponent implements OnInit {
 
     get containerClass() {
         return {
-            [`ant-spin-container`]:true,
-            [`ant-spin-blur`]:toBoolean(this.spin)
+            [`ant-spin-container`]: true,
+            [`ant-spin-blur`]: toBoolean(this.spin)
 
         }
     }
 
     ngOnInit() {
-       
+
     }
 }

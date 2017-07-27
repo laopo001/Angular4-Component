@@ -30,21 +30,50 @@ export class FormComponent implements OnInit {
 
     }
     @HostListener('submit', ['$event'])
-    async submit(e) {
+    submit(e) {
         e.preventDefault();
-        let err=[];
-        for (let x of this.FormItems['_results']) {
-            if (x.descriptor != null||x.toSuccess) {
-                await x.validate()
-                if(x.validateStatus==='error'){
-                    err.push(x.err_message)
+        let run = async () => {
+            let err = [];
+            for (let x of this.FormItems['_results']) {
+                if (x.descriptor != null || x.toSuccess) {
+                    
+                    await x.validate()
+                    if (x.validateStatus === 'error') {
+                        err.push(x.err_message)
+                    }
+
                 }
+
             }
-            // if(x.toSuccess){
-            //     x.validateStatus='success'
-            // }
+            return err;
+
         }
-        this.onSubmit.emit(err)
+        run().then((errs) => {
+            this.onSubmit.emit(errs)
+        }).catch((e) => {
+            console.error(e)
+        })
+
+
+        // let err = [];
+        // for (let x of this.FormItems['_results']) {
+        //     if (x.descriptor != null || x.toSuccess) {
+
+        //         await x.validate()
+        //         if (x.validateStatus === 'error') {
+        //             err.push(x.err_message)
+        //         }
+
+        //         // await x.validate()
+        //         // if (x.validateStatus === 'error') {
+        //         //     err.push(x.err_message)
+        //         // }
+        //     }
+        //     // if(x.toSuccess){
+        //     //     x.validateStatus='success'
+        //     // }
+        // }
+        // this.onSubmit.emit(err)
     }
 
     ngOnInit() {

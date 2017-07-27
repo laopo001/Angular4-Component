@@ -60,24 +60,24 @@ export default class Trigger {
     this.setTether();
   }
 
-  @Input() set nglPopoverTheme(theme: string) {
-    this.theme = theme;
-    this.setPopover();
-  }
+  // @Input() set nglPopoverTheme(theme: string) {
+  //   this.theme = theme;
+  //   // this.setPopover();
+  // }
 
- // @Input() nglTooltip: string | boolean;
+  // @Input() nglTooltip: string | boolean;
 
   @Input() set nglPopoverDelay(delay: any | any[]) {
     delay = Array.isArray(delay) ? delay : [delay, delay];
     [this.openDelay, this.closeDelay] = delay.map(Number);
   }
 
-  @Input() set nglInteractive(interactive: boolean | string) {
-    this.interactive = toBoolean(interactive);
-  }
-  get nglInteractive() {
-    return this.interactive;
-  }
+  // @Input() set nglInteractive(interactive: boolean | string) {
+  //   this.interactive = toBoolean(interactive);
+  // }
+  // get nglInteractive() {
+  //   return this.interactive;
+  // }
 
   @Input() set open(open: boolean) {
     this.toggle(open, open ? this.openDelay : this.closeDelay);
@@ -96,8 +96,8 @@ export default class Trigger {
   private openDelay = 0;
   private closeDelay = 0;
   private toggleTimeout: any = null;
-  private interactive = false;
-  private interactiveSubscription: any = null;
+  // private interactive = false;
+  // private interactiveSubscription: any = null;
 
   constructor(private element: ElementRef, private viewContainer: ViewContainerRef, private injector: Injector,
     private ngZone: NgZone,
@@ -179,17 +179,18 @@ export default class Trigger {
       this.tether.setOptions(options);
     }
 
-    this.setPopover();
+    //   this.setPopover();
   }
 
-  private setPopover() {
-    if (!this.popover) return;
+  // private setPopover() {
+  //   if (!this.popover) return;
 
-    const { opposite } = placement(this._placement);
-    this.popover.nubbin = opposite;
-    //this.popover.theme = this.theme;
-    //this.popover.nglTooltip = this.nglTooltip;
-  }
+  //   const { opposite } = placement(this._placement);
+  //   console.log(opposite)
+  //   //this.popover.nubbin = opposite;
+  //   //this.popover.theme = this.theme;
+  //   //this.popover.nglTooltip = this.nglTooltip;
+  // }
 
   private create() {
     if (this.componentRef) return;
@@ -199,16 +200,14 @@ export default class Trigger {
 
     this.componentRef = this.viewContainer.createComponent(this.popoverFactory, 0, this.injector, [nodes]);
     this.popover = this.componentRef.instance;
-    // this.popover.header = this.nglPopoverHeader;
-    // this.popover.footer = this.nglPopoverFooter;
-    this.popover.afterViewInit.take(1).subscribe(() =>
+    this.popover.afterViewInit.take(1).subscribe(() => {
       //修改成异步
-      this.position(true)
-    );
+      this.position(true);
+    });
 
-    if (this.nglInteractive) {
-      this.interactiveSubscription = this.popover.onInteraction.subscribe((enter: boolean) => this.open = enter);
-    }
+    // if (this.nglInteractive) {
+    //   this.interactiveSubscription = this.popover.onInteraction.subscribe((enter: boolean) => this.open = enter);
+    // }
 
     this.setTether(true);
 
@@ -245,9 +244,9 @@ export default class Trigger {
     this.componentRef = null;
     this.popover = null;
 
-    if (this.interactiveSubscription) {
-      this.interactiveSubscription.unsubscribe();
-    }
+    // if (this.interactiveSubscription) {
+    //   this.interactiveSubscription.unsubscribe();
+    // }
 
     this.nglPopoverToggled.emit(false);
   }

@@ -1,12 +1,12 @@
 import { Directive, Input, ContentChild } from '@angular/core';
-import { NglDatatableCell } from './cell';
-import { NglDatatableHeadingTemplate } from './heading';
+import { columnCell } from './cell';
+import { columnHead } from './heading';
 import { toBoolean } from '../util/util';
 
 @Directive({
   selector: 'acTable-column',
 })
-export class NglDatatableColumn {
+export class acTableColumn {
   @Input() heading: string;
   @Input() key: string;
   @Input() headClass: any;
@@ -14,8 +14,8 @@ export class NglDatatableColumn {
   @Input() width: number | string;
   @Input() fixLeft: boolean | string;
   @Input() fixRight: boolean | string;
-  @ContentChild(NglDatatableCell) cellTpl: NglDatatableCell;
-  @ContentChild(NglDatatableHeadingTemplate) headingTpl: NglDatatableHeadingTemplate;
+  @ContentChild(columnCell) cellTpl: columnCell;
+  @ContentChild(columnHead) headingTpl: columnHead;
 
   @Input() set sortable(sortable: string | boolean) {
     this._sortable = toBoolean(sortable);

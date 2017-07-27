@@ -11,7 +11,7 @@ import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, HostBin
   //   '[class.slds-is-sorted]': `!!sortOrder`,
   // },
 })
-export class NglInternalDatatableHeadCell {
+export class _HeadCell {
 
   // @HostBinding('attr.title')
   @Input() heading: string;

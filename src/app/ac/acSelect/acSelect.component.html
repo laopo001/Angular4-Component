@@ -1,5 +1,5 @@
 <template #tip>
-    <div class="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft" [ngStyle]="tipStyle">
+    <div class="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottom" [ngStyle]="tipStyle">
         <div style="overflow: auto;">
             <ul class="ant-select-dropdown-menu ant-select-dropdown-menu-vertical  ant-select-dropdown-menu-root" role="menu">
                 <ng-content></ng-content>
@@ -9,7 +9,7 @@
     </div>
 </template>
 
-<div #content [triggerTarget]="tip" (click)="onClick($event)" placement="bottom" [open]="opened" [class]="contentClass" [ngStyle]="contentStyle">
+<div #content [triggerTarget]="tip" (click)="onClick($event)" placement="bottom" [open]="opened" [ngClass]="contentClass" [ngStyle]="contentStyle">
     <div class="ant-select-selection ant-select-selection--single" [attr.aria-expanded]="opened?'true':'false'">
         <div class="ant-select-selection__rendered">
             <div *ngIf="value==null&&searchValue==''" unselectable="unselectable" class="ant-select-selection__placeholder" style="display: block; user-select: none;">{{placeholder}}</div>
