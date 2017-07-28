@@ -1,0 +1,83 @@
+<strong>基本用法</strong>
+<br>
+<Tooltip title="title">
+    <Button>操作</Button>
+</Tooltip>
+
+
+
+
+<div style="margin-top:10px"></div>
+<strong>三种触发方式</strong><br>
+<Tooltip title="title" trigger="click">
+    <Button>click</Button>
+</Tooltip>
+<Tooltip title="title" trigger="hover">
+    <Button>hover</Button>
+</Tooltip>
+<Tooltip title="title" trigger="focus">
+    <Button>focus</Button>
+</Tooltip>
+
+
+
+
+
+
+<div style="margin-top:10px"></div>
+<strong>位置</strong><br>
+<div style="margin-left: 70px; white-space:nowrap">
+
+    <Tooltip placement="topLeft" title="text" >
+        <Button>TL</Button>
+    </Tooltip>
+    <Tooltip placement="top" title="text" >
+        <Button>Top</Button>
+    </Tooltip>
+    <Tooltip placement="topRight" title="text" >
+        <Button>TR</Button>
+    </Tooltip>
+</div>
+<div style="width: 70px;float: left ">
+    <Tooltip placement="leftTop" title="text" >
+        <Button>LT</Button>
+    </Tooltip>
+    <Tooltip placement="left" title="text" >
+        <Button>Left</Button>
+    </Tooltip>
+    <Tooltip placement="leftBottom" title="text" >
+        <Button>LB</Button>
+    </Tooltip>
+</div>
+<div style="width: 70px; margin-left:304px">
+    <Tooltip placement="rightTop" title="text" >
+        <Button>RT</Button>
+    </Tooltip>
+    <Tooltip placement="right" title="text" >
+        <Button>Right</Button>
+    </Tooltip>
+    <Tooltip placement="rightBottom" title="text" >
+        <Button>RB</Button>
+    </Tooltip>
+</div>
+<div style="margin-left: 70px; clear: both; white-space: nowrap">
+    <Tooltip placement="bottomLeft" title="text" >
+        <Button>BL</Button>
+    </Tooltip>
+    <Tooltip placement="bottom" title="text" >
+        <Button>Bottom</Button>
+    </Tooltip>
+    <Tooltip placement="bottomRight" title="text" >
+        <Button>BR</Button>
+    </Tooltip>
+</div>
+
+
+
+<div style="margin-top:10px"></div>
+<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="Tooltip">
+    <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
+    <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
+    <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
+    <acTable-column [width]='200' heading="默认值" key="dValue"></acTable-column>
+</acTable>

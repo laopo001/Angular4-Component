@@ -1,0 +1,90 @@
+<strong>基本用法</strong>
+<br>
+
+<Popover title="Popover" content="tip" trigger="hover">
+    <Button>hover</Button>
+</Popover>
+
+
+
+
+<div style="margin-top:10px"></div>
+<strong>三种触发方式</strong><br>
+<Popover title="Popover" content="tip" trigger="click">
+    <Button>click</Button>
+</Popover>
+<Popover title="Popover" content="tip" trigger="hover">
+    <Button>hover</Button>
+</Popover>
+<Popover title="Popover" content="tip" trigger="focus">
+    <Button>focus</Button>
+</Popover>
+
+
+
+
+<div style="margin-top:10px"></div>
+<strong>位置</strong><br>
+<div style="margin-left: 70px; white-space:nowrap">
+
+    <Popover placement="topLeft" title="text" content="content" trigger="click">
+        <Button>TL</Button>
+    </Popover>
+    <Popover placement="top" title="text" content="content" trigger="click">
+        <Button>Top</Button>
+    </Popover>
+    <Popover placement="topRight" title="text" content="content" trigger="click">
+        <Button>TR</Button>
+    </Popover>
+</div>
+<div style="width: 70px;float: left ">
+    <Popover placement="leftTop" title="text" content="content" trigger="click">
+        <Button>LT</Button>
+    </Popover>
+    <Popover placement="left" title="text" content="content" trigger="click">
+        <Button>Left</Button>
+    </Popover>
+    <Popover placement="leftBottom" title="text" content="content" trigger="click">
+        <Button>LB</Button>
+    </Popover>
+</div>
+<div style="width: 70px; margin-left:304px">
+    <Popover placement="rightTop" title="text" content="content" trigger="click">
+        <Button>RT</Button>
+    </Popover>
+    <Popover placement="right" title="text" content="content" trigger="click">
+        <Button>Right</Button>
+    </Popover>
+    <Popover placement="rightBottom" title="text" content="content" trigger="click">
+        <Button>RB</Button>
+    </Popover>
+</div>
+<div style="margin-left: 70px; clear: both; white-space: nowrap">
+    <Popover placement="bottomLeft" title="text" content="content" trigger="click">
+        <Button>BL</Button>
+    </Popover>
+    <Popover placement="bottom" title="text" content="content" trigger="click">
+        <Button>Bottom</Button>
+    </Popover>
+    <Popover placement="bottomRight" title="text" content="content" trigger="click">
+        <Button>BR</Button>
+    </Popover>
+</div>
+
+<div style="margin-top:10px"></div>
+<strong>从浮层内关闭</strong><br>
+<template #tip>
+   <a (click)="opened=false">Close<Icon type="close" ></Icon></a> 
+</template>
+<Popover title="Popover" [content]="tip" trigger="click" [(opened)]="opened" (openedChange)="openedChange($event)">
+    <Button>从浮层内关闭</Button>
+</Popover>
+
+
+<div style="margin-top:10px"></div>
+<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="Popover">
+    <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
+    <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
+    <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
+    <acTable-column [width]='200' heading="默认值" key="dValue"></acTable-column>
+</acTable>

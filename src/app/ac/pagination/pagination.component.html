@@ -3,7 +3,7 @@
         <a></a>
     </li>
     <li [attr.title]="simpleShowTitle" [class]="simpleMiddleClass">
-        <input type="text" [(ngModel)]="_current" (keyup.enter)="update()" (blur)="update()">
+        <input type="text" size="3" [(ngModel)]="_current" (keyup.enter)="update()" (blur)="update()">
         <!--<input type="text" class="form-control"  [(ngModel)]="current">-->
         <span [class]="simpleSlashClass">／</span> {{allPages}}
     </li>
@@ -31,9 +31,9 @@
         <acSelect className="ant-pagination-options-size-changer"   placeholder="请选择" [size]="size" [value]="_pageSize" (valueChange)="_pageSizeChange($event)">
             <acOption *ngFor="let item of pageSizeData" [value]="item" [label]="item+' / page'"></acOption>
         </acSelect>
-        <div *ngIf="showQuickJumper||showQuickJumper===''" class="ant-pagination-options-quick-jumper">
+        <div *ngIf="showQuickJumper" class="ant-pagination-options-quick-jumper">
             Goto
-            <input [(ngModel)]="_current" (keyup.enter)="update()" (blur)="update()">
+            <input [(ngModel)]="_current" (keyup.enter)="update()" (blur)="update()" >
         </div>
 
     </div>

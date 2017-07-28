@@ -1,0 +1,80 @@
+<strong>基本用法</strong>
+<br>
+<Popconfirm title="title" (onConfirm)="onConfirm($event)" okText="确定" cancelText="取消">
+    <Button>操作</Button>
+</Popconfirm>
+
+
+
+
+<div style="margin-top:10px"></div>
+<strong>二种触发方式</strong><br>
+<Popconfirm title="title" (onConfirm)="onConfirm($event)" trigger="click" okText="确定" cancelText="取消">
+    <Button>click</Button>
+</Popconfirm>
+<Popconfirm title="title" (onConfirm)="onConfirm($event)" trigger="hover" okText="确定" cancelText="取消">
+    <Button>hover</Button>
+</Popconfirm>
+
+
+
+
+
+
+<div style="margin-top:10px"></div>
+<strong>位置</strong><br>
+<div style="margin-left: 70px; white-space:nowrap">
+
+    <Popconfirm placement="topLeft" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>TL</Button>
+    </Popconfirm>
+    <Popconfirm placement="top" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>Top</Button>
+    </Popconfirm>
+    <Popconfirm placement="topRight" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>TR</Button>
+    </Popconfirm>
+</div>
+<div style="width: 70px;float: left ">
+    <Popconfirm placement="leftTop" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>LT</Button>
+    </Popconfirm>
+    <Popconfirm placement="left" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>Left</Button>
+    </Popconfirm>
+    <Popconfirm placement="leftBottom" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>LB</Button>
+    </Popconfirm>
+</div>
+<div style="width: 70px; margin-left:304px">
+    <Popconfirm placement="rightTop" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>RT</Button>
+    </Popconfirm>
+    <Popconfirm placement="right" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>Right</Button>
+    </Popconfirm>
+    <Popconfirm placement="rightBottom" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>RB</Button>
+    </Popconfirm>
+</div>
+<div style="margin-left: 70px; clear: both; white-space: nowrap">
+    <Popconfirm placement="bottomLeft" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>BL</Button>
+    </Popconfirm>
+    <Popconfirm placement="bottom" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>Bottom</Button>
+    </Popconfirm>
+    <Popconfirm placement="bottomRight" title="text" (onConfirm)="onConfirm($event)"  >
+        <Button>BR</Button>
+    </Popconfirm>
+</div>
+
+
+
+<div style="margin-top:10px"></div>
+<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="Popconfirm">
+    <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
+    <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
+    <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
+    <acTable-column [width]='200' heading="默认值" key="dValue"></acTable-column>
+</acTable>

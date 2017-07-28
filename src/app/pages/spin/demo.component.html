@@ -1,0 +1,27 @@
+<strong>基本用法</strong>
+<br>
+<Spin spin></Spin>
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>更多大小</strong><br>
+<Spin spin size='small'></Spin>
+<div style="margin-top:50px;"></div>
+<Spin spin></Spin>
+<div style="margin-top:50px;"></div>
+<Spin spin size='large'></Spin>
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>自定义描述文案</strong><br>
+<Spin spin tip="Loading..."></Spin>
+
+
+
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="Pagination">
+    <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
+    <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
+    <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
+    <acTable-column [width]='200' heading="默认值" key="dValue"></acTable-column>
+</acTable>
+

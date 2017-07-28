@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, TemplateRef, Output, EventEmitter, ContentChildren, QueryList } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild, TemplateRef, Output, EventEmitter, ChangeDetectionStrategy, ContentChildren, QueryList } from '@angular/core';
 import { contains, stopDefault, stopBubble } from '../util/util';
 import { Trigger } from '../trigger/';
 
@@ -10,11 +10,12 @@ type Method = 'click' | 'hover' | 'focus';
 @Component({
     selector: 'Tooltip',
     templateUrl: './tooltip.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Tooltip implements OnInit {
     @ViewChild(Trigger) Trigger: Trigger;
     @ViewChild('dom') dom: ElementRef;
-    @Input() title: any='tooltip';
+    @Input() title: any = 'tooltip';
     @Input() content: any;
     @Input() opened = false;
     @Output() openedChange = new EventEmitter<boolean>();
@@ -30,13 +31,13 @@ export class Tooltip implements OnInit {
     get placementClass() {
         return `ant-tooltip ant-tooltip-placement-${this.placement}`
     }
-    focusClick=false;
-    _trigger='hover';
+    focusClick = false;
+    _trigger = 'hover';
     @Input()
-    set trigger(x){
-        if(x=='click'){this._trigger=x;this.focusClick=false;};
-        if(x=='hover'){this._trigger=x;this.focusClick=false;};
-        if(x=='focus'){this._trigger='click';this.focusClick=true;};
+    set trigger(x) {
+        if (x == 'click') { this._trigger = x; this.focusClick = false; };
+        if (x == 'hover') { this._trigger = x; this.focusClick = false; };
+        if (x == 'focus') { this._trigger = 'click'; this.focusClick = true; };
     }
 
     @Input() className: string;

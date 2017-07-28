@@ -13,6 +13,16 @@ import { TableDemoComponent } from './pages/table/demo.component'
 import { CheckboxDemoComponent } from './pages/checkbox/demo.component'
 import { InputDemoComponent } from './pages/input/demo.component'
 import { SelectDemoComponent } from './pages/select/demo.component'
+import { RadioDemoComponent } from './pages/radio/demo.component'
+import { PopoverDemoComponent } from './pages/popover/demo.component'
+import { PopconfirmDemoComponent } from './pages/popconfirm/demo.component'
+import { TooltipDemoComponent } from './pages/tooltip/demo.component'
+import { GridDemoComponent } from './pages/grid/demo.component'
+import { PaginationDemoComponent } from './pages/pagination/demo.component'
+import { SpinDemoComponent } from './pages/spin/demo.component'
+
+
+
 import { AppComponent } from './app.component';
 import { message } from './ac/message/'
 
@@ -28,7 +38,9 @@ import { ROUTES } from './app.router'
         }), BrowserAnimationsModule
     ],
     declarations: [
-        AppComponent, Page1Component, Page2Component, Page3Component, message, TableDemoComponent, CheckboxDemoComponent, InputDemoComponent,SelectDemoComponent
+        AppComponent, Page1Component, Page2Component, Page3Component, message, TableDemoComponent, CheckboxDemoComponent, InputDemoComponent, SelectDemoComponent,
+        RadioDemoComponent, PopoverDemoComponent, PopconfirmDemoComponent,TooltipDemoComponent,GridDemoComponent,PaginationDemoComponent,
+        SpinDemoComponent,
     ],
 
     bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
 
-import { Component, OnInit, Input, Output, ContentChildren, QueryList, HostBinding, TemplateRef, EventEmitter, ViewChild } from '@angular/core';
-import { toBoolean } from '../util/util'
+import { Component, OnInit, Input, Output, ContentChildren, QueryList, HostBinding, ChangeDetectorRef, ChangeDetectionStrategy, TemplateRef, EventEmitter, ViewChild } from '@angular/core';
+import { toBoolean, format } from '../util/util'
 var classnames = require('classnames');
 
 @Component({
@@ -15,23 +15,25 @@ var classnames = require('classnames');
             <span #ngContent [style.display]="show_ngContent ? 'inline-block' : 'none'"><ng-content></ng-content></span>
         </label>
     `,
-    styles: [`
-  
-  `]
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RadioComponent implements OnInit {
-    @Input() checked = false;
+    @Input() @format(toBoolean) checked = false;
     @ViewChild('ngContent') ngContent;
     show_ngContent = true;
     //   @Input() label = '';
-    @Input() disabled = false;
+    @Input() @format(toBoolean) disabled = false;
     @Input() value: any;
     @Output() checkedChange = new EventEmitter();
     valueChange = new EventEmitter();
-
+    constructor(private cdRef: ChangeDetectorRef) {
+    }
     handClick($event) {
-     //   this.checked = true;
-        this.checkedChange.emit(true);
+        //   this.checked = true;
+        if (!this.disabled) {
+            this.checkedChange.emit(true);
+        }
+
     }
     get radioClass() {
         return {
@@ -43,15 +45,9 @@ export class RadioComponent implements OnInit {
     ngOnInit() {
 
     }
-    Init() {
-        this.checked = toBoolean(this.checked);
-        this.disabled = toBoolean(this.disabled);
-        // if(this.value==null){
-        //     this.value=this.label;
-        // }
-    }
+
     ngOnChanges(changes: any) {
-        this.Init();
+
     }
     ngAfterContentInit() {
         this.show_ngContent = this.ngContent.nativeElement.childNodes.length > 0

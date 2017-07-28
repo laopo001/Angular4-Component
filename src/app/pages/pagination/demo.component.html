@@ -1,0 +1,45 @@
+<strong>基本用法</strong>
+<br>
+<Pagination [defaultCurrent]="1" total="50"></Pagination>
+
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>更多分页</strong><br>
+<Pagination [(current)]="current" total="500"></Pagination>
+
+
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>改变每页显示条目数</strong><br>
+<Pagination [total]="500" [(current)]="current2" [(pageSize)]="pageSize2" [showTotal]="showTotal"
+    (onChange)="select()" [pageSizeData]="[10, 20, 50, 100]"></Pagination>
+
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>快速跳转</strong><br>
+<Pagination [total]="500" [(current)]="current2" showQuickJumper  [(pageSize)]="pageSize2" [showTotal]="showTotal"
+    (onChange)="select()" [pageSizeData]="[10, 20, 50, 100]"></Pagination>
+
+
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>迷你</strong><br>
+<Pagination [defaultCurrent]="1" total="500" size="small"></Pagination>
+<Pagination [defaultCurrent]="1" total="500" size="small" [pageSizeData]="[10, 20, 50, 100]" showQuickJumper></Pagination>
+
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>简洁</strong><br>
+<Pagination [defaultCurrent]="1" total="500" simple ></Pagination>
+
+
+
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="Pagination">
+    <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
+    <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
+    <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
+    <acTable-column [width]='200' heading="默认值" key="dValue"></acTable-column>
+</acTable>
+

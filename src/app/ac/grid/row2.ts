@@ -1,7 +1,7 @@
 
-import { Component, OnInit, Input ,ContentChildren ,QueryList} from '@angular/core';
+import { Component, OnInit, Input ,ContentChildren ,QueryList,ChangeDetectionStrategy} from '@angular/core';
 
-import ColComponent  from './col';
+import ColComponent  from './col2';
 
 
 @Component({
@@ -11,9 +11,7 @@ import ColComponent  from './col';
          <ng-content></ng-content>
     </div>
     `,
-    styles: [`
-  
-  `]
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class RowComponent implements OnInit {
     get Rowclass() {

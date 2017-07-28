@@ -1,15 +1,13 @@
-import { Component, OnInit, Input,  HostBinding } from '@angular/core';
+import { Component, OnInit, Input,  HostBinding ,ChangeDetectionStrategy} from '@angular/core';
 var classnames = require('classnames');
 
 
 @Component({
     selector: 'div[Col]',
     template: `
-
         <ng-content></ng-content>
-
     `,
-
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ColComponent implements OnInit {
     @HostBinding('class')

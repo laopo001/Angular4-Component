@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, TemplateRef, Output, EventEmitter, ContentChildren, QueryList } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild,ChangeDetectionStrategy, TemplateRef, Output, EventEmitter, ContentChildren, QueryList } from '@angular/core';
 import { contains, stopDefault, stopBubble } from '../util/util';
 import { Trigger } from '../trigger/';
 
@@ -10,7 +10,8 @@ type Method = 'click' | 'hover' | 'focus';
 @Component({
     selector: 'Popover',
     templateUrl: './popover.component.html',
-    styleUrls: ['./popover.component.scss']
+//    styleUrls: ['./popover.component.scss']
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Popover implements OnInit {
     @ViewChild(Trigger) Trigger: Trigger;

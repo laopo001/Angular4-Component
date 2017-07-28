@@ -2,11 +2,11 @@ import { Component, ViewChild, TemplateRef, OnInit, ElementRef } from '@angular/
 import { ROUTES } from './app.router'
 
 @Component({
-  selector: 'my-app',
-
+  selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent  {
+
    ROUTES=ROUTES;
 }

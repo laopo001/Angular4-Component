@@ -1,29 +1,30 @@
 <strong>基本用法</strong>
 <br>
-<Check [(checked)]="checked">Check</Check>
+<Radio [(checked)]="checked">Radio</Radio>
 
 <div style="margin-top:10px"></div>
 <strong>不可用</strong><br>
-<Check  disabled>disabled</Check>
-<Check checked disabled>disabled</Check>
+<Radio disabled>disabled</Radio>
+<Radio checked disabled>disabled</Radio>
 
 <div style="margin-top:10px"></div>
-<strong>CheckGroup</strong><br>
-<CheckGroup [(value)]="value" (valueChange)="valueChange($event)">
-    <Check value="1">Apple</Check>
-    <Check value="2">Pear</Check>
-    <Check value="3">Orange</Check>
-</CheckGroup>
+<strong>RadioGroup</strong><br>
+<RadioGroup [(value)]="value" (valueChange)="valueChange($event)">
+    <Radio value="1">Apple</Radio>
+    <Radio value="2">Pear</Radio>
+    <Radio value="3">Orange</Radio>
+</RadioGroup>
+<div style="margin-top:10px"></div>
+<strong>RadioGroup2</strong><br>
+<RadioGroup [(value)]="value2" (valueChange)="valueChange($event)">
+    <Radio value="1" disabled>Apple</Radio>
+    <Radio value="2">Pear</Radio>
+    <Radio value="3">Orange</Radio>
+</RadioGroup>
 
-<strong>CheckGroup2</strong><br>
-<CheckGroup [(value)]="value2" (valueChange)="valueChange($event)">
-    <Check value="1" disabled>Apple</Check>
-    <Check value="2">Pear</Check>
-    <Check value="3" >Orange</Check>
-</CheckGroup>
 
 <div style="margin-top:10px"></div>
-<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="Check">
+<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="Radio">
     <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
     <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
     <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
@@ -31,7 +32,7 @@
 </acTable>
 
 <div style="margin-top:10px"></div>
-<acTable size="small" [data]="data2" rowKey="id" [pagination]='false' header="CheckGroup">
+<acTable size="small" [data]="data2" rowKey="id" [pagination]='false' header="RadioGroup">
     <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
     <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
     <acTable-column [width]='200' heading="类型" key="type"></acTable-column>

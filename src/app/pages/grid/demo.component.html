@@ -1,0 +1,130 @@
+<strong>基本用法</strong>
+<br>
+<Row>
+    <RCol span="12">RCol-12</RCol>
+    <RCol span="12">RCol-12</RCol>
+</Row>
+<Row>
+    <RCol span="8">RCol-8</RCol>
+    <RCol span="8">RCol-8</RCol>
+    <RCol span="8">RCol-8</RCol>
+</Row>
+<Row>
+    <RCol span="6">RCol-6</RCol>
+    <RCol span="6">RCol-6</RCol>
+    <RCol span="6">RCol-6</RCol>
+    <RCol span="6">RCol-6</RCol>
+</Row>
+
+
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>区块间隔</strong><br>
+<Row gutter="16">
+    <RCol className="gutter-row" span="6">
+        <div class="gutter-box">RCol-6</div>
+    </RCol>
+    <RCol className="gutter-row" span="6">
+        <div class="gutter-box">RCol-6</div>
+    </RCol>
+    <RCol className="gutter-row" span="6">
+        <div class="gutter-box">RCol-6</div>
+    </RCol>
+    <RCol className="gutter-row" span="6">
+        <div class="gutter-box">RCol-6</div>
+    </RCol>
+</Row>
+
+
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>左右偏移</strong><br>
+<Row>
+    <RCol span="8" className="border">RCol-8</RCol>
+    <RCol span="8" className="border" offset="8">RCol-8 RCol-offset-8</RCol>
+</Row>
+<Row>
+    <RCol span="6" offset="6" className="border">RCol-6 RCol-offset-6</RCol>
+    <RCol span="6" offset="6" className="border">RCol-6 RCol-offset-6</RCol>
+</Row>
+<Row>
+    <RCol span="12" offset="6" className="border">RCol-12 RCol-offset-6</RCol>
+</Row>
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>栅格排序</strong><br>
+<Row>
+    <RCol span="18" push="6" className="border">RCol-18 RCol-push-6</RCol>
+    <RCol span="6" pull="18" className="border">RCol-6 RCol-pull-18</RCol>
+</Row>
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>Flex 布局</strong><br>
+<div>
+    <p>sub-element align left</p>
+    <Row type="flex" justify="start">
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+    </Row>
+
+    <p>sub-element align center</p>
+    <Row type="flex" justify="center">
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+    </Row>
+
+    <p>sub-element align right</p>
+    <Row type="flex" justify="end">
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+    </Row>
+
+    <p>sub-element monospaced arrangement</p>
+    <Row type="flex" justify="space-between">
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+    </Row>
+
+    <p>sub-element align full</p>
+    <Row type="flex" justify="space-around">
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+        <div Col span="4" className="border">div-4</div>
+    </Row>
+</div>
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<strong>响应式布局</strong><br>
+<Row>
+    <RCol xs="2" sm="4" md="6" lg="8" xl="10" className="border">RCol</RCol>
+    <RCol xs="20" sm="16" md="12" lg="8" xl="4" className="border">RCol</RCol>
+    <RCol xs="2" sm="4" md="6" lg="8" xl="10" className="border">RCol</RCol>
+</Row>
+
+
+
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="Row or div[Row]">
+    <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
+    <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
+    <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
+    <acTable-column [width]='200' heading="默认值" key="dValue"></acTable-column>
+</acTable>
+
+<div style="margin-top:50px;border-bottom: 1px solid #333333;"></div>
+<acTable size="small" [data]="data2" rowKey="id" [pagination]='false' header="RCol or div[Col]">
+    <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
+    <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
+    <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
+    <acTable-column [width]='200' heading="默认值" key="dValue"></acTable-column>
+</acTable>

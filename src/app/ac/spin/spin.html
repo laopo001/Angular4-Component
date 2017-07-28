@@ -1,8 +1,8 @@
 <div class="ant-spin-nested-loading">
-    <div *ngIf="spin||spin===''">
-        <div class="ant-spin ant-spin-spinning ant-spin-show-text">
+    <div *ngIf="spin">
+        <div [ngClass]="spinClass">
             <span class="ant-spin-dot"><i></i><i></i><i></i><i></i></span>
-            <div class="ant-spin-text">Loading...</div>
+            <div *ngIf="tip" class="ant-spin-text">{{tip}}</div>
         </div>
     </div>
     <div [ngClass]="containerClass">

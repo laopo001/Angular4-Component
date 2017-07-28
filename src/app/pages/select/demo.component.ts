@@ -7,104 +7,69 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./demo.component.css']
 })
 export class SelectDemoComponent implements OnInit {
-	Value ='http'
+	Value = 'http'
 	Value2 = null
 	ngOnInit() {
-
+  
 	}
-
+	Value3 = 'www.baidu.com'
 
 	searchInput = ''
 	data = [{
 		param: 'width',
-		description: '宽度,当使用前/后置标签时，有默认宽度',
+		description: '宽度,在上下同宽模式下必填',
 		type: `百分比|number `,
-		dValue: '100%'
-	}, {
-		param: 'value',
-		description: 'input值',
-		type: `string`,
 		dValue: `''`
 	}, {
-		param: 'size',
-		description: '大小',
-		type: `large|default|small`,
-		dValue: `default`
+		param: 'value',
+		description: '选中值',
+		type: `any`,
+		dValue: `null`
+	}, {
+		param: 'placeholder',
+		description: '提示语，在value为null时显示',
+		type: `string`,
+		dValue: `'请输入'`
 	}, {
 		param: 'disabled',
 		description: '禁用',
 		type: `boolean`,
 		dValue: `false`
 	}, {
-		param: 'addonBefore',
-		description: '带标签的 input，设置前置标签',
-		type: `string | TemplateRef<any>`,
-		dValue: `无`
+		param: 'showSearch',
+		description: '开启搜索功能,只能在使用data渲染时',
+		type: `boolean`,
+		dValue: `false`
 	}, {
-		param: 'addonAfter',
-		description: '带标签的 input，设置后置标签',
-		type: `string | TemplateRef<any>`,
-		dValue: `无`
+		param: 'data',
+		description: '根据data渲染option',
+		type: `[{label:xxxx,value:xxxx,disabled:false}]`,
+		dValue: `[]`
 	}, {
-		param: 'prefix',
-		description: '带有前缀图标的 input',
-		type: `string | TemplateRef<any>`,
-		dValue: `无`
+		param: 'dropdownMatchSelectWidth',
+		description: '下拉菜单和选择器同宽',
+		type: `boolean`,
+		dValue: `true`
 	}, {
-		param: 'suffix',
-		description: '带有后缀图标的 input',
-		type: `string | TemplateRef<any>`,
-		dValue: `无`
-	}, {
-		param: 'time',
-		description: '防抖/节流的时间间隔',
-		type: `Int`,
-		dValue: `1000`
-	}, {
-		param: 'option',
-		description: '防抖/节流的参数',
-		type: `Object`,
-		dValue: `{'leading': false,'trailing': true }`
-	}, {
-		param: 'valueChange',
-		description: 'value改变监听',
-		type: `Function(e:Event)`,
-		dValue: '无'
-	}, {
-		param: 'onEnter',
-		description: '回车触发',
-		type: `Function(e:Event)`,
-		dValue: `无`
-	}, {
-		param: 'debounceChange',
-		description: '防抖',
-		type: `Function(e:Event)`,
-		dValue: `无`
-	}, {
-		param: 'throttleChange',
-		description: '节流',
-		type: `Function(e:Event)`,
-		dValue: `无`
+		param: 'size',
+		description: '选择框大小，可选 large small',
+		type: `'large' | 'small' | 'default'`,
+		dValue: `'default'`
 	},]
 	data2 = [{
-		param: 'width',
-		description: '宽度,当使用前/后置标签时，有默认宽度',
-		type: `百分比|number `,
-		dValue: '100%'
+		param: 'label',
+		description: '选中该 Option 后，Select 显示的值(必填)',
+		type: `string `,
+		dValue: `''`
 	}, {
 		param: 'value',
-		description: 'input值',
+		description: 'option值(必填)',
 		type: `string`,
 		dValue: `''`
 	}, {
-		param: 'row',
-		description: '多少行高度',
-		type: `number`,
-		dValue: `1`
-	}, {
-		param: 'autosize',
-		description: '自动高度：如{minRows:2,maxRows:3}',
-		type: `Object`,
-		dValue: `无`
-	},]
+		param: 'disabled',
+		description: '禁用',
+		type: `boolean`,
+		dValue: `false`
+	}]
 }

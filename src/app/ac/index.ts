@@ -47,12 +47,13 @@ let output = [
   Popconfirm,
   acInput, acTextArea,
   Modal,
-  Tooltip
+  Tooltip,
+  RowComponent, ColComponent,
   // RowComponent, ColComponent
 ]
 
 @NgModule({
-  declarations: [...output, _HeadCell, _Cell, RowComponent, ColComponent, expandedRowIcon],
+  declarations: [...output, _HeadCell, _Cell,  expandedRowIcon],
   exports: [...output],
   entryComponents: [NglPopover],
   imports: [CommonModule, FormsModule, ngOutModule],

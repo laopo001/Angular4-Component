@@ -22,11 +22,11 @@ const attachments = <{ [key: string]: any }>{
   bottomLeft: { attachment: 'top left', offset: '0 0', opposite: 'topLeft' },
   topLeft: { attachment: 'bottom left', offset: '0 0', opposite: 'bottomLeft' },
 
-  rightBottom: { attachment: 'left bottom', offset: '0 0', opposite: 'leftBottom' },
+  rightBottom: { attachment: 'right top', offset: '0 0', opposite: 'leftBottom' },
   leftBottom: { attachment: 'right bottom', offset: '0 0', opposite: 'rightBottom' },
 
   rightTop: { attachment: 'left top', offset: '0 0', opposite: 'leftTop' },
-  leftTop: { attachment: 'right top', offset: '0 0', opposite: 'rightTop' },
+  leftTop: { attachment: 'left bottom', offset: '0 0', opposite: 'rightTop' },
 
 
 };

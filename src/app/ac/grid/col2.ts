@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,ChangeDetectionStrategy } from '@angular/core';
 
 
 
@@ -10,7 +10,7 @@ import { Component, OnInit, Input } from '@angular/core';
         <ng-content></ng-content>
     </div>
     `,
-
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ColComponent implements OnInit {
     get Colclass() {

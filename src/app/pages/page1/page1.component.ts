@@ -4,7 +4,7 @@ import {message} from '../../ac/'
 
 
 @Component({
-  selector: 'my-app',
+  selector: 'page1',
  // template:` <acIcon type="loading"></acIcon>`,
   templateUrl: './page1.component.html',
   styleUrls: ['./page1.component.css']

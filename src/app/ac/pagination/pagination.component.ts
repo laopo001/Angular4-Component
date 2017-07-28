@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import LOCALE from './locale/zh_CN';
-
+import { contains, stopDefault, stopBubble, waining, toWidth, format, toBoolean } from '../util/util';
 function classNames(obj: Pagination) {
 
     var { prefixCls, size } = obj;
@@ -31,7 +31,7 @@ export class Pagination implements OnInit {
     @Input() total = 0;
 
     @Input() selectComponentClass: any = null;
-    @Input() showQuickJumper = false;
+    @Input() @format(toBoolean) showQuickJumper = false;
     @Input() showSizeChanger = false;
     @Input() showLessItems = false;
     @Input() showTitle = true;
@@ -69,7 +69,7 @@ export class Pagination implements OnInit {
 
     pagerList: any[] = [];
 
-    @Input() simple: boolean = false;
+    @Input() @format(toBoolean) simple: boolean = false;
 
 
 

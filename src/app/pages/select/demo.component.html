@@ -12,17 +12,26 @@
     <acOption value="https" label="https:"></acOption>
 </acSelect>
 <div style="margin-top:10px"></div>
-<strong>禁用|禁用部分选项</strong><br>
+<strong>禁用|禁用部分选项  </strong><br>
 
 <acSelect [(value)]="Value" disabled>
     <acOption value="http" label="http:"></acOption>
     <acOption value="https" label="https:"></acOption>
 </acSelect>
 
-<acSelect [(value)]="Value" >
+<acSelect [(value)]="Value">
     <acOption value="http" label="http:"></acOption>
     <acOption value="https" disabled label="https:"></acOption>
 </acSelect>
+
+
+<div style="margin-top:10px"></div>
+<strong>上下高度不一致</strong><br>
+<acSelect [(value)]="Value3" [dropdownMatchSelectWidth]="false" placeholder="请输入">
+    <acOption value="www.baidu.com" label="www.baidu.com"></acOption>
+    <acOption value="www.aasdfsasadfasfddasdf.com" label="www.aasdfsasadfasfddasdf.com"></acOption>
+</acSelect>
+
 
 <div style="margin-top:10px"></div>
 <strong>带搜索框</strong><br>
@@ -32,14 +41,14 @@
 
 
 <div style="margin-top:50px"></div>
-<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="acInput">
+<acTable size="small" [data]="data" rowKey="id" [pagination]='false' header="acSelect">
     <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
     <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
     <acTable-column [width]='200' heading="类型" key="type"></acTable-column>
     <acTable-column [width]='200' heading="默认值" key="dValue"></acTable-column>
 </acTable>
 <div style="margin-top:10px"></div>
-<acTable size="small" [data]="data2" rowKey="id" [pagination]='false' header="acTextArea">
+<acTable size="small" [data]="data2" rowKey="id" [pagination]='false' header="acOption">
     <acTable-column [width]='200' heading="参数" key="param"></acTable-column>
     <acTable-column [width]='200' heading="说明" key="description"></acTable-column>
     <acTable-column [width]='200' heading="类型" key="type"></acTable-column>

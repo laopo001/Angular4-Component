@@ -21,8 +21,8 @@ export default class Select implements OnInit {
     @Input() @format(toBoolean) showSearch: boolean = false;
     @Input() @format(toBoolean) disabled: boolean = false;
     @Input() className: string = '';
-    @Input() placeholder: string = '';
-    @Input() width: any = '80';
+    @Input() placeholder: string = '请输入';
+    @Input() width: any = '';
     @Input() data: any[] = [];
     _data: any[] = [];
     @Input() size: Size = 'default'

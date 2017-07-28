@@ -73,7 +73,7 @@ export class InputDemoComponent implements OnInit {
 		dValue: `1000`
 	}, {
 		param: 'option',
-		description: '防抖/节流的参数',
+		description: '防抖/节流的参数，参见lodash的文档',
 		type: `Object`,
 		dValue: `{'leading': false,'trailing': true }`
 	}, {

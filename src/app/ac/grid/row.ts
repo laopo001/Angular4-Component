@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input, ContentChildren, QueryList, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, ContentChildren, QueryList, HostBinding, ChangeDetectionStrategy } from '@angular/core';
 
 import ColComponent from './col';
 var classnames = require('classnames');
@@ -7,13 +7,9 @@ var classnames = require('classnames');
 @Component({
     selector: 'div[Row]',
     template: `
-   
          <ng-content></ng-content>
- 
     `,
-    styles: [`
-  
-  `]
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class RowComponent implements OnInit {
     @HostBinding('class')

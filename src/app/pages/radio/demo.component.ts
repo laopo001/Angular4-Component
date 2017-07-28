@@ -3,16 +3,15 @@ import { Component, OnInit } from '@angular/core';
 
 
 @Component({
-	selector: 'checkbox-demo',
+	selector: 'radio-demo',
 	templateUrl: './demo.component.html',
 	styleUrls: ['./demo.component.css'],
 
 })
-export class CheckboxDemoComponent {
+export class RadioDemoComponent {
 	checked = false
-	value = ['1']
-	value2 = ['2']
-
+	value = '1'
+	value2 = '2'
 	valueChange(e) { console.log(e) }
 	data = [
 		{
